@@ -12,9 +12,9 @@ const EditorActionbar = ({ editor }: Props) => {
   return (
     <>
       <ButtonGroup orientation="horizontal">
-        <HeadingButton editor={editor} level={2} hideWhenUnavailable={true} showShortcut={true} />
-        <HeadingButton editor={editor} level={3} hideWhenUnavailable={true} showShortcut={true} />
-        <HeadingButton editor={editor} level={4} hideWhenUnavailable={true} showShortcut={true} />
+        {/* <HeadingButton editor={editor} level={2} hideWhenUnavailable={true} showShortcut={true} /> */}
+        {/* <HeadingButton editor={editor} level={3} hideWhenUnavailable={true} showShortcut={true} />
+        <HeadingButton editor={editor} level={4} hideWhenUnavailable={true} showShortcut={true} /> */}
         {/* <ListButton
           editor={editor}
           type="bulletList"
@@ -38,6 +38,45 @@ const EditorActionbar = ({ editor }: Props) => {
           type="button"
           onClick={() => {
             const chain = editor.chain().focus()
+            if (editor.isActive("heading", { level: 2 })) {
+              chain.setParagraph().run()
+            } else {
+              chain.setHeading({ level: 2 }).run()
+            }
+          }}
+        >
+          h2
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const chain = editor.chain().focus()
+            if (editor.isActive("heading", { level: 3 })) {
+              chain.setParagraph().run()
+            } else {
+              chain.setHeading({ level: 3 }).run()
+            }
+          }}
+        >
+          h3
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const chain = editor.chain().focus()
+            if (editor.isActive("heading", { level: 4 })) {
+              chain.setParagraph().run()
+            } else {
+              chain.setHeading({ level: 4 }).run()
+            }
+          }}
+        >
+          h4
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const chain = editor.chain().focus()
             if (editor.isActive("bulletList")) {
               chain.toggleOrderedList()
             } else {
@@ -52,7 +91,7 @@ const EditorActionbar = ({ editor }: Props) => {
           type="button"
           onClick={() => editor.chain().focus().toggleWrap("sectionBlock").run()}
         >
-          Section
+          Toggle Section
         </button>
       </ButtonGroup>
     </>
