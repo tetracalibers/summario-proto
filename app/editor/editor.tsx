@@ -1,7 +1,8 @@
 // src/Tiptap.tsx
 import { useEditor, EditorContent } from "@tiptap/react"
-import { FloatingMenu, BubbleMenu } from "@tiptap/react/menus"
 import StarterKit from "@tiptap/starter-kit"
+
+import "~/components/tiptap-node/paragraph-node/paragraph-node.scss"
 
 export const TiptapEditor = () => {
   const editor = useEditor({
@@ -12,8 +13,6 @@ export const TiptapEditor = () => {
   return (
     <>
       <EditorContent editor={editor} />
-      <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
-      <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
     </>
   )
 }
