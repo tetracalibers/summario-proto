@@ -9,6 +9,7 @@ import StarterKit from "@tiptap/starter-kit"
 import { all, createLowlight } from "lowlight"
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
 import EditorMenu from "./Menu"
+import EditorActionbar from "./Actionbar"
 
 const lowlight = createLowlight(all)
 
@@ -25,8 +26,8 @@ export const TiptapEditor = () => {
 
   return (
     <div>
+      <EditorActionbar editor={editor} />
       <EditorMenu editor={editor} />
-      {/* エディタ本体 */}
       <EditorContent editor={editor} />
     </div>
   )
