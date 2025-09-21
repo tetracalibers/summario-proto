@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import "~/components/tiptap-ui-primitive/badge/badge-colors.scss"
 import "~/components/tiptap-ui-primitive/badge/badge-group.scss"
