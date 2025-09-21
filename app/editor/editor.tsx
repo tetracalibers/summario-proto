@@ -1,5 +1,6 @@
 import "~/components/tiptap-node/paragraph-node/paragraph-node.scss"
 import "~/components/tiptap-node/list-node/list-node.scss"
+import "~/components/tiptap-node/heading-node/heading-node.scss"
 
 import { useEditor, EditorContent } from "@tiptap/react"
 import { BubbleMenu } from "@tiptap/react/menus"
