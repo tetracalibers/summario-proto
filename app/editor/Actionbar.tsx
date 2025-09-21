@@ -15,7 +15,7 @@ const EditorActionbar = ({ editor }: Props) => {
         <HeadingButton editor={editor} level={2} hideWhenUnavailable={true} showShortcut={true} />
         <HeadingButton editor={editor} level={3} hideWhenUnavailable={true} showShortcut={true} />
         <HeadingButton editor={editor} level={4} hideWhenUnavailable={true} showShortcut={true} />
-        <ListButton
+        {/* <ListButton
           editor={editor}
           type="bulletList"
           hideWhenUnavailable={true}
@@ -32,8 +32,22 @@ const EditorActionbar = ({ editor }: Props) => {
           type="taskList"
           hideWhenUnavailable={true}
           showShortcut={true}
-        />
+        /> */}
         <CodeBlockButton editor={editor} hideWhenUnavailable={true} showShortcut={true} />
+        <button
+          type="button"
+          onClick={() => {
+            const chain = editor.chain().focus()
+            if (editor.isActive("bulletList")) {
+              chain.toggleOrderedList()
+            } else {
+              chain.toggleBulletList()
+            }
+            chain.run()
+          }}
+        >
+          Toggle List Type
+        </button>
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleWrap("sectionBlock").run()}
