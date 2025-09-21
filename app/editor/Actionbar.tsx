@@ -33,7 +33,7 @@ const EditorActionbar = ({ editor }: Props) => {
           hideWhenUnavailable={true}
           showShortcut={true}
         /> */}
-        <CodeBlockButton editor={editor} hideWhenUnavailable={true} showShortcut={true} />
+        {/* <CodeBlockButton editor={editor} hideWhenUnavailable={true} showShortcut={true} /> */}
         <button
           type="button"
           onClick={() => {
@@ -86,6 +86,9 @@ const EditorActionbar = ({ editor }: Props) => {
           }}
         >
           Toggle List Type
+        </button>
+        <button type="button" onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
+          Toggle Code Block
         </button>
         <button
           type="button"
