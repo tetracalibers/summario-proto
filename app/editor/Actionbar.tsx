@@ -34,6 +34,12 @@ const EditorActionbar = ({ editor }: Props) => {
           showShortcut={true}
         />
         <CodeBlockButton editor={editor} hideWhenUnavailable={true} showShortcut={true} />
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleWrap("sectionBlock").run()}
+        >
+          Section
+        </button>
       </ButtonGroup>
     </>
   )
