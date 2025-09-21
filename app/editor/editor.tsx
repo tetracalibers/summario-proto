@@ -10,6 +10,7 @@ import { all, createLowlight } from "lowlight"
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
 import EditorMenu from "./Menu"
 import EditorActionbar from "./Actionbar"
+import { ListKit } from "@tiptap/extension-list"
 
 const lowlight = createLowlight(all)
 
@@ -17,6 +18,7 @@ export const TiptapEditor = () => {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      ListKit,
       CodeBlockLowlight.configure({
         lowlight
       })
