@@ -20,6 +20,10 @@ body {
   :last-child {
     margin-block-end: 0;
   }
+
+  .node-sectionBlock {
+    margin-block: 1rem;
+  }
 }
 
 .drag-handle {
