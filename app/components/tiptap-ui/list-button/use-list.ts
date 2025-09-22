@@ -17,7 +17,7 @@ import {
   findNodePosition,
   isNodeInSchema,
   isNodeTypeSelected,
-  isValidPosition,
+  isValidPosition
 } from "~/lib/tiptap-utils"
 
 export type ListType = "bulletList" | "orderedList" | "taskList"
@@ -48,19 +48,19 @@ export interface UseListConfig {
 export const listIcons = {
   bulletList: ListIcon,
   orderedList: ListOrderedIcon,
-  taskList: ListTodoIcon,
+  taskList: ListTodoIcon
 }
 
 export const listLabels: Record<ListType, string> = {
   bulletList: "Bullet List",
   orderedList: "Ordered List",
-  taskList: "Task List",
+  taskList: "Task List"
 }
 
 export const LIST_SHORTCUT_KEYS: Record<ListType, string> = {
   bulletList: "mod+shift+8",
   orderedList: "mod+shift+7",
-  taskList: "mod+shift+9",
+  taskList: "mod+shift+9"
 }
 
 /**
@@ -72,8 +72,7 @@ export function canToggleList(
   turnInto: boolean = true
 ): boolean {
   if (!editor || !editor.isEditable) return false
-  if (!isNodeInSchema(type, editor) || isNodeTypeSelected(editor, ["image"]))
-    return false
+  if (!isNodeInSchema(type, editor) || isNodeTypeSelected(editor, ["image"])) return false
 
   if (!turnInto) {
     switch (type) {
@@ -96,7 +95,7 @@ export function canToggleList(
     if (selection.empty || selection instanceof TextSelection) {
       const pos = findNodePosition({
         editor,
-        node: state.selection.$anchor.node(1),
+        node: state.selection.$anchor.node(1)
       })?.pos
       if (!isValidPosition(pos)) return false
     }
@@ -141,7 +140,7 @@ export function toggleList(editor: Editor | null, type: ListType): boolean {
     if (state.selection.empty || state.selection instanceof TextSelection) {
       const pos = findNodePosition({
         editor,
-        node: state.selection.$anchor.node(1),
+        node: state.selection.$anchor.node(1)
       })?.pos
       if (!isValidPosition(pos)) return false
 
@@ -159,31 +158,22 @@ export function toggleList(editor: Editor | null, type: ListType): boolean {
       const firstChild = selection.node.firstChild?.firstChild
       const lastChild = selection.node.lastChild?.lastChild
 
-      const from = firstChild
-        ? selection.from + firstChild.nodeSize
-        : selection.from + 1
+      const from = firstChild ? selection.from + firstChild.nodeSize : selection.from + 1
 
-      const to = lastChild
-        ? selection.to - lastChild.nodeSize
-        : selection.to - 1
+      const to = lastChild ? selection.to - lastChild.nodeSize : selection.to - 1
 
       chain = chain.setTextSelection({ from, to }).clearNodes()
     }
 
     if (editor.isActive(type)) {
       // Unwrap list
-      chain
-        .liftListItem("listItem")
-        .lift("bulletList")
-        .lift("orderedList")
-        .lift("taskList")
-        .run()
+      chain.liftListItem("listItem").lift("bulletList").lift("orderedList").lift("taskList").run()
     } else {
       // Wrap in specific list type
       const toggleMap: Record<ListType, () => typeof chain> = {
         bulletList: () => chain.toggleBulletList(),
         orderedList: () => chain.toggleOrderedList(),
-        taskList: () => chain.toggleList("taskList", "taskItem"),
+        taskList: () => chain.toggleList("taskList", "taskItem")
       }
 
       const toggle = toggleMap[type]
@@ -258,12 +248,7 @@ export function shouldShowButton(props: {
  * ```
  */
 export function useList(config: UseListConfig) {
-  const {
-    editor: providedEditor,
-    type,
-    hideWhenUnavailable = false,
-    onToggled,
-  } = config
+  const { editor: providedEditor, type, hideWhenUnavailable = false, onToggled } = config
 
   const { editor } = useTiptapEditor(providedEditor)
   const [isVisible, setIsVisible] = React.useState<boolean>(true)
@@ -303,6 +288,6 @@ export function useList(config: UseListConfig) {
     canToggle,
     label: listLabels[type],
     shortcutKeys: LIST_SHORTCUT_KEYS[type],
-    Icon: listIcons[type],
+    Icon: listIcons[type]
   }
 }

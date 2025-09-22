@@ -18,17 +18,9 @@ import { useLinkPopover } from "~/components/tiptap-ui/link-popover"
 // --- UI Primitives ---
 import type { ButtonProps } from "~/components/tiptap-ui-primitive/button"
 import { Button, ButtonGroup } from "~/components/tiptap-ui-primitive/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "~/components/tiptap-ui-primitive/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/tiptap-ui-primitive/popover"
 import { Separator } from "~/components/tiptap-ui-primitive/separator"
-import {
-  Card,
-  CardBody,
-  CardItemGroup,
-} from "~/components/tiptap-ui-primitive/card"
+import { Card, CardBody, CardItemGroup } from "~/components/tiptap-ui-primitive/card"
 import { Input, InputGroup } from "~/components/tiptap-ui-primitive/input"
 
 export interface LinkMainProps {
@@ -58,9 +50,7 @@ export interface LinkMainProps {
   isActive: boolean
 }
 
-export interface LinkPopoverProps
-  extends Omit<ButtonProps, "type">,
-    UseLinkPopoverConfig {
+export interface LinkPopoverProps extends Omit<ButtonProps, "type">, UseLinkPopoverConfig {
   /**
    * Callback for when the popover opens or closes.
    */
@@ -106,7 +96,7 @@ const LinkMain: React.FC<LinkMainProps> = ({
   setLink,
   removeLink,
   openLink,
-  isActive,
+  isActive
 }) => {
   const isMobile = useIsMobile()
 
@@ -120,12 +110,12 @@ const LinkMain: React.FC<LinkMainProps> = ({
   return (
     <Card
       style={{
-        ...(isMobile ? { boxShadow: "none", border: 0 } : {}),
+        ...(isMobile ? { boxShadow: "none", border: 0 } : {})
       }}
     >
       <CardBody
         style={{
-          ...(isMobile ? { padding: 0 } : {}),
+          ...(isMobile ? { padding: 0 } : {})
         }}
       >
         <CardItemGroup orientation="horizontal">
@@ -191,7 +181,7 @@ export const LinkContent: React.FC<{
   editor?: Editor | null
 }> = ({ editor }) => {
   const linkPopover = useLinkPopover({
-    editor,
+    editor
   })
 
   return <LinkMain {...linkPopover} />
@@ -202,10 +192,7 @@ export const LinkContent: React.FC<{
  *
  * For custom popover implementations, use the `useLinkPopover` hook instead.
  */
-export const LinkPopover = React.forwardRef<
-  HTMLButtonElement,
-  LinkPopoverProps
->(
+export const LinkPopover = React.forwardRef<HTMLButtonElement, LinkPopoverProps>(
   (
     {
       editor: providedEditor,
@@ -222,22 +209,12 @@ export const LinkPopover = React.forwardRef<
     const { editor } = useTiptapEditor(providedEditor)
     const [isOpen, setIsOpen] = React.useState(false)
 
-    const {
-      isVisible,
-      canSet,
-      isActive,
-      url,
-      setUrl,
-      setLink,
-      removeLink,
-      openLink,
-      label,
-      Icon,
-    } = useLinkPopover({
-      editor,
-      hideWhenUnavailable,
-      onSetLink,
-    })
+    const { isVisible, canSet, isActive, url, setUrl, setLink, removeLink, openLink, label, Icon } =
+      useLinkPopover({
+        editor,
+        hideWhenUnavailable,
+        onSetLink
+      })
 
     const handleOnOpenChange = React.useCallback(
       (nextIsOpen: boolean) => {

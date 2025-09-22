@@ -165,17 +165,14 @@ export function useLinkHandler(props: LinkHandlerProps) {
     setUrl,
     setLink,
     removeLink,
-    openLink,
+    openLink
   }
 }
 
 /**
  * Custom hook for link popover state management
  */
-export function useLinkState(props: {
-  editor: Editor | null
-  hideWhenUnavailable: boolean
-}) {
+export function useLinkState(props: { editor: Editor | null; hideWhenUnavailable: boolean }) {
   const { editor, hideWhenUnavailable = false } = props
 
   const canSet = canSetLink(editor)
@@ -190,7 +187,7 @@ export function useLinkState(props: {
       setIsVisible(
         shouldShowLinkButton({
           editor,
-          hideWhenUnavailable,
+          hideWhenUnavailable
         })
       )
     }
@@ -207,7 +204,7 @@ export function useLinkState(props: {
   return {
     isVisible,
     canSet,
-    isActive,
+    isActive
   }
 }
 
@@ -249,22 +246,18 @@ export function useLinkState(props: {
  * ```
  */
 export function useLinkPopover(config?: UseLinkPopoverConfig) {
-  const {
-    editor: providedEditor,
-    hideWhenUnavailable = false,
-    onSetLink,
-  } = config || {}
+  const { editor: providedEditor, hideWhenUnavailable = false, onSetLink } = config || {}
 
   const { editor } = useTiptapEditor(providedEditor)
 
   const { isVisible, canSet, isActive } = useLinkState({
     editor,
-    hideWhenUnavailable,
+    hideWhenUnavailable
   })
 
   const linkHandler = useLinkHandler({
     editor,
-    onSetLink,
+    onSetLink
   })
 
   return {
@@ -273,6 +266,6 @@ export function useLinkPopover(config?: UseLinkPopoverConfig) {
     isActive,
     label: "Link",
     Icon: LinkIcon,
-    ...linkHandler,
+    ...linkHandler
   }
 }
