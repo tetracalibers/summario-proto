@@ -23,6 +23,7 @@
     "@tiptap/extension-link": "^3.4.4",
     "@tiptap/extension-list": "^3.4.4",
     "@tiptap/extension-node-range": "^3.4.4",
+    "@tiptap/extension-table-of-contents": "^3.4.6",
     "@tiptap/extensions": "^3.4.4",
     "@tiptap/pm": "^3.4.4",
     "@tiptap/react": "^3.4.4",

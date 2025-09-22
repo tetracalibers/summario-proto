@@ -16,6 +16,17 @@ import { Link } from "@tiptap/extension-link"
 import { Placeholder } from "@tiptap/extensions"
 import TitleBlock from "~/extensions/title-block/extension"
 import Document from "@tiptap/extension-document"
+import { AppShell } from "@mantine/core"
+import React, { useState } from "react"
+// @ts-ignore
+import ToC from "~/components/tiptap-original/table-of-contents/ToC"
+import {
+  getHierarchicalIndexes,
+  TableOfContents,
+  type TableOfContentData
+} from "@tiptap/extension-table-of-contents"
+
+const MemorizedToC = React.memo(ToC)
 
 const CustomDocument = Document.extend({
   content: "title_block block*"
@@ -24,6 +35,8 @@ const CustomDocument = Document.extend({
 const lowlight = createLowlight(all)
 
 export const TiptapEditor = () => {
+  const [tocItems, setTocItems] = useState<TableOfContentData>([])
+
   const editor = useEditor({
     extensions: [
       CustomDocument,
@@ -50,6 +63,12 @@ export const TiptapEditor = () => {
           }
           return "..."
         }
+      }),
+      TableOfContents.configure({
+        getIndex: getHierarchicalIndexes,
+        onUpdate(content) {
+          setTocItems(content)
+        }
       })
     ],
     content: `
@@ -70,21 +89,26 @@ export const TiptapEditor = () => {
   })
 
   return (
-    <div>
-      <EditorActionbar editor={editor} />
-      <DragHandle editor={editor}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-        </svg>
-      </DragHandle>
-      <EditorContent editor={editor} />
-    </div>
+    <AppShell aside={{ width: 300, breakpoint: "sm" }}>
+      <AppShell.Main>
+        <EditorActionbar editor={editor} />
+        <DragHandle editor={editor}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+          </svg>
+        </DragHandle>
+        <EditorContent editor={editor} />
+      </AppShell.Main>
+      <AppShell.Aside>
+        <MemorizedToC editor={editor} items={tocItems} />
+      </AppShell.Aside>
+    </AppShell>
   )
 }
 
