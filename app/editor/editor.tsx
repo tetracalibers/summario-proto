@@ -8,11 +8,11 @@ import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { all, createLowlight } from "lowlight"
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
-import EditorMenu from "./Menu"
 import EditorActionbar from "./Actionbar"
 import { ListKit } from "@tiptap/extension-list"
 import SectionBlock from "~/extensions/section-block/extension"
 import DragHandle from "@tiptap/extension-drag-handle-react"
+import { Link } from "@tiptap/extension-link"
 
 const lowlight = createLowlight(all)
 
@@ -24,6 +24,7 @@ export const TiptapEditor = () => {
       CodeBlockLowlight.configure({
         lowlight
       }),
+      Link.configure({ openOnClick: false }),
       SectionBlock
     ],
     content: `
@@ -42,7 +43,6 @@ export const TiptapEditor = () => {
   return (
     <div>
       <EditorActionbar editor={editor} />
-      <EditorMenu editor={editor} />
       <DragHandle editor={editor}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

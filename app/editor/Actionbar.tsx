@@ -2,6 +2,7 @@ import type { Editor } from "@tiptap/react"
 import { ButtonGroup } from "~/components/tiptap-ui-primitive/button"
 import { CodeBlockButton } from "~/components/tiptap-ui/code-block-button"
 import { HeadingButton } from "~/components/tiptap-ui/heading-button"
+import { LinkPopover } from "~/components/tiptap-ui/link-popover"
 import { ListButton } from "~/components/tiptap-ui/list-button"
 
 interface Props {
@@ -34,6 +35,7 @@ const EditorActionbar = ({ editor }: Props) => {
           showShortcut={true}
         /> */}
         {/* <CodeBlockButton editor={editor} hideWhenUnavailable={true} showShortcut={true} /> */}
+        <LinkPopover editor={editor} hideWhenUnavailable={false} autoOpenOnLinkActive={true} />
         <button
           type="button"
           onClick={() => {
