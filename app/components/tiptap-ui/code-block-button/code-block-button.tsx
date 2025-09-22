@@ -65,8 +65,9 @@ export const CodeBlockButton = React.forwardRef<HTMLButtonElement, CodeBlockButt
     const handleClick = React.useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
-        if (event.defaultPrevented) return
-        handleToggle()
+        // XXX: 独自実装のSectionBlock内で意図した挙動にならない
+        // if (event.defaultPrevented) return
+        // handleToggle()
       },
       [onClick]
     )
