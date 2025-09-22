@@ -13,6 +13,7 @@ import { ListKit } from "@tiptap/extension-list"
 import SectionBlock from "~/extensions/section-block/extension"
 import DragHandle from "@tiptap/extension-drag-handle-react"
 import { Link } from "@tiptap/extension-link"
+import { Placeholder } from "@tiptap/extensions"
 
 const lowlight = createLowlight(all)
 
@@ -25,7 +26,17 @@ export const TiptapEditor = () => {
         lowlight
       }),
       Link.configure({ openOnClick: false }),
-      SectionBlock
+      SectionBlock,
+      Placeholder.configure({
+        showOnlyCurrent: false,
+        includeChildren: true,
+        placeholder: ({ node }) => {
+          if (node.type.name === "heading") {
+            return "Heading " + node.attrs.level
+          }
+          return "..."
+        }
+      })
     ],
     content: `
     <p></p>

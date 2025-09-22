@@ -42,3 +42,7 @@ body {
     height: 1.25rem;
   }
 }
+
+.is-empty:not(.with-slash)[data-placeholder]:has(> .ProseMirror-trailingBreak:only-child) {
+  position: relative;
+}
