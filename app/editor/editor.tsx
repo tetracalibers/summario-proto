@@ -28,11 +28,14 @@ export const TiptapEditor = () => {
       SectionBlock
     ],
     content: `
-    <p>
-      This is still the text editor you’re used to, but enriched with node views.
-    </p>
+    <p></p>
+    <section-block type="summary">
+      <h2>Summary</h2>
+      <p></p>
+    </section-block>
     <section-block>
-      <p>This is section.</p>
+      <h2>Context</h2>
+      <p></p>
     </section-block>
     <p>
       Did you see that? That’s a React component. We are really living in the future.
