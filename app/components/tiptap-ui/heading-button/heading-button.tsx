@@ -66,10 +66,11 @@ export const HeadingButton = React.forwardRef<HTMLButtonElement, HeadingButtonPr
     const handleClick = React.useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
-        if (event.defaultPrevented) return
-        handleToggle()
+        // XXX: 独自実装のSectionBlock内で意図した挙動にならない
+        // if (event.defaultPrevented) return
+        // handleToggle()
       },
-      [handleToggle, onClick]
+      [onClick]
     )
 
     if (!isVisible) {

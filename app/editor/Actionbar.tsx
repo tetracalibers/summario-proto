@@ -13,9 +13,6 @@ const EditorActionbar = ({ editor }: Props) => {
   return (
     <>
       <ButtonGroup orientation="horizontal">
-        {/* <HeadingButton editor={editor} level={2} hideWhenUnavailable={true} showShortcut={true} /> */}
-        {/* <HeadingButton editor={editor} level={3} hideWhenUnavailable={true} showShortcut={true} />
-        <HeadingButton editor={editor} level={4} hideWhenUnavailable={true} showShortcut={true} /> */}
         {/* <ListButton
           editor={editor}
           type="bulletList"
@@ -35,14 +32,11 @@ const EditorActionbar = ({ editor }: Props) => {
           showShortcut={true}
         /> */}
         <LinkPopover editor={editor} hideWhenUnavailable={false} autoOpenOnLinkActive={true} />
-        <CodeBlockButton
+        <HeadingButton
           editor={editor}
+          level={2}
           hideWhenUnavailable={false}
           showShortcut={true}
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        />
-        <button
-          type="button"
           onClick={() => {
             const chain = editor.chain().focus()
             if (editor.isActive("heading", { level: 2 })) {
@@ -51,11 +45,12 @@ const EditorActionbar = ({ editor }: Props) => {
               chain.setHeading({ level: 2 }).run()
             }
           }}
-        >
-          h2
-        </button>
-        <button
-          type="button"
+        />
+        <HeadingButton
+          editor={editor}
+          level={3}
+          hideWhenUnavailable={false}
+          showShortcut={true}
           onClick={() => {
             const chain = editor.chain().focus()
             if (editor.isActive("heading", { level: 3 })) {
@@ -64,11 +59,12 @@ const EditorActionbar = ({ editor }: Props) => {
               chain.setHeading({ level: 3 }).run()
             }
           }}
-        >
-          h3
-        </button>
-        <button
-          type="button"
+        />
+        <HeadingButton
+          editor={editor}
+          level={4}
+          hideWhenUnavailable={false}
+          showShortcut={true}
           onClick={() => {
             const chain = editor.chain().focus()
             if (editor.isActive("heading", { level: 4 })) {
@@ -77,9 +73,13 @@ const EditorActionbar = ({ editor }: Props) => {
               chain.setHeading({ level: 4 }).run()
             }
           }}
-        >
-          h4
-        </button>
+        />
+        <CodeBlockButton
+          editor={editor}
+          hideWhenUnavailable={false}
+          showShortcut={true}
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        />
         <button
           type="button"
           onClick={() => {
