@@ -14,23 +14,37 @@ import SectionBlock from "~/extensions/section-block/extension"
 import DragHandle from "@tiptap/extension-drag-handle-react"
 import { Link } from "@tiptap/extension-link"
 import { Placeholder } from "@tiptap/extensions"
+import TitleBlock from "~/extensions/title-block/extension"
+import Document from "@tiptap/extension-document"
+
+const CustomDocument = Document.extend({
+  content: "title_block block*"
+})
 
 const lowlight = createLowlight(all)
 
 export const TiptapEditor = () => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      CustomDocument,
+      StarterKit.configure({
+        document: false,
+        heading: {
+          levels: [2, 3, 4]
+        }
+      }),
       ListKit,
       CodeBlockLowlight.configure({
         lowlight
       }),
       Link.configure({ openOnClick: false }),
       SectionBlock,
+      TitleBlock,
       Placeholder.configure({
         showOnlyCurrent: false,
         includeChildren: true,
         placeholder: ({ node }) => {
+          if (node.type.name === "title_block") return "Title"
           if (node.type.name === "heading") {
             return "Heading " + node.attrs.level
           }
@@ -39,6 +53,7 @@ export const TiptapEditor = () => {
       })
     ],
     content: `
+    <title-block></title-block>
     <p></p>
     <section-block type="summary">
       <h2>Summary</h2>
