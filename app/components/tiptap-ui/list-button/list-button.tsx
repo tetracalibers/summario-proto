@@ -68,10 +68,11 @@ export const ListButton = React.forwardRef<HTMLButtonElement, ListButtonProps>(
     const handleClick = React.useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
-        if (event.defaultPrevented) return
-        handleToggle()
+        // XXX: 独自実装のSectionBlock内では意図した挙動にならない
+        // if (event.defaultPrevented) return
+        // handleToggle()
       },
-      [handleToggle, onClick]
+      [onClick]
     )
 
     if (!isVisible) {

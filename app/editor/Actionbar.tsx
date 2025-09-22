@@ -13,24 +13,6 @@ const EditorActionbar = ({ editor }: Props) => {
   return (
     <>
       <ButtonGroup orientation="horizontal">
-        {/* <ListButton
-          editor={editor}
-          type="bulletList"
-          hideWhenUnavailable={true}
-          showShortcut={true}
-        />
-        <ListButton
-          editor={editor}
-          type="orderedList"
-          hideWhenUnavailable={true}
-          showShortcut={true}
-        />
-        <ListButton
-          editor={editor}
-          type="taskList"
-          hideWhenUnavailable={true}
-          showShortcut={true}
-        /> */}
         <LinkPopover editor={editor} hideWhenUnavailable={false} autoOpenOnLinkActive={true} />
         <HeadingButton
           editor={editor}
@@ -74,26 +56,26 @@ const EditorActionbar = ({ editor }: Props) => {
             }
           }}
         />
+        <ListButton
+          editor={editor}
+          type="bulletList"
+          hideWhenUnavailable={false}
+          showShortcut={true}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+        />
+        <ListButton
+          editor={editor}
+          type="orderedList"
+          hideWhenUnavailable={false}
+          showShortcut={true}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        />
         <CodeBlockButton
           editor={editor}
           hideWhenUnavailable={false}
           showShortcut={true}
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         />
-        <button
-          type="button"
-          onClick={() => {
-            const chain = editor.chain().focus()
-            if (editor.isActive("bulletList")) {
-              chain.toggleOrderedList()
-            } else {
-              chain.toggleBulletList()
-            }
-            chain.run()
-          }}
-        >
-          Toggle List Type
-        </button>
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleWrap("sectionBlock").run()}
