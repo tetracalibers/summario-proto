@@ -52,5 +52,13 @@ export default Node.create({
           return chain().deleteNode(this.name).run()
         }
     }
+  },
+
+  onUpdate({ editor }) {
+    // 中身が空になったらセクション自体も削除
+    const activeNode = editor.state.selection.$head.parent
+    if (activeNode.content.size === 0) {
+      editor.chain().focus().deleteNode(this.name).run()
+    }
   }
 })
