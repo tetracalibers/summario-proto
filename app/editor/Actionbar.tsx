@@ -99,8 +99,12 @@ const EditorActionbar = ({ editor }: Props) => {
           const from = activeSectionBlock.pos + 1
           const to = activeSectionBlock.pos + activeSectionBlock.node.nodeSize - 1
 
-          for (let i = from; i <= to; i++) {
-            editor.chain().focus(i).toggleWrap("sectionBlock").run()
+          for (let i = from; i < to; i++) {
+            editor
+              .chain()
+              .focus(i - 1)
+              .toggleWrap("sectionBlock")
+              .run()
           }
         }}
       >
