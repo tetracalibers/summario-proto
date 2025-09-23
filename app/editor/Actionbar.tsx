@@ -110,6 +110,37 @@ const EditorActionbar = ({ editor }: Props) => {
       >
         Toggle Group
       </Button>
+      <Button
+        type="button"
+        onClick={() => {
+          const activeNodePos = editor.state.selection.$head
+          const activeNode = activeNodePos.parent
+
+          if (activeNode.type.name === "title_block") {
+            return
+          }
+
+          const $sectionBlocks = editor.$nodes("sectionBlock")
+          if (!$sectionBlocks) {
+            editor.chain().focus().deleteNode(activeNode.type.name).run()
+            return
+          }
+
+          const activeSectionBlock = $sectionBlocks.find((node) => {
+            return (
+              activeNodePos.pos >= node.pos && activeNodePos.pos <= node.pos + node.node.nodeSize
+            )
+          })
+          if (!activeSectionBlock) {
+            editor.chain().focus().deleteNode(activeNode.type.name).run()
+            return
+          }
+
+          editor.chain().deleteSectionBlock().run()
+        }}
+      >
+        Delete
+      </Button>
     </Toolbar>
   )
 }

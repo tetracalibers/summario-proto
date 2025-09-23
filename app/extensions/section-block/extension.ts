@@ -3,6 +3,14 @@ import { ReactNodeViewRenderer } from "@tiptap/react"
 
 import SectionBlock from "./SectionBlock"
 
+declare module "@tiptap/core" {
+  interface Commands<ReturnType> {
+    customExtension: {
+      deleteSectionBlock: () => ReturnType
+    }
+  }
+}
+
 export default Node.create({
   name: "sectionBlock",
 
@@ -34,5 +42,15 @@ export default Node.create({
 
   addNodeView() {
     return ReactNodeViewRenderer(SectionBlock)
+  },
+
+  addCommands() {
+    return {
+      deleteSectionBlock:
+        () =>
+        ({ chain }) => {
+          return chain().deleteNode(this.name).run()
+        }
+    }
   }
 })
