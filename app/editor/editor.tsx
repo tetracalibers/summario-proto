@@ -16,6 +16,8 @@ import { Link } from "@tiptap/extension-link"
 import { Placeholder } from "@tiptap/extensions"
 import TitleBlock from "~/extensions/title-block/extension"
 import Document from "@tiptap/extension-document"
+import BlockTypeMenu from "./BlockTypeMenu"
+import { Grid, ScrollArea } from "@mantine/core"
 
 const CustomDocument = Document.extend({
   content: "title_block block*"
@@ -70,21 +72,28 @@ export const TiptapEditor = () => {
   })
 
   return (
-    <div>
-      <EditorActionbar editor={editor} />
-      <DragHandle editor={editor}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-        </svg>
-      </DragHandle>
-      <EditorContent editor={editor} />
-    </div>
+    <Grid>
+      <Grid.Col span="auto">
+        <EditorActionbar editor={editor} />
+        <DragHandle editor={editor}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+          </svg>
+        </DragHandle>
+        <EditorContent editor={editor} />
+      </Grid.Col>
+      <Grid.Col span={3}>
+        <ScrollArea h={"calc(100vh - 10rem)"} px={"md"}>
+          <BlockTypeMenu />
+        </ScrollArea>
+      </Grid.Col>
+    </Grid>
   )
 }
 
