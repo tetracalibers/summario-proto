@@ -17,6 +17,7 @@
     "@radix-ui/react-popover": "^1.1.15",
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
+    "@tabler/icons-react": "^3.35.0",
     "@tiptap/extension-code-block-lowlight": "^3.4.4",
     "@tiptap/extension-collaboration": "^3.4.4",
     "@tiptap/extension-drag-handle": "^3.4.4",
