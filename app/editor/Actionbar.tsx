@@ -1,33 +1,9 @@
 import type { Editor } from "@tiptap/react"
-// import { CodeBlockButton } from "~/components/tiptap-ui/code-block-button"
-// import { HeadingButton } from "~/components/tiptap-ui/heading-button"
-// import { LinkPopover } from "~/components/tiptap-ui/link-popover"
-// import { ListButton } from "~/components/tiptap-ui/list-button"
-// import { Toolbar } from "~/components/tiptap-ui-primitive/toolbar"
-// import { Button } from "~/components/tiptap-ui-primitive/button"
 import { RichTextEditor } from "@mantine/tiptap"
 import { IconSection, IconTrash } from "@tabler/icons-react"
 
 interface Props {
   editor: Editor
-}
-
-const toggleHeading = (editor: Editor, level: 1 | 2 | 3 | 4 | 5 | 6) => {
-  const chain = editor.chain().focus()
-  if (editor.isActive("heading", { level })) {
-    chain.setParagraph().run()
-  } else {
-    chain.setHeading({ level }).run()
-  }
-}
-const toggleBulletList = (editor: Editor) => {
-  editor.chain().focus().toggleBulletList().run()
-}
-const toggleOrderedList = (editor: Editor) => {
-  editor.chain().focus().toggleOrderedList().run()
-}
-const toggleCodeBlock = (editor: Editor) => {
-  editor.chain().focus().toggleCodeBlock().run()
 }
 
 const toggleSectionBlock = (editor: Editor) => {
