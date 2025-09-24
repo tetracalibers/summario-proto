@@ -1,15 +1,14 @@
 import BLOCK_TYPES from "./block-type.json"
-import { Badge, Card, Group, Stack, Text } from "@mantine/core"
+import { Card } from "primereact/card"
+import "./card.css"
 
 const BlockTypeMenu = () => {
   return (
-    <Stack>
+    <div className="stack">
       {BLOCK_TYPES.map((block) => (
         <Card
-          shadow="sm"
-          padding="md"
-          radius="md"
-          withBorder
+          title={block.label}
+          subTitle={block.label_ja}
           draggable
           key={block.name}
           onDragStart={(e) => {
@@ -19,16 +18,10 @@ const BlockTypeMenu = () => {
             )
           }}
         >
-          <Group justify="space-between">
-            <Text fw={500}>{block.label}</Text>
-            <Badge color="pink">{block.label_ja}</Badge>
-          </Group>
-          <Text size="sm" c="dimmed">
-            {block.description}
-          </Text>
+          <p style={{ margin: 0 }}>{block.description}</p>
         </Card>
       ))}
-    </Stack>
+    </div>
   )
 }
 

@@ -1,7 +1,7 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
-import { ColorSchemeScript, MantineProvider } from "@mantine/core"
+import { PrimeReactProvider } from "primereact/api"
 import type { Route } from "./+types/root"
-import "@mantine/core/styles.css"
+import "primereact/resources/themes/lara-light-pink/theme.css"
 import "./app.css"
 
 export const links: Route.LinksFunction = () => [
@@ -13,7 +13,7 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    href: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
   }
 ]
 
@@ -23,12 +23,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <ColorSchemeScript />
         <Meta />
         <Links />
       </head>
       <body>
-        <MantineProvider>{children}</MantineProvider>
+        <PrimeReactProvider>{children}</PrimeReactProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

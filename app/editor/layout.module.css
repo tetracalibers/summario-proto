@@ -1,0 +1,14 @@
+.root {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 3fr 1fr;
+  grid-template-areas: "main-area right-area";
+}
+
+.mainArea {
+  grid-area: main-area;
+}
+
+.rightArea {
+  grid-area: right-area;
+}

@@ -4,6 +4,9 @@ import "~/components/tiptap-node/heading-node/heading-node.scss"
 import "~/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "~/components/tiptap-node/code-block-node/code-block-node.scss"
 
+import "./scroll-panel.css"
+import styles from "./layout.module.css"
+
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { all, createLowlight } from "lowlight"
@@ -17,7 +20,7 @@ import { Placeholder } from "@tiptap/extensions"
 import TitleBlock from "~/extensions/title-block/extension"
 import Document from "@tiptap/extension-document"
 import BlockTypeMenu from "./BlockTypeMenu"
-import { Grid, ScrollArea } from "@mantine/core"
+import { ScrollPanel } from "primereact/scrollpanel"
 
 const newSectionBlock = (type: string, label: string) => ({
   type: "sectionBlock",
@@ -140,8 +143,8 @@ export const TiptapEditor = () => {
   })
 
   return (
-    <Grid>
-      <Grid.Col span="auto">
+    <div className={styles.root}>
+      <div className={styles.mainArea}>
         <EditorActionbar editor={editor} />
         <DragHandle editor={editor}>
           <svg
@@ -155,13 +158,13 @@ export const TiptapEditor = () => {
           </svg>
         </DragHandle>
         <EditorContent editor={editor} />
-      </Grid.Col>
-      <Grid.Col span={3}>
-        <ScrollArea h={"calc(100vh - 10rem)"} px={"md"} pb={"md"}>
+      </div>
+      <div className={styles.rightArea}>
+        <ScrollPanel style={{ height: "calc(100vh - 6rem)" }}>
           <BlockTypeMenu />
-        </ScrollArea>
-      </Grid.Col>
-    </Grid>
+        </ScrollPanel>
+      </div>
+    </div>
   )
 }
 
