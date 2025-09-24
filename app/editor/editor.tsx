@@ -50,7 +50,9 @@ const TiptapEditor = () => {
         link: false,
         heading: {
           levels: [2, 3, 4]
-        }
+        },
+        italic: false,
+        underline: false
       }),
       ListKit,
       CodeBlockLowlight.configure({
