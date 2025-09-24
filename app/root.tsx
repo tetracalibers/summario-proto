@@ -1,7 +1,9 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
 import { ColorSchemeScript, MantineProvider } from "@mantine/core"
 import type { Route } from "./+types/root"
+
 import "@mantine/core/styles.css"
+import "@mantine/tiptap/styles.css" // ‼️ import tiptap styles after core package styles
 import "./app.css"
 
 export const links: Route.LinksFunction = () => [
