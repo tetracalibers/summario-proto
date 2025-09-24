@@ -16,6 +16,29 @@ import { Link } from "@tiptap/extension-link"
 import { Placeholder } from "@tiptap/extensions"
 import TitleBlock from "~/extensions/title-block/extension"
 import Document from "@tiptap/extension-document"
+import BlockTypeMenu from "./BlockTypeMenu"
+import { Grid, ScrollArea } from "@mantine/core"
+
+const newSectionBlock = (type: string, label: string) => ({
+  type: "sectionBlock",
+  attrs: { type },
+  content: [
+    {
+      type: "heading",
+      attrs: { level: 2 },
+      content: [
+        {
+          type: "text",
+          text: label
+        }
+      ]
+    },
+    {
+      type: "paragraph",
+      content: []
+    }
+  ]
+})
 
 const CustomDocument = Document.extend({
   content: "title_block block*"
@@ -52,6 +75,53 @@ export const TiptapEditor = () => {
         }
       })
     ],
+    editorProps: {
+      handleDrop: (view, event, _slice, _moved) => {
+        const block = event.dataTransfer?.getData("application/x-block")
+        if (!block) return false // TipTapのデフォルトの挙動に任せる
+
+        // dropされた位置
+        const droppedPoint = view.posAtCoords({ left: event.clientX, top: event.clientY })
+        if (!droppedPoint) return false
+
+        // dropされた位置にある要素
+        // nodeの間にdropされた場合はnullになるが、その場合は最後に処理するのでnullでも弾かない
+        const droppedNode = view.state.doc.nodeAt(droppedPoint.pos - 1)
+
+        // テキストの途中にdropされた場合は何もしない
+        // resolveでエラーになってしまうため、ここで弾く
+        if (droppedNode?.type.name === "text") return false
+        // セクションブロックの中には入れない
+        if (droppedNode?.type.name === "sectionBlock") return false
+
+        // depthを調べるためにNodePosに変換
+        const droppedNodePos = view.state.doc.resolve(droppedPoint.pos)
+
+        const blockInfo = JSON.parse(block)
+
+        // トップレベルのparagraphにdropされた場合は置き換える
+        if (droppedNode?.type.name === "paragraph" && droppedNodePos.depth === 1) {
+          editor
+            .chain()
+            .deleteNode("paragraph")
+            .insertContentAt(droppedPoint.pos, newSectionBlock(blockInfo.type, blockInfo.label))
+            .run()
+
+          return true // TipTapのデフォルトのドロップ処理を停止
+        }
+
+        // paragraph以外のnodeにdropされた場合は何もしない
+        if (droppedNodePos.depth > 0) return false
+
+        // nodeの間にdropされた場合はその位置に挿入
+        editor.commands.insertContentAt(
+          droppedPoint.pos,
+          newSectionBlock(blockInfo.type, blockInfo.label)
+        )
+
+        return true
+      }
+    },
     content: `
     <title-block></title-block>
     <p></p>
@@ -70,21 +140,28 @@ export const TiptapEditor = () => {
   })
 
   return (
-    <div>
-      <EditorActionbar editor={editor} />
-      <DragHandle editor={editor}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-        </svg>
-      </DragHandle>
-      <EditorContent editor={editor} />
-    </div>
+    <Grid>
+      <Grid.Col span="auto">
+        <EditorActionbar editor={editor} />
+        <DragHandle editor={editor}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+          </svg>
+        </DragHandle>
+        <EditorContent editor={editor} />
+      </Grid.Col>
+      <Grid.Col span={3}>
+        <ScrollArea h={"calc(100vh - 10rem)"} px={"md"} pb={"md"}>
+          <BlockTypeMenu />
+        </ScrollArea>
+      </Grid.Col>
+    </Grid>
   )
 }
 
