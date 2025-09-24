@@ -63,6 +63,13 @@ const EditorActionbar = ({ editor }: Props) => {
   return (
     <RichTextEditor.Toolbar sticky stickyOffset="var(--docs-header-height)">
       <RichTextEditor.ControlsGroup>
+        <RichTextEditor.Bold />
+        <RichTextEditor.Strikethrough />
+        <RichTextEditor.Code />
+        <RichTextEditor.ClearFormatting />
+      </RichTextEditor.ControlsGroup>
+
+      <RichTextEditor.ControlsGroup>
         <RichTextEditor.H2 />
         <RichTextEditor.H3 />
         <RichTextEditor.H4 />
