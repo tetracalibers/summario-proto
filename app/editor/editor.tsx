@@ -1,9 +1,3 @@
-// import "~/components/tiptap-node/paragraph-node/paragraph-node.scss"
-// import "~/components/tiptap-node/list-node/list-node.scss"
-// import "~/components/tiptap-node/heading-node/heading-node.scss"
-// import "~/components/tiptap-node/blockquote-node/blockquote-node.scss"
-// import "~/components/tiptap-node/code-block-node/code-block-node.scss"
-
 import { useEditor } from "@tiptap/react"
 import { RichTextEditor, Link } from "@mantine/tiptap"
 import StarterKit from "@tiptap/starter-kit"
