@@ -21,7 +21,7 @@
     "name": "background",
     "label": "Background",
     "label_ja": "背景",
-    "description": "どのような課題を解決するために登場した？"
+    "description": "どんな課題を解決するために登場した？"
   },
   {
     "name": "context",
