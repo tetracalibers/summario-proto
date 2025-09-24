@@ -95,14 +95,14 @@ const EditorActionbar = ({ editor }: Props) => {
         <RichTextEditor.Control
           onClick={() => toggleSectionBlock(editor)}
           aria-label="toggle section"
-          title="toggle section"
+          title="Toggle section"
         >
           <IconSection stroke={1.5} size={16} />
         </RichTextEditor.Control>
         <RichTextEditor.Control
           onClick={() => deleteBlock(editor)}
           aria-label="delete"
-          title="delete"
+          title="Delete block"
         >
           <IconTrash stroke={1.5} size={16} />
         </RichTextEditor.Control>
