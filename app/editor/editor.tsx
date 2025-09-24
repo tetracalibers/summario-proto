@@ -40,7 +40,7 @@ const CustomDocument = Document.extend({
 
 const lowlight = createLowlight(all)
 
-export const TiptapEditor = () => {
+const TiptapEditor = () => {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
