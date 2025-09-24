@@ -19,6 +19,27 @@ import Document from "@tiptap/extension-document"
 import BlockTypeMenu from "./BlockTypeMenu"
 import { Grid, ScrollArea } from "@mantine/core"
 
+const newSectionBlock = (type: string, label: string) => ({
+  type: "sectionBlock",
+  attrs: { type },
+  content: [
+    {
+      type: "heading",
+      attrs: { level: 2 },
+      content: [
+        {
+          type: "text",
+          text: label
+        }
+      ]
+    },
+    {
+      type: "paragraph",
+      content: []
+    }
+  ]
+})
+
 const CustomDocument = Document.extend({
   content: "title_block block*"
 })
@@ -62,36 +83,43 @@ export const TiptapEditor = () => {
         // dropされた位置
         const droppedPoint = view.posAtCoords({ left: event.clientX, top: event.clientY })
         if (!droppedPoint) return false
-        if (droppedPoint.inside > 0) return false
 
         // dropされた位置にある要素
+        // nodeの間にdropされた場合はnullになるが、その場合は最後に処理するのでnullでも弾かない
         const droppedNode = view.state.doc.nodeAt(droppedPoint.pos - 1)
+
+        // テキストの途中にdropされた場合は何もしない
+        // resolveでエラーになってしまうため、ここで弾く
+        if (droppedNode?.type.name === "text") return false
         // セクションブロックの中には入れない
         if (droppedNode?.type.name === "sectionBlock") return false
 
-        const blockInfo = JSON.parse(block)
-        editor.commands.insertContentAt(droppedPoint.pos, {
-          type: "sectionBlock",
-          attrs: { type: blockInfo.type },
-          content: [
-            {
-              type: "heading",
-              attrs: { level: 2 },
-              content: [
-                {
-                  type: "text",
-                  text: blockInfo.label
-                }
-              ]
-            },
-            {
-              type: "paragraph",
-              content: []
-            }
-          ]
-        })
+        // depthを調べるためにNodePosに変換
+        const droppedNodePos = view.state.doc.resolve(droppedPoint.pos)
 
-        return false
+        const blockInfo = JSON.parse(block)
+
+        // トップレベルのparagraphにdropされた場合は置き換える
+        if (droppedNode?.type.name === "paragraph" && droppedNodePos.depth === 1) {
+          editor
+            .chain()
+            .deleteNode("paragraph")
+            .insertContentAt(droppedPoint.pos, newSectionBlock(blockInfo.type, blockInfo.label))
+            .run()
+
+          return true // TipTapのデフォルトのドロップ処理を停止
+        }
+
+        // paragraph以外のnodeにdropされた場合は何もしない
+        if (droppedNodePos.depth > 0) return false
+
+        // nodeの間にdropされた場合はその位置に挿入
+        editor.commands.insertContentAt(
+          droppedPoint.pos,
+          newSectionBlock(blockInfo.type, blockInfo.label)
+        )
+
+        return true
       }
     },
     content: `
