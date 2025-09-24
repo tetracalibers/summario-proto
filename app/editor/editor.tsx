@@ -89,7 +89,7 @@ export const TiptapEditor = () => {
         <EditorContent editor={editor} />
       </Grid.Col>
       <Grid.Col span={3}>
-        <ScrollArea h={"calc(100vh - 10rem)"} px={"md"}>
+        <ScrollArea h={"calc(100vh - 10rem)"} px={"md"} pb={"md"}>
           <BlockTypeMenu />
         </ScrollArea>
       </Grid.Col>
