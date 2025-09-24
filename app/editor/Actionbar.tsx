@@ -1,6 +1,6 @@
 import type { Editor } from "@tiptap/react"
 import { RichTextEditor } from "@mantine/tiptap"
-import { IconSection, IconTrash } from "@tabler/icons-react"
+import { IconSection, IconTrash, IconSourceCode } from "@tabler/icons-react"
 
 interface Props {
   editor: Editor
@@ -76,7 +76,7 @@ const EditorActionbar = ({ editor }: Props) => {
       </RichTextEditor.ControlsGroup>
 
       <RichTextEditor.ControlsGroup>
-        <RichTextEditor.CodeBlock />
+        <RichTextEditor.CodeBlock icon={IconSourceCode} />
         <RichTextEditor.BulletList />
         <RichTextEditor.OrderedList />
       </RichTextEditor.ControlsGroup>
