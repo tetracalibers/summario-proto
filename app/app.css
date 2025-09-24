@@ -23,6 +23,14 @@ body {
   .node-sectionBlock {
     margin-block: 1rem;
   }
+
+  .is-empty::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
 }
 
 .drag-handle {
@@ -40,8 +48,4 @@ body {
     width: 1.25rem;
     height: 1.25rem;
   }
-}
-
-.is-empty:not(.with-slash)[data-placeholder]:has(> .ProseMirror-trailingBreak:only-child) {
-  position: relative;
 }
