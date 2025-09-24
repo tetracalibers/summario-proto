@@ -5,7 +5,20 @@ const BlockTypeMenu = () => {
   return (
     <Stack>
       {BLOCK_TYPES.map((block) => (
-        <Card shadow="sm" padding="md" radius="md" withBorder>
+        <Card
+          shadow="sm"
+          padding="md"
+          radius="md"
+          withBorder
+          draggable
+          key={block.name}
+          onDragStart={(e) => {
+            e.dataTransfer.setData(
+              "application/x-block",
+              JSON.stringify({ type: block.name, label: block.label })
+            )
+          }}
+        >
           <Group justify="space-between">
             <Text fw={500}>{block.label}</Text>
             <Badge color="pink">{block.label_ja}</Badge>

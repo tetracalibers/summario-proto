@@ -54,6 +54,46 @@ export const TiptapEditor = () => {
         }
       })
     ],
+    editorProps: {
+      handleDrop: (view, event, _slice, _moved) => {
+        const block = event.dataTransfer?.getData("application/x-block")
+        if (!block) return false // TipTapのデフォルトの挙動に任せる
+
+        // dropされた位置
+        const droppedPoint = view.posAtCoords({ left: event.clientX, top: event.clientY })
+        if (!droppedPoint) return false
+        if (droppedPoint.inside > 0) return false
+
+        // dropされた位置にある要素
+        const droppedNode = view.state.doc.nodeAt(droppedPoint.pos - 1)
+        // セクションブロックの中には入れない
+        if (droppedNode?.type.name === "sectionBlock") return false
+
+        const blockInfo = JSON.parse(block)
+        editor.commands.insertContentAt(droppedPoint.pos, {
+          type: "sectionBlock",
+          attrs: { type: blockInfo.type },
+          content: [
+            {
+              type: "heading",
+              attrs: { level: 2 },
+              content: [
+                {
+                  type: "text",
+                  text: blockInfo.label
+                }
+              ]
+            },
+            {
+              type: "paragraph",
+              content: []
+            }
+          ]
+        })
+
+        return false
+      }
+    },
     content: `
     <title-block></title-block>
     <p></p>
