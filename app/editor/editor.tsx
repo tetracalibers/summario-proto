@@ -123,6 +123,10 @@ const TiptapEditor = () => {
     content: `
     <title-block></title-block>
     <p></p>
+    <ul>
+      <li>item 1</li>
+      <li>item 2</li>
+    </ul>
     <section-block type="summary">
       <h2>Summary</h2>
       <p></p>
