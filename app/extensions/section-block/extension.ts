@@ -5,7 +5,7 @@ import SectionBlock from "./SectionBlock"
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
-    customExtension: {
+    sectionBlock: {
       deleteSectionBlock: () => ReturnType
     }
   }

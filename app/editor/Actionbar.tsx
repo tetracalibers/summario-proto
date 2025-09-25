@@ -1,7 +1,6 @@
 import type { Editor } from "@tiptap/react"
 import { RichTextEditor } from "@mantine/tiptap"
 import { IconSection, IconTrash, IconSourceCode } from "@tabler/icons-react"
-import { TextSelection } from "@tiptap/pm/state"
 
 interface Props {
   editor: Editor
@@ -43,58 +42,29 @@ const deleteBlock = (editor: Editor) => {
   if (activeNode.type.name === "title_block") return
 
   // トップレベルのノードはそのまま削除
-  // TODO: カーソルを前ノードの末尾に移動させる
   if (activeNodePos.depth === 1) {
-    editor.chain().focus().deleteNode(activeNode.type.name).run()
+    editor.chain().focus().deleteNode(activeNode.type.name).setCursorToPrevNodeEnd().run()
     return
   }
 
   // リスト内の場合、リストアイテムごと削除
   // activeNodeはparagraphになっているが、その親であるli:has(> p)要素を削除する
   if (editor.isActive("bulletList") || editor.isActive("orderedList")) {
-    // 選択ノードの開始位置
-    const pos = activeNodePos.before(activeNodePos.depth - 1)
-
-    // 削除前に「直前ノード」の末尾位置を取っておく
-    const prevPos = editor.state.doc.resolve(pos - 1)
-    const prevNode = prevPos.nodeBefore
-
-    // 直前ノードが存在しない場合は削除のみ実行
-    if (!prevNode) {
-      editor.chain().focus().selectParentNode().deleteSelection().run()
-      return
-    }
-
-    editor
-      .chain()
-      .focus()
-      .selectParentNode()
-      .deleteSelection()
-      // cursorを直前ノードの末尾に移動
-      .setTextSelection(TextSelection.near(prevPos, -1))
-      .run()
+    editor.chain().focus().selectParentNode().deleteSelection().setCursorToPrevNodeEnd().run()
     return
   }
 
-  // TODO: blockquoteの場合も同様にp要素の親要素を削除するようにする
-
-  console.log(editor.isActive("sectionBlock"))
-
-  const $sectionBlocks = editor.$nodes("sectionBlock")
-  if (!$sectionBlocks) {
-    editor.chain().focus().deleteNode(activeNode.type.name).run()
+  // blockquoteの場合も同様にp要素の親要素を削除する
+  if (editor.isActive("blockquote")) {
+    editor.chain().focus().selectParentNode().deleteSelection().setCursorToPrevNodeEnd().run()
     return
   }
 
-  const activeSectionBlock = $sectionBlocks.find((node) => {
-    return activeNodePos.pos >= node.pos && activeNodePos.pos <= node.pos + node.node.nodeSize
-  })
-  if (!activeSectionBlock) {
-    editor.chain().focus().deleteNode(activeNode.type.name).run()
+  // TODO: セクションブロック内のブロックを削除した場合の挙動を考える
+  if (editor.isActive("sectionBlock")) {
+    editor.chain().focus().deleteSectionBlock().setCursorToPrevNodeEnd().run()
     return
   }
-
-  editor.chain().deleteSectionBlock().run()
 }
 
 const EditorActionbar = ({ editor }: Props) => {
