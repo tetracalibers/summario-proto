@@ -1,4 +1,4 @@
-import type { Editor } from "@tiptap/react"
+import { findParentNodeClosestToPos, type Editor } from "@tiptap/react"
 import { RichTextEditor } from "@mantine/tiptap"
 import { IconSection, IconTrash, IconSourceCode } from "@tabler/icons-react"
 
@@ -75,8 +75,20 @@ const deleteBlock = (editor: Editor) => {
     return
   }
 
-  // TODO: セクションブロック内のブロックを削除した場合の挙動を考える
   if (editor.isActive("sectionBlock")) {
+    const activeSectionBlock = findParentNodeClosestToPos(
+      activeNodePos,
+      (node) => node.type.name === "sectionBlock"
+    )
+    if (!activeSectionBlock) return
+
+    // 子が複数ある場合は現在のノードだけ削除
+    if (activeSectionBlock.node.childCount > 1) {
+      editor.chain().focus().deleteNode(activeNode.type.name).setCursorToPrevNodeEnd().run()
+      return
+    }
+
+    // 子が1つだけの場合はセクションブロックごと削除
     editor.chain().focus().deleteSectionBlock().setCursorToPrevNodeEnd().run()
     return
   }
