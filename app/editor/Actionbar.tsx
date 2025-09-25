@@ -1,6 +1,6 @@
 import type { Editor } from "@tiptap/react"
 import { RichTextEditor } from "@mantine/tiptap"
-import { IconSection, IconTrash } from "@tabler/icons-react"
+import { IconSection, IconTrash, IconSourceCode } from "@tabler/icons-react"
 
 interface Props {
   editor: Editor
@@ -63,13 +63,25 @@ const EditorActionbar = ({ editor }: Props) => {
   return (
     <RichTextEditor.Toolbar sticky stickyOffset="var(--docs-header-height)">
       <RichTextEditor.ControlsGroup>
+        <RichTextEditor.Undo />
+        <RichTextEditor.Redo />
+      </RichTextEditor.ControlsGroup>
+
+      <RichTextEditor.ControlsGroup>
+        <RichTextEditor.Bold />
+        <RichTextEditor.Strikethrough />
+        <RichTextEditor.Code />
+        <RichTextEditor.ClearFormatting />
+      </RichTextEditor.ControlsGroup>
+
+      <RichTextEditor.ControlsGroup>
         <RichTextEditor.H2 />
         <RichTextEditor.H3 />
         <RichTextEditor.H4 />
       </RichTextEditor.ControlsGroup>
 
       <RichTextEditor.ControlsGroup>
-        <RichTextEditor.CodeBlock />
+        <RichTextEditor.CodeBlock icon={IconSourceCode} />
         <RichTextEditor.BulletList />
         <RichTextEditor.OrderedList />
       </RichTextEditor.ControlsGroup>
@@ -83,14 +95,14 @@ const EditorActionbar = ({ editor }: Props) => {
         <RichTextEditor.Control
           onClick={() => toggleSectionBlock(editor)}
           aria-label="toggle section"
-          title="toggle section"
+          title="Toggle section"
         >
           <IconSection stroke={1.5} size={16} />
         </RichTextEditor.Control>
         <RichTextEditor.Control
           onClick={() => deleteBlock(editor)}
           aria-label="delete"
-          title="delete"
+          title="Delete block"
         >
           <IconTrash stroke={1.5} size={16} />
         </RichTextEditor.Control>
