@@ -21,7 +21,7 @@ body {
     margin-block: 1rem;
   }
 
-  .is-empty::before {
+  .is-empty:not(.node-sectionBlock)::before {
     color: #adb5bd;
     content: attr(data-placeholder);
     float: left;

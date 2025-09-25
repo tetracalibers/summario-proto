@@ -12,6 +12,7 @@ import TitleBlock from "~/extensions/title-block/extension"
 import Document from "@tiptap/extension-document"
 import BlockTypeMenu from "./BlockTypeMenu"
 import { Grid, ScrollArea } from "@mantine/core"
+import { CursorControl } from "./commands"
 
 const newSectionBlock = (type: string, label: string) => ({
   type: "sectionBlock",
@@ -45,6 +46,7 @@ const TiptapEditor = () => {
     shouldRerenderOnTransaction: true,
     extensions: [
       CustomDocument,
+      CursorControl,
       StarterKit.configure({
         document: false,
         link: false,
@@ -123,10 +125,18 @@ const TiptapEditor = () => {
     content: `
     <title-block></title-block>
     <p></p>
+    <ul>
+      <li>item 1</li>
+      <li>item 2</li>
+    </ul>
     <section-block type="summary">
       <h2>Summary</h2>
-      <p></p>
+      <ul>
+        <li>item 1</li>
+        <li>item 2</li>
+      </ul>
     </section-block>
+    <p>ABC</p>
     <section-block>
       <h2>Context</h2>
       <p></p>
