@@ -31,6 +31,7 @@ export const CursorControl = Extension.create({
             return chain().setTextSelection(TextSelection.atEnd(state.doc)).run()
           }
 
+          // setTextSelectionコマンドを使用するとカーソルの位置を設定できる
           return chain().setTextSelection(TextSelection.near(prevPos, -1)).run()
         }
     }
