@@ -35,7 +35,16 @@ const toggleSectionBlock = (editor: Editor) => {
 }
 
 const deleteBlock = (editor: Editor) => {
-  const activeNodePos = editor.state.selection.$from
+  const { $from, $to } = editor.state.selection
+
+  // 範囲選択されているときはその範囲を削除
+  if ($from.pos !== $to.pos) {
+    const range = { from: $from.pos === 1 ? $from.pos + 1 : $from.pos, to: $to.pos }
+    editor.chain().focus().deleteRange(range).setCursorToPrevNodeEnd().run()
+    return
+  }
+
+  const activeNodePos = $from
   const activeNode = activeNodePos.parent
 
   // トップタイトルは削除不可
