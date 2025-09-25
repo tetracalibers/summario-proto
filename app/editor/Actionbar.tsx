@@ -39,8 +39,14 @@ const deleteBlock = (editor: Editor) => {
 
   // 範囲選択されているときはその範囲を削除
   if ($from.pos !== $to.pos) {
-    const range = { from: $from.pos === 1 ? $from.pos + 1 : $from.pos, to: $to.pos }
-    editor.chain().focus().deleteRange(range).setCursorToPrevNodeEnd().run()
+    // ドキュメントの最初のノードが選択されている場合、deleteSelection()ではエラーになる…
+    if ($from.pos === 1) {
+      const range = { from: $from.pos + 1, to: $to.pos }
+      editor.chain().focus().deleteRange(range).setCursorToPrevNodeEnd($from.textOffset).run()
+      return
+    }
+
+    editor.chain().focus().deleteSelection().setCursorToPrevNodeEnd($from.textOffset).run()
     return
   }
 

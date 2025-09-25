@@ -4,7 +4,7 @@ import { TextSelection } from "@tiptap/pm/state"
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     cursorControl: {
-      setCursorToPrevNodeEnd: () => ReturnType
+      setCursorToPrevNodeEnd: (textOffset?: number) => ReturnType
     }
   }
 }
@@ -15,8 +15,11 @@ export const CursorControl = Extension.create({
   addCommands() {
     return {
       setCursorToPrevNodeEnd:
-        () =>
+        (textOffset = 0) =>
         ({ chain, state }) => {
+          // テキストの途中であれば何もしない
+          if (textOffset > 0) return true
+
           const { $from } = state.selection
           const pos = $from.before()
           const prevPos = state.doc.resolve(pos - 1)
