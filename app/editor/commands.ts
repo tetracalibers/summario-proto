@@ -22,6 +22,7 @@ export const CursorControl = Extension.create({
 
           const { $from } = state.selection
           const pos = $from.before()
+          if (pos < 1) return true // ドキュメントの最初のノードでは何もしない
           const prevPos = state.doc.resolve(pos - 1)
 
           const isLastNode =
