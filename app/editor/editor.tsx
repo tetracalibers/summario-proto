@@ -48,8 +48,15 @@ export default function TiptapEditor() {
       CustomDocument,
       CursorControl,
       StarterKit.configure({
-        document: false,
-        link: false,
+        document: false, // CustomDocumentを使うので無効化
+        link: false, // Link拡張を使うので無効化
+        codeBlock: false, // CodeBlockLowlight拡張を使うので無効化
+        // ListKit拡張を使うので無効化
+        bulletList: false,
+        orderedList: false,
+        listItem: false,
+        listKeymap: false,
+        // 許容する構文の制御
         heading: {
           levels: [2, 3, 4]
         },
