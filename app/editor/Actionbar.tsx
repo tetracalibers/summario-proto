@@ -53,8 +53,11 @@ const deleteBlock = (editor: Editor) => {
   const activeNodePos = $from
   const activeNode = activeNodePos.parent
 
-  // トップタイトルは削除不可
-  if (activeNode.type.name === "title_block") return
+  // トップタイトルはコンテンツのクリアのみ
+  if (activeNode.type.name === "title_block") {
+    editor.chain().focus().clearContent().run()
+    return
+  }
 
   // トップレベルのノードはそのまま削除
   if (activeNodePos.depth === 1) {
