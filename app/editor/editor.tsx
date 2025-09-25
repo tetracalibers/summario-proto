@@ -41,7 +41,7 @@ const CustomDocument = Document.extend({
 
 const lowlight = createLowlight(all)
 
-const TiptapEditor = () => {
+export default function TiptapEditor() {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
@@ -174,5 +174,3 @@ const TiptapEditor = () => {
     </Grid>
   )
 }
-
-export default TiptapEditor
