@@ -7,7 +7,8 @@
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:migrate": "tsx migrate.ts"
   },
   "dependencies": {
     "@mantine/core": "^8.3.1",
@@ -27,6 +28,8 @@
     "@tiptap/starter-kit": "^3.4.4",
     "isbot": "^5.1.27",
     "lowlight": "^3.3.0",
+    "pg": "^8.16.3",
+    "postgres": "^3.4.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.7.1"
@@ -36,7 +39,10 @@
     "@types/node": "^20",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "drizzle-kit": "^0.31.5",
+    "drizzle-orm": "^0.44.5",
     "prettier": "^3.6.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.8.3",
     "vite": "^6.3.3",
     "vite-tsconfig-paths": "^5.1.4"
