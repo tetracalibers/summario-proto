@@ -13,6 +13,9 @@ import Document from "@tiptap/extension-document"
 import BlockTypeMenu from "./BlockTypeMenu"
 import { Grid, ScrollArea } from "@mantine/core"
 import { CursorControl } from "./commands"
+import { useSetAtom } from "jotai"
+import { usedBlockTypesAtom } from "./atoms"
+import type { BlockTypes } from "./blocks"
 
 const newSectionBlock = (type: string, label: string) => ({
   type: "sectionBlock",
@@ -42,6 +45,8 @@ const CustomDocument = Document.extend({
 const lowlight = createLowlight(all)
 
 export default function TiptapEditor() {
+  const setUsedBlockTypes = useSetAtom(usedBlockTypesAtom)
+
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
@@ -128,6 +133,16 @@ export default function TiptapEditor() {
 
         return true
       }
+    },
+    onUpdate: ({ editor, transaction }) => {
+      if (!transaction.docChanged) return
+      const usedTypes: BlockTypes[] = []
+      editor.state.doc.forEach((node) => {
+        if (node.type.name === "sectionBlock") {
+          usedTypes.push(node.attrs.type)
+        }
+      })
+      setUsedBlockTypes(usedTypes)
     },
     content: `
     <title-block></title-block>
