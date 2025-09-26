@@ -36,7 +36,7 @@ const newSectionBlock = (type: string, label: string) => ({
 })
 
 const CustomDocument = Document.extend({
-  content: "title_block block*"
+  content: "title_block (section|block)*"
 })
 
 const lowlight = createLowlight(all)
