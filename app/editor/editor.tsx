@@ -143,14 +143,6 @@ export default function TiptapEditor() {
         <li>item 2</li>
       </ul>
     </section-block>
-    <p>ABC</p>
-    <section-block>
-      <h2>Context</h2>
-      <p></p>
-    </section-block>
-    <p>
-      Did you see that? That’s a React component. We are really living in the future.
-    </p>
     `
   })
 
