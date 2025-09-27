@@ -11,8 +11,11 @@ import { Placeholder } from "@tiptap/extension-placeholder"
 import TitleBlock from "~/extensions/title-block/extension"
 import Document from "@tiptap/extension-document"
 import BlockTypeMenu from "./BlockTypeMenu"
-import { Grid, ScrollArea } from "@mantine/core"
+import { AppShell, Burger, Grid, ScrollArea } from "@mantine/core"
 import { CursorControl } from "./commands"
+import { useDisclosure } from "@mantine/hooks"
+import FolderTree from "~/components/folder-tree/FolderTree"
+import { folderTreeDummyData } from "~/dummy/folder-tree-data"
 
 const newSectionBlock = (type: string, label: string) => ({
   type: "sectionBlock",
@@ -42,6 +45,8 @@ const CustomDocument = Document.extend({
 const lowlight = createLowlight(all)
 
 const TiptapEditor = () => {
+  const [opened, { toggle }] = useDisclosure(true)
+
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
@@ -148,30 +153,51 @@ const TiptapEditor = () => {
   })
 
   return (
-    <Grid>
-      <Grid.Col span="auto">
-        <RichTextEditor editor={editor}>
-          <EditorActionbar editor={editor} />
-          <DragHandle editor={editor}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-            </svg>
-          </DragHandle>
-          <RichTextEditor.Content />
-        </RichTextEditor>
-      </Grid.Col>
-      <Grid.Col span={3}>
-        <ScrollArea h={"calc(100vh - 10rem)"} px={"md"} pb={"md"}>
-          <BlockTypeMenu />
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{ width: 250, breakpoint: "sm", collapsed: { mobile: !opened } }}
+      padding="md"
+    >
+      <AppShell.Header p={"md"}>
+        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+        <div>Summario</div>
+      </AppShell.Header>
+      <AppShell.Navbar p={"md"}>
+        <ScrollArea>
+          <FolderTree data={folderTreeDummyData} />
         </ScrollArea>
-      </Grid.Col>
-    </Grid>
+      </AppShell.Navbar>
+      <AppShell.Main>
+        <Grid>
+          <Grid.Col span="auto">
+            <RichTextEditor editor={editor}>
+              <EditorActionbar editor={editor} />
+              <DragHandle editor={editor}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 9h16.5m-16.5 6.75h16.5"
+                  />
+                </svg>
+              </DragHandle>
+              <RichTextEditor.Content />
+            </RichTextEditor>
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <ScrollArea h={"calc(100vh - 10rem)"} pb={"md"}>
+              <BlockTypeMenu />
+            </ScrollArea>
+          </Grid.Col>
+        </Grid>
+      </AppShell.Main>
+    </AppShell>
   )
 }
 
