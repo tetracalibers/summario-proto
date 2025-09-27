@@ -16,6 +16,7 @@ import { CursorControl } from "./commands"
 import { useDisclosure } from "@mantine/hooks"
 import FolderTree from "~/components/folder-tree/FolderTree"
 import { folderTreeDummyData } from "~/dummy/folder-tree-data"
+import { editorDummyContent } from "~/dummy/editor-content"
 
 const newSectionBlock = (type: string, label: string) => ({
   type: "sectionBlock",
@@ -127,29 +128,7 @@ const TiptapEditor = () => {
         return true
       }
     },
-    content: `
-    <title-block></title-block>
-    <p></p>
-    <ul>
-      <li>item 1</li>
-      <li>item 2</li>
-    </ul>
-    <section-block type="summary">
-      <h2>Summary</h2>
-      <ul>
-        <li>item 1</li>
-        <li>item 2</li>
-      </ul>
-    </section-block>
-    <p>ABC</p>
-    <section-block>
-      <h2>Context</h2>
-      <p></p>
-    </section-block>
-    <p>
-      Did you see that? That’s a React component. We are really living in the future.
-    </p>
-    `
+    content: editorDummyContent
   })
 
   return (
