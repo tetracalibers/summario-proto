@@ -4,7 +4,7 @@
 -- TRUNCATEはテーブルデータを高速に削除するコマンド。
 -- CASCADEをつけることで、外部キーで参照しているテーブルもまとめて削除してくれる。
 -- RESTART IDENTITYをつけることで、連番(id)もリセットされる。
--- TRUNCATE TABLE folders, terms, term_aliases, term_relations RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE folders, terms, term_aliases, term_edges RESTART IDENTITY CASCADE;
 
 -- フォルダのサンプルデータ
 INSERT INTO folders (id, name, parent_id) VALUES

@@ -34,3 +34,11 @@ npx supabase stop
 npm i drizzle-orm postgres
 npm i -D drizzle-kit tsx
 ```
+
+## スキーマの変更
+
+```bash
+npx drizzle-kit generate
+npx supabase start
+npx supabase db reset
+```
