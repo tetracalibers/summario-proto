@@ -49,7 +49,7 @@ export const terms = pgTable(
   {
     id: serial("id").primaryKey(),
     title: varchar("title", { length: 255 }).notNull(),
-    content: text("content").notNull().default(""),
+    content: text("content").notNull().default(""), // HTML文字列
     folderId: integer("folder_id").references(() => folders.id, { onDelete: "set null" }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
@@ -68,8 +68,8 @@ export const termsRelations = relations(terms, ({ one, many }) => ({
   }),
   aliases: many(termAliases),
   // 関連（双方向）。実体は term_relations 側に保持。
-  relationsFrom: many(termRelations, { relationName: "relations_from" }),
-  relationsTo: many(termRelations, { relationName: "relations_to" })
+  relationsFrom: many(termEdges, { relationName: "relations_from" }),
+  relationsTo: many(termEdges, { relationName: "relations_to" })
 }))
 
 // ------------------------------
@@ -105,30 +105,30 @@ export const aliasRelations = relations(termAliases, ({ one }) => ({
 // term_relations: 用語間の双方向（無向グラフ）
 // 「(a, b) と (b, a) は同じ」→ 片側だけ保持
 // ------------------------------
-export const termRelations = pgTable(
-  "term_relations",
+export const termEdges = pgTable(
+  "term_edges",
   {
     // 便宜上 from/to として定義するが、DB 側で (min, max) に正規化し、無向性を担保
-    fromTermId: integer("from_term_id")
+    sourceTermId: integer("source_term_id")
       .references(() => terms.id, { onDelete: "cascade" })
       .notNull(),
-    toTermId: integer("to_term_id")
+    targetTermId: integer("target_term_id")
       .references(() => terms.id, { onDelete: "cascade" })
       .notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
   },
-  (t) => [primaryKey({ name: "pk_term_relations", columns: [t.fromTermId, t.toTermId] })]
+  (t) => [primaryKey({ name: "pk_term_edges", columns: [t.sourceTermId, t.targetTermId] })]
 )
 
-export const termRelationsRelations = relations(termRelations, ({ one }) => ({
+export const termEdgesLinks = relations(termEdges, ({ one }) => ({
   from: one(terms, {
-    fields: [termRelations.fromTermId],
+    fields: [termEdges.sourceTermId],
     references: [terms.id],
-    relationName: "relations_from"
+    relationName: "relation_from"
   }),
   to: one(terms, {
-    fields: [termRelations.toTermId],
+    fields: [termEdges.targetTermId],
     references: [terms.id],
-    relationName: "relations_to"
+    relationName: "relation_to"
   })
 }))
