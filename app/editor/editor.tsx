@@ -17,27 +17,7 @@ import { useDisclosure } from "@mantine/hooks"
 import FolderTree from "~/components/folder-tree/FolderTree"
 import { folderTreeDummyData } from "~/dummy/folder-tree-data"
 import { editorDummyContent } from "~/dummy/editor-content"
-
-const newSectionBlock = (type: string, label: string) => ({
-  type: "sectionBlock",
-  attrs: { type },
-  content: [
-    {
-      type: "heading",
-      attrs: { level: 2 },
-      content: [
-        {
-          type: "text",
-          text: label
-        }
-      ]
-    },
-    {
-      type: "paragraph",
-      content: []
-    }
-  ]
-})
+import { createSectionBlockJson } from "~/extensions/section-block/helper"
 
 const CustomDocument = Document.extend({
   content: "title_block block*"
@@ -110,7 +90,10 @@ const TiptapEditor = () => {
           editor
             .chain()
             .deleteNode("paragraph")
-            .insertContentAt(droppedPoint.pos, newSectionBlock(blockInfo.type, blockInfo.label))
+            .insertContentAt(
+              droppedPoint.pos,
+              createSectionBlockJson(blockInfo.type, blockInfo.label)
+            )
             .run()
 
           return true // TipTapのデフォルトのドロップ処理を停止
@@ -122,7 +105,7 @@ const TiptapEditor = () => {
         // nodeの間にdropされた場合はその位置に挿入
         editor.commands.insertContentAt(
           droppedPoint.pos,
-          newSectionBlock(blockInfo.type, blockInfo.label)
+          createSectionBlockJson(blockInfo.type, blockInfo.label)
         )
 
         return true
