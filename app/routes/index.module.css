@@ -3,9 +3,11 @@
   grid-template-areas:
     "side-l header side-r"
     "side-l main side-r";
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 3fr minmax(200px, 1fr);
   grid-template-rows: auto 1fr;
+  column-gap: 1rem;
   height: 100svh;
+  padding-inline-end: 1rem;
 
   --_debug-base-color: pink;
   --_debug-color-1: var(--_debug-base-color);
@@ -28,9 +30,7 @@
   grid-auto-flow: column;
   width: 100%;
   gap: 0.5rem;
-  padding-inline: 1rem;
-  padding-block-start: 1rem;
-  padding-block-end: 0.5rem;
+  padding-block: 1rem;
 
   > .save_btn {
     grid-column: 4;
@@ -40,6 +40,7 @@
 .main {
   grid-area: main;
   overflow-y: auto;
+  padding-block-end: 1rem;
 }
 
 .side_l {
@@ -52,8 +53,10 @@
 
 .side_r {
   grid-area: side-r;
-  padding: 1rem;
-  overflow-y: auto;
-
-  background-color: var(--_debug-color-4);
+  grid-row-start: 2;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+  padding-block-end: 1rem;
+  container-type: size;
 }

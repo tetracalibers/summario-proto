@@ -99,7 +99,7 @@ const EditorActionbar = () => {
   if (!editor) return null
 
   return (
-    <RichTextEditor.Toolbar sticky stickyOffset="var(--docs-header-height)" bdrs={0}>
+    <RichTextEditor.Toolbar sticky stickyOffset="var(--docs-header-height)">
       <RichTextEditor.ControlsGroup>
         <RichTextEditor.Undo />
         <RichTextEditor.Redo />

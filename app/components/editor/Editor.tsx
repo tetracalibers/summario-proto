@@ -8,7 +8,7 @@ const TipTapEditor = () => {
   if (!editor) return null
 
   return (
-    <RichTextEditor editor={editor} bd={0} bdrs={0}>
+    <RichTextEditor editor={editor} mih="100%">
       <EditorActionbar />
       <DragHandle editor={editor}>
         <svg

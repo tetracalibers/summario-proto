@@ -4,7 +4,7 @@ import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import FolderTree from "~/components/folder-tree/FolderTree"
 import { folderTreeDummyData } from "~/dummy/folder-tree-data"
 import TiptapProvider from "~/components/editor/TiptapProvider"
-import { Button } from "@mantine/core"
+import { Accordion, Button, ScrollArea } from "@mantine/core"
 
 export default function Index() {
   return (
@@ -35,10 +35,23 @@ export default function Index() {
           <pre>Network Graph</pre>
         </div>
         <div className={styles.side_r}>
-          <pre>Alias Input</pre>
-          <pre>Related Terms Input</pre>
-          <pre>References Input</pre>
-          <BlockTypeMenu />
+          <Accordion variant="contained" multiple defaultValue={["alias"]}>
+            <Accordion.Item value="alias">
+              <Accordion.Control>エイリアスの設定</Accordion.Control>
+              <Accordion.Panel>Alias Input</Accordion.Panel>
+            </Accordion.Item>
+            <Accordion.Item value="related">
+              <Accordion.Control>関連用語の設定</Accordion.Control>
+              <Accordion.Panel>Related Input</Accordion.Panel>
+            </Accordion.Item>
+            <Accordion.Item value="references">
+              <Accordion.Control>参考文献の設定</Accordion.Control>
+              <Accordion.Panel>References Input</Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
+          <ScrollArea h="100%" pr="1rem">
+            <BlockTypeMenu />
+          </ScrollArea>
         </div>
       </div>
     </TiptapProvider>
