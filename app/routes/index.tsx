@@ -4,16 +4,27 @@ import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import FolderTree from "~/components/folder-tree/FolderTree"
 import { folderTreeDummyData } from "~/dummy/folder-tree-data"
 import TiptapProvider from "~/components/editor/TiptapProvider"
+import { Button } from "@mantine/core"
 
 export default function Index() {
   return (
     <TiptapProvider>
       <div className={styles.root}>
         <header className={styles.header}>
-          <pre>Node Title</pre>
-          <pre>Alias Input</pre>
-          <pre>Save</pre>
-          <pre>Delete Note</pre>
+          <Button variant="gradient" gradient={{ from: "gray", to: "cyan", deg: 207 }} radius="sm">
+            Cancel
+          </Button>
+          <Button variant="gradient" gradient={{ from: "pink", to: "red", deg: 90 }} radius="sm">
+            Delete
+          </Button>
+          <Button
+            variant="gradient"
+            gradient={{ from: "grape", to: "indigo", deg: 90 }}
+            radius="sm"
+            className={styles.save_btn}
+          >
+            Save
+          </Button>
         </header>
         <main className={styles.main}>
           <TipTapEditor />
@@ -24,6 +35,7 @@ export default function Index() {
           <pre>Network Graph</pre>
         </div>
         <div className={styles.side_r}>
+          <pre>Alias Input</pre>
           <pre>Related Terms Input</pre>
           <pre>References Input</pre>
           <BlockTypeMenu />
