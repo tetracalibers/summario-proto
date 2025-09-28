@@ -1,0 +1,42 @@
+.root {
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "side-l main side-r"
+    "footer footer footer";
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  height: 100svh;
+
+  --_debug-base-color: pink;
+  --_debug-color-1: var(--_debug-base-color);
+  --_debug-color-2: oklch(from var(--_debug-base-color) l c calc(h + 90));
+  --_debug-color-3: oklch(from var(--_debug-base-color) l c calc(h + 180));
+  --_debug-color-4: oklch(from var(--_debug-base-color) l c calc(h + 270));
+}
+
+.header {
+  grid-area: header;
+  background-color: var(--_debug-color-1);
+}
+
+.main {
+  grid-area: main;
+  background-color: var(--_debug-color-2);
+}
+
+.side_l {
+  grid-area: side-l;
+  background-color: var(--_debug-color-3);
+}
+
+.side_r {
+  grid-area: side-r;
+  background-color: var(--_debug-color-3);
+}
+
+.footer {
+  grid-area: footer;
+  background-color: var(--_debug-color-4);
+}
