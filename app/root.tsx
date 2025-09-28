@@ -5,6 +5,7 @@ import { theme } from "./mantine-theme"
 
 import "@mantine/core/styles.css"
 import "@mantine/tiptap/styles.css" // ‼️ import tiptap styles after core package styles
+import "@gfazioli/mantine-split-pane/styles.css"
 import "./app.css"
 
 export const links: Route.LinksFunction = () => [
