@@ -4,7 +4,7 @@ import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import FolderTree from "~/components/folder-tree/FolderTree"
 import { folderTreeDummyData } from "~/dummy/folder-tree-data"
 import TiptapProvider from "~/components/editor/TiptapProvider"
-import { Accordion, Button, ScrollArea } from "@mantine/core"
+import { Accordion, Button, ScrollArea, TagsInput } from "@mantine/core"
 
 export default function Index() {
   return (
@@ -38,7 +38,12 @@ export default function Index() {
           <Accordion variant="contained" multiple defaultValue={["alias"]}>
             <Accordion.Item value="alias">
               <Accordion.Control>エイリアスの設定</Accordion.Control>
-              <Accordion.Panel>Alias Input</Accordion.Panel>
+              <Accordion.Panel>
+                <TagsInput
+                  label="Press Enter to submit a alias"
+                  placeholder="Type and press enter..."
+                />
+              </Accordion.Panel>
             </Accordion.Item>
             <Accordion.Item value="related">
               <Accordion.Control>関連用語の設定</Accordion.Control>

@@ -48,11 +48,12 @@
   padding-inline: 1rem;
   overflow-y: auto;
 
-  background-color: var(--_debug-color-3);
+  background-color: var(--_debug-color-4);
 }
 
 .side_r {
   grid-area: side-r;
+  grid-row-start: 3;
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 1rem;
