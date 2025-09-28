@@ -4,7 +4,7 @@ import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import FolderTree from "~/components/folder-tree/FolderTree"
 import { folderTreeDummyData } from "~/dummy/folder-tree-data"
 import TiptapProvider from "~/components/editor/TiptapProvider"
-import { Accordion, Button, ScrollArea, TagsInput } from "@mantine/core"
+import { Accordion, Autocomplete, Button, Paper, ScrollArea, TagsInput } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
 
 export default function Index() {
@@ -31,13 +31,18 @@ export default function Index() {
           <TipTapEditor />
         </main>
         <div className={styles.side_l}>
-          <Split orientation="horizontal" h="100%">
-            <Split.Pane grow minHeight="30%" px={"1rem"}>
-              <pre>Search Input</pre>
-              <FolderTree data={folderTreeDummyData} />
+          <Autocomplete
+            placeholder="Search by Title or Alias"
+            data={["React", "Angular", "Vue", "Svelte"]}
+          />
+          <Split orientation="horizontal" h="100%" spacing="md">
+            <Split.Pane grow minHeight="30%">
+              <Paper shadow="xs" withBorder p="1rem" h="100%">
+                <FolderTree data={folderTreeDummyData} />
+              </Paper>
             </Split.Pane>
             <Split.Resizer />
-            <Split.Pane px={"1rem"}>
+            <Split.Pane px={"1rem"} minHeight="20%">
               <pre>Network Graph</pre>
             </Split.Pane>
           </Split>
