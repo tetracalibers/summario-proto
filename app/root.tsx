@@ -1,6 +1,7 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
 import { ColorSchemeScript, MantineProvider } from "@mantine/core"
 import type { Route } from "./+types/root"
+import { theme } from "./mantine-theme"
 
 import "@mantine/core/styles.css"
 import "@mantine/tiptap/styles.css" // ‼️ import tiptap styles after core package styles
@@ -15,7 +16,7 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    href: "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
   }
 ]
 
@@ -30,7 +31,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider theme={theme}>{children}</MantineProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
