@@ -11,7 +11,7 @@ import { all, createLowlight } from "lowlight"
 import { Placeholder } from "@tiptap/extension-placeholder"
 
 const CustomDocument = Document.extend({
-  content: "title_block block*"
+  content: "title_block (section|block)*"
 })
 
 const lowlight = createLowlight(all)
