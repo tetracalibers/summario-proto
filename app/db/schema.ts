@@ -82,14 +82,14 @@ export const termAliases = pgTable(
     termId: integer("term_id")
       .references(() => terms.id, { onDelete: "cascade" })
       .notNull(),
-    alias: varchar("alias", { length: 255 }).notNull(),
+    title: varchar("title", { length: 255 }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
   },
   (t) => [
     // 同じ term 内で同じ alias を重複禁止
-    unique("uniq_alias_per_term").on(t.termId, t.alias),
+    unique("uniq_alias_per_term").on(t.termId, t.title),
     // 検索最適化
-    index("idx_term_aliases_alias").on(t.alias),
+    index("idx_term_aliases_title").on(t.title),
     index("idx_term_aliases_term").on(t.termId)
   ]
 )
@@ -132,3 +132,6 @@ export const termEdgesLinks = relations(termEdges, ({ one }) => ({
     relationName: "relation_to"
   })
 }))
+
+export type Folder = typeof folders.$inferSelect
+export type Term = typeof terms.$inferSelect

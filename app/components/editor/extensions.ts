@@ -9,6 +9,31 @@ import TitleBlock from "~/extensions/title-block/extension"
 import Document from "@tiptap/extension-document"
 import { all, createLowlight } from "lowlight"
 import { Placeholder } from "@tiptap/extension-placeholder"
+import { Extension } from "@tiptap/core"
+
+declare module "@tiptap/core" {
+  interface Commands<ReturnType> {
+    customDocumentControl: {
+      clearTitleContent: () => ReturnType
+    }
+  }
+}
+
+const CustomDocumentControl = Extension.create({
+  name: "customDocumentControl",
+
+  addCommands() {
+    return {
+      clearTitleContent:
+        () =>
+        ({ chain }) => {
+          const titleLength = this.editor.state.doc.content.firstChild?.content.size || 0
+          const range = { from: 1, to: titleLength + 1 }
+          return chain().insertContentAt(range, "").run()
+        }
+    }
+  }
+})
 
 const CustomDocument = Document.extend({
   content: "title_block (section|block)*"
@@ -18,6 +43,7 @@ const lowlight = createLowlight(all)
 
 export const tiptapExtensions: Extensions = [
   CustomDocument,
+  CustomDocumentControl,
   CursorControl,
   StarterKit.configure({
     document: false, // CustomDocumentを使うので無効化

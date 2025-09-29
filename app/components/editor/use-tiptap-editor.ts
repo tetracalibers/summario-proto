@@ -1,12 +1,10 @@
-import { EditorContext, useEditor } from "@tiptap/react"
-import { dummyEditorContent } from "~/db/dummy"
-import { tiptapExtensions } from "./extensions"
+import { useEditor, type Content } from "@tiptap/react"
 import { createSectionBlockJson } from "~/extensions/section-block/helper"
-import { useMemo, type PropsWithChildren } from "react"
+import { tiptapExtensions } from "./extensions"
 
-const TiptapProvider = ({ children }: PropsWithChildren) => {
+export const useTiptapEditor = (initialContent: Content) => {
   const editor = useEditor({
-    //shouldRerenderOnTransaction: true,
+    shouldRerenderOnTransaction: true,
     immediatelyRender: false, // Disable immediate rendering to prevent SSR issues
     extensions: tiptapExtensions,
     editorProps: {
@@ -16,6 +14,8 @@ const TiptapProvider = ({ children }: PropsWithChildren) => {
         const block = event.dataTransfer?.getData("application/x-block")
         if (!block) return false // TipTapのデフォルトの挙動に任せる
 
+        const blockInfo = JSON.parse(block)
+
         // dropされた位置
         const droppedPoint = view.posAtCoords({ left: event.clientX, top: event.clientY })
         if (!droppedPoint) return false
@@ -23,6 +23,17 @@ const TiptapProvider = ({ children }: PropsWithChildren) => {
         // dropされた位置にある要素
         // nodeの間にdropされた場合はnullになるが、その場合は最後に処理するのでnullでも弾かない
         const droppedNode = view.state.doc.nodeAt(droppedPoint.pos - 1)
+
+        const isLastNode =
+          view.state.doc.resolve(view.state.doc.content.size).nodeBefore === droppedNode
+        // resolveでエラーになってしまうため、ここで処理
+        if (isLastNode) {
+          editor.commands.insertContentAt(
+            droppedPoint.pos,
+            createSectionBlockJson(blockInfo.type, blockInfo.label)
+          )
+          return true
+        }
 
         // テキストの途中にdropされた場合は何もしない
         // resolveでエラーになってしまうため、ここで弾く
@@ -33,18 +44,12 @@ const TiptapProvider = ({ children }: PropsWithChildren) => {
         // depthを調べるためにNodePosに変換
         const droppedNodePos = view.state.doc.resolve(droppedPoint.pos)
 
-        const blockInfo = JSON.parse(block)
-
         // トップレベルのparagraphにdropされた場合は置き換える
         if (droppedNode?.type.name === "paragraph" && droppedNodePos.depth === 1) {
-          editor
-            .chain()
-            .deleteNode("paragraph")
-            .insertContentAt(
-              droppedPoint.pos,
-              createSectionBlockJson(blockInfo.type, blockInfo.label)
-            )
-            .run()
+          editor.commands.insertContentAt(
+            droppedPoint.pos,
+            createSectionBlockJson(blockInfo.type, blockInfo.label)
+          )
 
           return true // TipTapのデフォルトのドロップ処理を停止
         }
@@ -61,13 +66,8 @@ const TiptapProvider = ({ children }: PropsWithChildren) => {
         return true
       }
     },
-    content: dummyEditorContent
+    content: initialContent
   })
 
-  // Memoize the provider value to avoid unnecessary re-renders
-  const providerValue = useMemo(() => ({ editor }), [editor])
-
-  return <EditorContext.Provider value={providerValue}>{children}</EditorContext.Provider>
+  return editor
 }
-
-export default TiptapProvider

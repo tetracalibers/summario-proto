@@ -1,0 +1,39 @@
+.root {
+  display: grid;
+  grid-template-areas:
+    ". . ."
+    "search main side-r"
+    "side-l main side-r"
+    "side-l . .";
+  grid-template-columns: minmax(0, auto) 2.5fr minmax(220px, 1fr);
+  grid-template-rows: 0 auto 1fr;
+  gap: 1rem;
+  height: 100svh;
+  padding-inline: 1rem;
+}
+
+.main {
+  grid-area: main;
+  display: grid;
+  grid-template-rows: subgrid;
+}
+
+.search {
+  grid-area: search;
+}
+
+.side_l {
+  grid-area: side-l;
+  overflow-y: auto;
+}
+
+.side_r {
+  grid-area: side-r;
+  /* grid-row-start: 3; */
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+  padding-block-end: 1rem;
+  padding-inline-start: 1rem;
+  container-type: size;
+}

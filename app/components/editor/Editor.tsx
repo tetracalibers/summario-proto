@@ -1,16 +1,17 @@
 import { RichTextEditor } from "@mantine/tiptap"
 import DragHandle from "@tiptap/extension-drag-handle-react"
-import { useCurrentEditor } from "@tiptap/react"
 import EditorActionbar from "./Actionbar"
+import { type Editor } from "@tiptap/react"
 
-const TipTapEditor = () => {
-  const { editor } = useCurrentEditor()
-  if (!editor) return null
+interface Props {
+  editor: Editor | null
+}
 
+const TipTapEditor = ({ editor }: Props) => {
   return (
     <RichTextEditor editor={editor} mih="100%" bd={0}>
-      <EditorActionbar />
-      <DragHandle editor={editor}>
+      <EditorActionbar editor={editor} />
+      <DragHandle editor={editor!}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

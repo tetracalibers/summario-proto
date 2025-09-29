@@ -1,4 +1,4 @@
-import { findParentNodeClosestToPos, useCurrentEditor, type Editor } from "@tiptap/react"
+import { findParentNodeClosestToPos, type Editor } from "@tiptap/react"
 import { RichTextEditor } from "@mantine/tiptap"
 import { IconSection, IconTrash, IconSourceCode } from "@tabler/icons-react"
 
@@ -51,7 +51,7 @@ const deleteBlock = (editor: Editor) => {
 
   // トップタイトルはコンテンツのクリアのみ
   if (activeNode.type.name === "title_block") {
-    editor.chain().focus().clearContent().run()
+    editor.chain().focus().clearTitleContent().run()
     return
   }
 
@@ -93,11 +93,11 @@ const deleteBlock = (editor: Editor) => {
   }
 }
 
-const EditorActionbar = () => {
-  const { editor } = useCurrentEditor()
+interface Props {
+  editor: Editor | null
+}
 
-  if (!editor) return null
-
+const EditorActionbar = ({ editor }: Props) => {
   return (
     <RichTextEditor.Toolbar sticky>
       <RichTextEditor.ControlsGroup>
@@ -131,14 +131,14 @@ const EditorActionbar = () => {
 
       <RichTextEditor.ControlsGroup>
         <RichTextEditor.Control
-          onClick={() => toggleSectionBlock(editor)}
+          onClick={() => toggleSectionBlock(editor!)}
           aria-label="toggle section"
           title="Toggle section"
         >
           <IconSection stroke={1.5} size={16} />
         </RichTextEditor.Control>
         <RichTextEditor.Control
-          onClick={() => deleteBlock(editor)}
+          onClick={() => deleteBlock(editor!)}
           aria-label="delete"
           title="Delete block"
         >

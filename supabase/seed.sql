@@ -22,7 +22,7 @@ INSERT INTO terms (id, title, content, folder_id) VALUES
 (5, 'Drizzle ORM', '<p>TypeScript向けのORMです。</p>', 4);
 
 -- エイリアスのサンプルデータ
-INSERT INTO term_aliases (term_id, alias) VALUES
+INSERT INTO term_aliases (term_id, title) VALUES
 (1, 'React.js'),
 (3, 'Node'),
 (4, 'Postgres');
