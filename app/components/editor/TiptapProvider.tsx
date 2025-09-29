@@ -1,5 +1,5 @@
 import { EditorContext, useEditor } from "@tiptap/react"
-import { editorDummyContent } from "~/dummy/editor-content"
+import { dummyEditorContent } from "~/db/dummy"
 import { tiptapExtensions } from "./extensions"
 import { createSectionBlockJson } from "~/extensions/section-block/helper"
 import { useMemo, type PropsWithChildren } from "react"
@@ -61,7 +61,7 @@ const TiptapProvider = ({ children }: PropsWithChildren) => {
         return true
       }
     },
-    content: editorDummyContent
+    content: dummyEditorContent
   })
 
   // Memoize the provider value to avoid unnecessary re-renders

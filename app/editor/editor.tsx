@@ -6,8 +6,7 @@ import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import { AppShell, Burger, Grid, ScrollArea } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import FolderTree from "~/components/folder-tree/FolderTree"
-import { folderTreeDummyData } from "~/dummy/folder-tree-data"
-import { editorDummyContent } from "~/dummy/editor-content"
+import { dummyFolderData, dummyEditorContent } from "~/db/dummy"
 import { createSectionBlockJson } from "~/extensions/section-block/helper"
 import { tiptapExtensions } from "~/components/editor/extensions"
 
@@ -69,7 +68,7 @@ const TiptapEditor = () => {
         return true
       }
     },
-    content: editorDummyContent
+    content: dummyEditorContent
   })
 
   if (!editor) return null
@@ -86,7 +85,7 @@ const TiptapEditor = () => {
       </AppShell.Header>
       <AppShell.Navbar p={"md"}>
         <ScrollArea>
-          <FolderTree data={folderTreeDummyData} />
+          <FolderTree data={dummyFolderData} />
         </ScrollArea>
       </AppShell.Navbar>
       <AppShell.Main>
