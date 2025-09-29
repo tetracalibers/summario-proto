@@ -91,3 +91,5 @@ export const dummyFolderData: TreeNodeData[] = [
     value: "tsconfig.json"
   }
 ]
+
+export const dummySearchKeywords = ["React", "Angular", "Vue", "Svelte"]

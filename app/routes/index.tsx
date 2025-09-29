@@ -2,7 +2,7 @@ import TipTapEditor from "~/components/editor/Editor"
 import styles from "./index.module.css"
 import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import FolderTree from "~/components/folder-tree/FolderTree"
-import { dummyFolderData } from "~/db/dummy"
+import { dummyFolderData, dummySearchKeywords } from "~/db/dummy"
 import TiptapProvider from "~/components/editor/TiptapProvider"
 import { Accordion, Autocomplete, Button, Paper, ScrollArea, TagsInput } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
@@ -31,10 +31,7 @@ export default function Index() {
           <TipTapEditor />
         </main>
         <div className={styles.side_l}>
-          <Autocomplete
-            placeholder="Search by Title or Alias"
-            data={["React", "Angular", "Vue", "Svelte"]}
-          />
+          <Autocomplete placeholder="Search by Title or Alias" data={dummySearchKeywords} />
           <Split orientation="horizontal" h="100%" spacing="md">
             <Split.Pane grow minHeight="30%">
               <Paper shadow="xs" withBorder p="1rem" h="100%">
