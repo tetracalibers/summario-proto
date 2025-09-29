@@ -14,6 +14,8 @@ export const useTiptapEditor = (initialContent: Content) => {
         const block = event.dataTransfer?.getData("application/x-block")
         if (!block) return false // TipTapのデフォルトの挙動に任せる
 
+        const blockInfo = JSON.parse(block)
+
         // dropされた位置
         const droppedPoint = view.posAtCoords({ left: event.clientX, top: event.clientY })
         if (!droppedPoint) return false
@@ -21,6 +23,17 @@ export const useTiptapEditor = (initialContent: Content) => {
         // dropされた位置にある要素
         // nodeの間にdropされた場合はnullになるが、その場合は最後に処理するのでnullでも弾かない
         const droppedNode = view.state.doc.nodeAt(droppedPoint.pos - 1)
+
+        const isLastNode =
+          view.state.doc.resolve(view.state.doc.content.size).nodeBefore === droppedNode
+        // resolveでエラーになってしまうため、ここで処理
+        if (isLastNode) {
+          editor.commands.insertContentAt(
+            droppedPoint.pos,
+            createSectionBlockJson(blockInfo.type, blockInfo.label)
+          )
+          return true
+        }
 
         // テキストの途中にdropされた場合は何もしない
         // resolveでエラーになってしまうため、ここで弾く
@@ -30,8 +43,6 @@ export const useTiptapEditor = (initialContent: Content) => {
 
         // depthを調べるためにNodePosに変換
         const droppedNodePos = view.state.doc.resolve(droppedPoint.pos)
-
-        const blockInfo = JSON.parse(block)
 
         // トップレベルのparagraphにdropされた場合は置き換える
         if (droppedNode?.type.name === "paragraph" && droppedNodePos.depth === 1) {
