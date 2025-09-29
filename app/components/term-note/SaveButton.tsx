@@ -1,13 +1,12 @@
 import { Button } from "@mantine/core"
-import { Editor, useEditorState } from "@tiptap/react"
+import { useCurrentEditor, useEditorState } from "@tiptap/react"
 import type { ButtonHTMLAttributes } from "react"
 import { Form } from "react-router"
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  editor: Editor | null
-}
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
-const SaveButton = ({ editor, ...props }: Props) => {
+const SaveButton = (props: Props) => {
+  const { editor } = useCurrentEditor()
   const editorState = useEditorState({
     editor,
     selector: ({ editor }) => {
@@ -17,16 +16,14 @@ const SaveButton = ({ editor, ...props }: Props) => {
       }
     }
   })
-  if (!editorState) return null
-
   return (
-    <Form method="post">
+    <Form method="post" style={{ display: "grid" }}>
       <Button
         type="submit"
         variant="gradient"
         gradient={{ from: "grape", to: "indigo", deg: 90 }}
         radius="sm"
-        disabled={!editorState.isDirty}
+        disabled={!editorState?.isDirty}
         {...props}
       >
         Save

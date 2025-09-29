@@ -14,6 +14,20 @@ export const dummyEditorContent = `
     <li><p>item 2</p></li>
   </ul>
 </section-block>
+<section-block type="summary">
+  <h2>Summary</h2>
+  <ul>
+    <li><p>item 1</p></li>
+    <li><p>item 2</p></li>
+  </ul>
+</section-block>
+<section-block type="summary">
+  <h2>Summary</h2>
+  <ul>
+    <li><p>item 1</p></li>
+    <li><p>item 2</p></li>
+  </ul>
+</section-block>
 <p>Did you see that? That’s a React component. We are really living in the future.</p>
 `
 

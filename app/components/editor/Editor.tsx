@@ -1,7 +1,7 @@
 import { RichTextEditor } from "@mantine/tiptap"
 import DragHandle from "@tiptap/extension-drag-handle-react"
-import { Editor } from "@tiptap/react"
 import EditorActionbar from "./Actionbar"
+import { type Editor } from "@tiptap/react"
 
 interface Props {
   editor: Editor | null
