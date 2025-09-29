@@ -1,21 +1,21 @@
 import { Button } from "@mantine/core"
 import SaveButton from "~/components/term-note/SaveButton"
 import type { Route } from "./+types"
-import { getRecentTerm } from "~/query/term"
+import { getRecentTerm } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
 
 export async function loader() {
-  const [term] = await getRecentTerm(1)
-  const editorContent = term.title + "\n" + term.content
+  const term = await getRecentTerm()
+  if (!term) throw new Response("No recent term found", { status: 404 })
 
-  return { term: { ...term, content: editorContent } }
+  return { term }
 }
 
 export default function Index({ loaderData }: Route.ComponentProps) {
   const { term } = loaderData
 
   return (
-    <EditorWith initialContent={term.content}>
+    <EditorWith initialContent={term.editorContent}>
       <Button variant="gradient" gradient={{ from: "gray", to: "cyan", deg: 207 }} radius="sm">
         Cancel
       </Button>

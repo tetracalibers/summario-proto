@@ -132,3 +132,6 @@ export const termEdgesLinks = relations(termEdges, ({ one }) => ({
     relationName: "relation_to"
   })
 }))
+
+export type Folder = typeof folders.$inferSelect
+export type Term = typeof terms.$inferSelect

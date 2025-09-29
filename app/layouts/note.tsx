@@ -4,7 +4,7 @@ import SideRight from "./note/SideRight"
 import SideLeft from "./note/SideLeft"
 import { Autocomplete, type TreeNodeData } from "@mantine/core"
 import { dummySearchKeywords } from "~/db/dummy"
-import { getFolderTree } from "~/query/folder"
+import { getFolderTree } from "~/service/folder"
 import type { Route } from "./+types/note"
 
 export async function loader() {
