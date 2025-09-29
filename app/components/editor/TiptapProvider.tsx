@@ -1,20 +1,13 @@
-import { useEditor } from "@tiptap/react"
-import { RichTextEditor } from "@mantine/tiptap"
-import EditorActionbar from "~/components/editor/Actionbar"
-import DragHandle from "@tiptap/extension-drag-handle-react"
-import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
-import { AppShell, Burger, Grid, ScrollArea } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
-import FolderTree from "~/components/folder-tree/FolderTree"
-import { dummyFolderData, dummyEditorContent } from "~/db/dummy"
+import { EditorContext, useEditor } from "@tiptap/react"
+import { dummyEditorContent } from "~/db/dummy"
+import { tiptapExtensions } from "./extensions"
 import { createSectionBlockJson } from "~/extensions/section-block/helper"
-import { tiptapExtensions } from "~/components/editor/extensions"
+import { useMemo, type PropsWithChildren } from "react"
 
-const TiptapEditor = () => {
-  const [opened, { toggle }] = useDisclosure(true)
-
+const TiptapProvider = ({ children }: PropsWithChildren) => {
   const editor = useEditor({
-    immediatelyRender: false,
+    //shouldRerenderOnTransaction: true,
+    immediatelyRender: false, // Disable immediate rendering to prevent SSR issues
     extensions: tiptapExtensions,
     editorProps: {
       handleDrop: (view, event, _slice, _moved) => {
@@ -71,55 +64,10 @@ const TiptapEditor = () => {
     content: dummyEditorContent
   })
 
-  if (!editor) return null
+  // Memoize the provider value to avoid unnecessary re-renders
+  const providerValue = useMemo(() => ({ editor }), [editor])
 
-  return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{ width: 250, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      padding="md"
-    >
-      <AppShell.Header p={"md"}>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-        <div>Summario</div>
-      </AppShell.Header>
-      <AppShell.Navbar p={"md"}>
-        <ScrollArea>
-          <FolderTree data={dummyFolderData} />
-        </ScrollArea>
-      </AppShell.Navbar>
-      <AppShell.Main>
-        <Grid>
-          <Grid.Col span="auto">
-            <RichTextEditor editor={editor}>
-              <EditorActionbar />
-              <DragHandle editor={editor}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 9h16.5m-16.5 6.75h16.5"
-                  />
-                </svg>
-              </DragHandle>
-              <RichTextEditor.Content />
-            </RichTextEditor>
-          </Grid.Col>
-          <Grid.Col span={3}>
-            <ScrollArea h={"calc(100vh - 10rem)"} pb={"md"}>
-              <BlockTypeMenu />
-            </ScrollArea>
-          </Grid.Col>
-        </Grid>
-      </AppShell.Main>
-    </AppShell>
-  )
+  return <EditorContext.Provider value={providerValue}>{children}</EditorContext.Provider>
 }
 
-export default TiptapEditor
+export default TiptapProvider

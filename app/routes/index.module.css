@@ -1,0 +1,63 @@
+.root {
+  display: grid;
+  grid-template-areas:
+    ". . ."
+    "side-l header side-r"
+    "side-l main side-r"
+    "side-l . .";
+  grid-template-columns: minmax(0, auto) 2.5fr minmax(220px, 1fr);
+  grid-template-rows: 0 auto 1fr;
+  gap: 1rem;
+  height: 100svh;
+  padding-inline: 1rem;
+
+  --_debug-base-color: pink;
+  --_debug-color-1: var(--_debug-base-color);
+  --_debug-color-2: oklch(from var(--_debug-base-color) l c calc(h + 90));
+  --_debug-color-3: oklch(from var(--_debug-base-color) l c calc(h + 180));
+  --_debug-color-4: oklch(from var(--_debug-base-color) l c calc(h + 270));
+}
+
+.header {
+  grid-area: header;
+
+  --btn-min: 80px;
+  display: grid;
+  grid-template-columns:
+    minmax(var(--btn-min), 0)
+    minmax(var(--btn-min), 0)
+    1fr
+    minmax(var(--btn-min), 0);
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  width: 100%;
+  gap: 0.5rem;
+
+  > .save_btn {
+    grid-column: 4;
+  }
+}
+
+.main {
+  grid-area: main;
+  overflow-y: auto;
+}
+
+.side_l {
+  grid-area: side-l;
+  overflow-y: auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+}
+
+.side_r {
+  grid-area: side-r;
+  /* grid-row-start: 3; */
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+  padding-block-end: 1rem;
+  padding-inline-start: 1rem;
+  container-type: size;
+}

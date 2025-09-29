@@ -1,10 +1,6 @@
-import { findParentNodeClosestToPos, type Editor } from "@tiptap/react"
+import { findParentNodeClosestToPos, useCurrentEditor, type Editor } from "@tiptap/react"
 import { RichTextEditor } from "@mantine/tiptap"
 import { IconSection, IconTrash, IconSourceCode } from "@tabler/icons-react"
-
-interface Props {
-  editor: Editor
-}
 
 const toggleSectionBlock = (editor: Editor) => {
   const $sectionBlocks = editor.$nodes("sectionBlock")
@@ -97,9 +93,13 @@ const deleteBlock = (editor: Editor) => {
   }
 }
 
-const EditorActionbar = ({ editor }: Props) => {
+const EditorActionbar = () => {
+  const { editor } = useCurrentEditor()
+
+  if (!editor) return null
+
   return (
-    <RichTextEditor.Toolbar sticky stickyOffset="var(--docs-header-height)">
+    <RichTextEditor.Toolbar sticky>
       <RichTextEditor.ControlsGroup>
         <RichTextEditor.Undo />
         <RichTextEditor.Redo />
