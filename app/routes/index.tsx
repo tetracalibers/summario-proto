@@ -2,14 +2,23 @@ import TipTapEditor from "~/components/editor/Editor"
 import styles from "./index.module.css"
 import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import FolderTree from "~/components/folder-tree/FolderTree"
-import { dummyEditorContent, dummyFolderData, dummySearchKeywords } from "~/db/dummy"
+import { dummyFolderData, dummySearchKeywords } from "~/db/dummy"
 import { Accordion, Autocomplete, Button, Paper, ScrollArea, TagsInput } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
 import SaveButton from "~/components/term-note/SaveButton"
 import { useTiptapEditor } from "~/components/editor/use-tiptap-editor"
+import type { Route } from "./+types"
+import { getRecentTerm } from "~/query/term"
 
-export default function Index() {
-  const editor = useTiptapEditor(dummyEditorContent)
+export async function loader() {
+  const [term] = await getRecentTerm(1)
+  const editorContent = term.title + "\n" + term.content
+  return { term: { ...term, content: editorContent } }
+}
+
+export default function Index({ loaderData }: Route.ComponentProps) {
+  const { term } = loaderData
+  const editor = useTiptapEditor(term.content)
 
   return (
     <div className={styles.root}>
