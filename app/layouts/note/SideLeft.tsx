@@ -1,14 +1,17 @@
 import { Split } from "@gfazioli/mantine-split-pane"
-import { Paper } from "@mantine/core"
+import { Paper, type TreeNodeData } from "@mantine/core"
 import FolderTree from "~/components/folder-tree/FolderTree"
-import { dummyFolderData } from "~/db/dummy"
 
-const SideLeft = () => {
+interface Props {
+  folderTree: TreeNodeData[]
+}
+
+export default function SideLeft({ folderTree }: Props) {
   return (
     <Split orientation="horizontal" h="100%" spacing="md">
       <Split.Pane grow minHeight="30%">
         <Paper shadow="xs" withBorder p="1rem" h="100%">
-          <FolderTree data={dummyFolderData} />
+          <FolderTree data={folderTree} />
         </Paper>
       </Split.Pane>
       <Split.Resizer />
@@ -18,5 +21,3 @@ const SideLeft = () => {
     </Split>
   )
 }
-
-export default SideLeft

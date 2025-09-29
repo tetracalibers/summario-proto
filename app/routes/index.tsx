@@ -7,6 +7,7 @@ import EditorWith from "~/components/editor/EditorWith"
 export async function loader() {
   const [term] = await getRecentTerm(1)
   const editorContent = term.title + "\n" + term.content
+
   return { term: { ...term, content: editorContent } }
 }
 
