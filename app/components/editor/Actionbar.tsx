@@ -51,7 +51,7 @@ const deleteBlock = (editor: Editor) => {
 
   // トップタイトルはコンテンツのクリアのみ
   if (activeNode.type.name === "title_block") {
-    editor.chain().focus().clearContent().run()
+    editor.chain().focus().clearTitleContent().run()
     return
   }
 
