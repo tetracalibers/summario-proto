@@ -14,11 +14,6 @@ export const dummyEditorContent = `
     <li><p>item 2</p></li>
   </ul>
 </section-block>
-<p>ABC</p>
-<section-block type="">
-  <h2>Context</h2>
-  <p></p>
-</section-block>
 <p>Did you see that? That’s a React component. We are really living in the future.</p>
 `
 
