@@ -1,12 +1,10 @@
-import { EditorContext, useEditor } from "@tiptap/react"
-import { dummyEditorContent } from "~/db/dummy"
-import { tiptapExtensions } from "./extensions"
+import { useEditor, type Content } from "@tiptap/react"
 import { createSectionBlockJson } from "~/extensions/section-block/helper"
-import { useMemo, type PropsWithChildren } from "react"
+import { tiptapExtensions } from "./extensions"
 
-const TiptapProvider = ({ children }: PropsWithChildren) => {
+export const useTiptapEditor = (initialContent: Content) => {
   const editor = useEditor({
-    //shouldRerenderOnTransaction: true,
+    shouldRerenderOnTransaction: true,
     immediatelyRender: false, // Disable immediate rendering to prevent SSR issues
     extensions: tiptapExtensions,
     editorProps: {
@@ -61,13 +59,8 @@ const TiptapProvider = ({ children }: PropsWithChildren) => {
         return true
       }
     },
-    content: dummyEditorContent
+    content: initialContent
   })
 
-  // Memoize the provider value to avoid unnecessary re-renders
-  const providerValue = useMemo(() => ({ editor }), [editor])
-
-  return <EditorContext.Provider value={providerValue}>{children}</EditorContext.Provider>
+  return editor
 }
-
-export default TiptapProvider

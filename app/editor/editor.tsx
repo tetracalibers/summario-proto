@@ -92,7 +92,7 @@ const TiptapEditor = () => {
         <Grid>
           <Grid.Col span="auto">
             <RichTextEditor editor={editor}>
-              <EditorActionbar />
+              <EditorActionbar editor={editor} />
               <DragHandle editor={editor}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

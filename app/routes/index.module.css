@@ -33,7 +33,7 @@
   width: 100%;
   gap: 0.5rem;
 
-  > .save_btn {
+  > :last-child {
     grid-column: 4;
   }
 }
