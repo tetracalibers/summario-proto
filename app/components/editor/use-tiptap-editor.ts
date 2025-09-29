@@ -46,14 +46,10 @@ export const useTiptapEditor = (initialContent: Content) => {
 
         // トップレベルのparagraphにdropされた場合は置き換える
         if (droppedNode?.type.name === "paragraph" && droppedNodePos.depth === 1) {
-          editor
-            .chain()
-            .deleteNode("paragraph")
-            .insertContentAt(
-              droppedPoint.pos,
-              createSectionBlockJson(blockInfo.type, blockInfo.label)
-            )
-            .run()
+          editor.commands.insertContentAt(
+            droppedPoint.pos,
+            createSectionBlockJson(blockInfo.type, blockInfo.label)
+          )
 
           return true // TipTapのデフォルトのドロップ処理を停止
         }
