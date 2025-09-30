@@ -1,15 +1,13 @@
 import BLOCK_TYPES from "./block-type.json"
-import { Badge, Card, Group, Stack, Text } from "@mantine/core"
+import { Stack } from "@mantine/core"
+import styles from "./card.module.css"
 
 const BlockTypeMenu = () => {
   return (
-    <Stack>
+    <Stack gap="sm">
       {BLOCK_TYPES.map((block) => (
-        <Card
-          shadow="sm"
-          padding="md"
-          radius="md"
-          withBorder
+        <div
+          className={styles.card_body}
           draggable
           key={block.name}
           onDragStart={(e) => {
@@ -19,14 +17,12 @@ const BlockTypeMenu = () => {
             )
           }}
         >
-          <Group justify="space-between">
-            <Text fw={500}>{block.label}</Text>
-            <Badge color="pink">{block.label_ja}</Badge>
-          </Group>
-          <Text size="sm" c="dimmed">
-            {block.description}
-          </Text>
-        </Card>
+          <div>
+            <div className={styles.card_title}>{block.label}</div>
+            <div className={styles.card_subtitle}>{block.label_ja}</div>
+          </div>
+          <div className={styles.card_content}>{block.description}</div>
+        </div>
       ))}
     </Stack>
   )

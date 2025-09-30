@@ -1,6 +1,6 @@
 import { type RouteConfig, index, layout, route } from "@react-router/dev/routes"
 
 export default [
-  layout("layouts/note.tsx", [index("routes/index.tsx")]),
-  route("editor", "routes/home.tsx")
+  index("routes/index.tsx"),
+  layout("layouts/editor-page-layout.tsx", [route("terms/:termId", "routes/term.tsx")])
 ] satisfies RouteConfig

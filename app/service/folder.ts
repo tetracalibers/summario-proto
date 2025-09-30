@@ -1,5 +1,5 @@
 import type { TreeNodeData } from "@mantine/core"
-import { selectAllFolders, selectAllTerms } from "~/db/query"
+import { queryTermPath, selectAllFolders, selectAllTerms, selectTermById } from "~/db/query"
 import type { Folder, Term } from "~/db/schema"
 
 const rawDataToUIData = (folder: Folder): TreeNodeData => ({
@@ -18,7 +18,7 @@ const buildFolderTree = (folders: Folder[], terms: Term[]): TreeNodeData[] => {
     if (parent) {
       parent.children = parent.children || []
       parent.children.push({
-        value: `term-${t.id}`,
+        value: `${t.id}`,
         label: t.title,
         children: []
       })
@@ -41,4 +41,11 @@ const buildFolderTree = (folders: Folder[], terms: Term[]): TreeNodeData[] => {
 export const getFolderTree = async (): Promise<TreeNodeData[]> => {
   const [allFolders, allTerms] = await Promise.all([selectAllFolders(), selectAllTerms()])
   return buildFolderTree(allFolders, allTerms)
+}
+
+export const getFolderPath = async (termId: string): Promise<string[] | null> => {
+  const [term] = await selectTermById(Number(termId))
+  if (!term) return null
+
+  return queryTermPath(term)
 }

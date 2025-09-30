@@ -13,6 +13,18 @@ export const theme = createTheme({
       "#4c5897",
       "#424e88",
       "#36437a"
+    ],
+    magenta: [
+      "#ffe9f6",
+      "#ffd1e6",
+      "#faa1c9",
+      "#f66eab",
+      "#f24391",
+      "#f02981",
+      "#f01879",
+      "#d60867",
+      "#c0005c",
+      "#a9004f"
     ]
   },
   fontFamily: "Nunito Sans, Noto Sans JP"
