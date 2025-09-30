@@ -1,4 +1,4 @@
-import { selectAllEdgesByTermId, selectAllRelatedTerms, selectTermById } from "~/db/query"
+import { selectAllRelatedTerms, selectOutgoingEdgesBySourceIds, selectTermById } from "~/db/query"
 
 /**
  * 指定された用語IDに関連するすべての用語を取得する
@@ -6,7 +6,7 @@ import { selectAllEdgesByTermId, selectAllRelatedTerms, selectTermById } from "~
  */
 export const findRelatedTerms = async (termId: number) => {
   // termId を含むすべてのエッジを取得
-  const edges = await selectAllEdgesByTermId(termId)
+  const edges = await selectOutgoingEdgesBySourceIds([termId])
 
   // 関連するすべての termId をユニークに抽出
   const relatedTermIds = [
