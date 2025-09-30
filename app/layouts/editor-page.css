@@ -32,7 +32,7 @@
     grid-area: rightside;
     /* grid-row-start: 3; */
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto;
     grid-auto-rows: 1fr;
     gap: 1rem;
   }
