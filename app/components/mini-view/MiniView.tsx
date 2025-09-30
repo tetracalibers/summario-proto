@@ -25,7 +25,7 @@ export default function MiniView({ contentJson }: Props) {
         overflowY: "auto"
       }}
     >
-      <Typography>
+      <Typography style={{ fontSizeAdjust: "0.4", lineHeight: 1.2 }}>
         <div dangerouslySetInnerHTML={{ __html: output }} />
       </Typography>
     </div>
