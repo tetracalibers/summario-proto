@@ -5,6 +5,7 @@ import EditorWith from "~/components/editor/EditorWith"
 import type { Route } from "./+types/term"
 import { findRelatedTerms } from "~/service/related-term"
 import NetworkGraph from "~/components/network-graph/NetworkGraph"
+import MiniView from "~/components/mini-view/MiniView"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params
@@ -51,7 +52,7 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
           </Accordion.Item>
         </Accordion>
         <NetworkGraph {...graphData} centerId={Number(termId)} />
-        <div>TODO: MiniView</div>
+        <MiniView contentJson={term.content!} />
       </div>
     </>
   )
