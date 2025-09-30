@@ -14,7 +14,7 @@ export default function MiniView({ contentJson }: Props) {
       content: contentJson,
       extensions: tiptapExtensions
     })
-  }, [])
+  }, [contentJson])
 
   return (
     <div
