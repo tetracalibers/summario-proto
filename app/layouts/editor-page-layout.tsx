@@ -1,7 +1,7 @@
 import { Outlet } from "react-router"
 import "./editor-page.css"
 import type { Route } from "./+types/editor-page-layout"
-import { getFolderTree } from "~/service/folder"
+import { getFolderPath, getFolderTree } from "~/service/folder"
 import { getAllSearchKeywords } from "~/service/search"
 import { Autocomplete, Paper, ScrollArea, type TreeNodeData } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
@@ -9,12 +9,18 @@ import FolderTree from "~/components/folder-tree/FolderTree"
 import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const [folderTree, searchKeywords] = await Promise.all([getFolderTree(), getAllSearchKeywords()])
-  return { folderTree, searchKeywords }
+  const { termId } = params
+
+  const [folderTree, searchKeywords, currentFolderPath] = await Promise.all([
+    getFolderTree(),
+    getAllSearchKeywords(),
+    getFolderPath(termId)
+  ])
+  return { folderTree, searchKeywords, currentFolderPath }
 }
 
 export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
-  const { folderTree, searchKeywords } = loaderData
+  const { folderTree, searchKeywords, currentFolderPath } = loaderData
 
   return (
     <div className="editor-page">
@@ -25,7 +31,10 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
         <Split orientation="horizontal" h="100%" spacing="md">
           <Split.Pane>
             <Paper shadow="xs" withBorder p="1rem" h="100%">
-              <FolderTree data={folderTree as TreeNodeData[]} />
+              <FolderTree
+                data={folderTree as TreeNodeData[]}
+                currentFolderPath={currentFolderPath}
+              />
             </Paper>
           </Split.Pane>
           <Split.Resizer />

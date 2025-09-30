@@ -1,4 +1,11 @@
-import { Group, Tree, type RenderTreeNodePayload, type TreeNodeData } from "@mantine/core"
+import {
+  getTreeExpandedState,
+  Group,
+  Tree,
+  useTree,
+  type RenderTreeNodePayload,
+  type TreeNodeData
+} from "@mantine/core"
 import { IconFolder, IconFolderOpen, IconFile } from "@tabler/icons-react"
 import { NavLink } from "react-router"
 
@@ -34,9 +41,13 @@ const Leaf = (payload: RenderTreeNodePayload) => {
 
 interface FolderTreeProps {
   data: TreeNodeData[]
+  currentFolderPath: string[] | null
 }
-const FolderTree = ({ data }: FolderTreeProps) => {
-  return <Tree data={data} renderNode={(payload) => <Leaf {...payload} />} />
+const FolderTree = ({ data, currentFolderPath }: FolderTreeProps) => {
+  const tree = useTree({
+    initialExpandedState: getTreeExpandedState(data, currentFolderPath ?? [])
+  })
+  return <Tree tree={tree} data={data} renderNode={(payload) => <Leaf {...payload} />} />
 }
 
 export default FolderTree

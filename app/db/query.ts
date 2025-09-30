@@ -1,6 +1,6 @@
-import { eq, desc, asc, or, and, inArray } from "drizzle-orm"
+import { eq, desc, asc, or, and, inArray, sql } from "drizzle-orm"
 import { db } from "~/db/connection"
-import { folders, termAliases, termEdges, terms } from "~/db/schema"
+import { folders, termAliases, termEdges, terms, type Term } from "~/db/schema"
 
 export const selectTermById = async (id: number) => {
   return db.select().from(terms).where(eq(terms.id, id))
@@ -24,6 +24,33 @@ export const selectAllTermsAndAlias = async () => {
     .from(terms)
     .leftJoin(termAliases, eq(termAliases.termId, terms.id))
     .orderBy(desc(terms.updatedAt))
+}
+
+// その用語が所属するフォルダのパスを表すフォルダidの配列を取得
+export const queryTermPath = async (term: Term): Promise<string[] | null> => {
+  if (!term.folderId) return null
+
+  const query = sql`
+    WITH RECURSIVE folder_path(id, parent_id, depth) AS (
+      SELECT
+        id,
+        parent_id,
+        1
+      FROM ${folders}
+      WHERE id = ${term.folderId}
+      UNION ALL
+      SELECT
+        f.id,
+        f.parent_id,
+        fp.depth + 1
+      FROM ${folders} f
+      JOIN folder_path fp ON f.id = fp.parent_id
+    )
+    SELECT id FROM folder_path ORDER BY depth DESC
+  `
+  const result = await db.execute<{ id: string }>(query)
+
+  return result.map((row) => row.id)
 }
 
 export const selectAllFolders = async () => {
