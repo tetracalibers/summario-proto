@@ -2,7 +2,7 @@ import { useEditor, type Content } from "@tiptap/react"
 import { createSectionBlockJson } from "~/extensions/section-block/helper"
 import { tiptapExtensions } from "./extensions"
 
-export const useTiptapEditor = (initialContent: Content) => {
+export const useTiptapEditor = (initialContent?: Content) => {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     immediatelyRender: false, // Disable immediate rendering to prevent SSR issues
