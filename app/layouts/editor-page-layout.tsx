@@ -30,15 +30,17 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
       <div className="leftside-area">
         <Split orientation="horizontal" h="100%" spacing="md">
           <Split.Pane>
-            <Paper shadow="xs" withBorder p="1rem" h="100%">
-              <FolderTree
-                data={folderTree as TreeNodeData[]}
-                currentFolderPath={currentFolderPath}
-              />
+            <Paper shadow="xs" withBorder p="0" h="100%">
+              <ScrollArea h="100%" p="1rem">
+                <FolderTree
+                  data={folderTree as TreeNodeData[]}
+                  currentFolderPath={currentFolderPath}
+                />
+              </ScrollArea>
             </Paper>
           </Split.Pane>
           <Split.Resizer />
-          <Split.Pane px={"1rem"} grow minHeight="20%">
+          <Split.Pane grow minHeight="20%">
             <ScrollArea h="100%" pr="1rem" pb="1rem">
               <BlockTypeMenu />
               <div>TODO: 参考書籍ブロック</div>
