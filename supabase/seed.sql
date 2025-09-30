@@ -15,11 +15,11 @@ INSERT INTO folders (id, name, parent_id) VALUES
 
 -- 用語ノートのサンプルデータ
 INSERT INTO terms (id, title, content, folder_id) VALUES
-(1, 'React', '<p>Facebookが開発したUIライブラリです。</p>', 2),
-(2, 'Vue.js', '<p>Evan Youが開発したプログレッシブフレームワークです。</p>', 2),
-(3, 'Node.js', '<p>サーバーサイドでJavaScriptを実行するための環境です。</p>', 3),
-(4, 'PostgreSQL', '<p>オープンソースのリレーショナルデータベースマネジメントシステムです。</p>', 4),
-(5, 'Drizzle ORM', '<p>TypeScript向けのORMです。</p>', 4);
+(1, 'React', '{"type":"doc","content":[{"type":"title_block","content":[{"type":"text","text":"React"}]},{"type":"paragraph","content":[{"type":"text","text":"Facebookが開発したUIライブラリです。"}]}]}', 2),
+(2, 'Vue.js', '{"type":"doc","content":[{"type":"title_block","content":[{"type":"text","text":"Vue.js"}]},{"type":"paragraph","content":[{"type":"text","text":"Evan Youが開発したプログレッシブフレームワークです。"}]}]}', 2),
+(3, 'Node.js', '{"type":"doc","content":[{"type":"title_block","content":[{"type":"text","text":"Node.js"}]},{"type":"paragraph","content":[{"type":"text","text":"サーバーサイドでJavaScriptを実行するための環境です。"}]}]}', 3),
+(4, 'PostgreSQL', '{"type":"doc","content":[{"type":"title_block","content":[{"type":"text","text":"PostgreSQL"}]},{"type":"paragraph","content":[{"type":"text","text":"オープンソースのリレーショナルデータベースマネジメントシステムです。"}]}]}', 4),
+(5, 'Drizzle ORM', '{"type":"doc","content":[{"type":"title_block","content":[{"type":"text","text":"Drizzle ORM"}]},{"type":"paragraph","content":[{"type":"text","text":"TypeScript向けのORMです。"}]}]}', 4);
 
 -- エイリアスのサンプルデータ
 INSERT INTO term_aliases (term_id, title) VALUES
