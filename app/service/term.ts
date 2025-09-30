@@ -8,8 +8,8 @@ const withEditorContent = (term: Term) => {
   }
 }
 
-export const getTermById = async (id: number) => {
-  const [term] = await selectTermById(id)
+export const getTermById = async (id: string) => {
+  const [term] = await selectTermById(Number(id))
   return term ? withEditorContent(term) : null
 }
 
