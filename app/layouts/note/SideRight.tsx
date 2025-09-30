@@ -1,5 +1,4 @@
-import { Accordion, ScrollArea, TagsInput } from "@mantine/core"
-import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
+import { Accordion, TagsInput } from "@mantine/core"
 
 const SideRight = () => {
   return (
@@ -18,14 +17,9 @@ const SideRight = () => {
           <Accordion.Control>関連用語の設定</Accordion.Control>
           <Accordion.Panel>Related Input</Accordion.Panel>
         </Accordion.Item>
-        <Accordion.Item value="references">
-          <Accordion.Control>参考文献の設定</Accordion.Control>
-          <Accordion.Panel>References Input</Accordion.Panel>
-        </Accordion.Item>
       </Accordion>
-      <ScrollArea h="100%" pr="1rem">
-        <BlockTypeMenu />
-      </ScrollArea>
+      <div>TODO: NetworkGraph</div>
+      <div>TODO: MiniView</div>
     </>
   )
 }
