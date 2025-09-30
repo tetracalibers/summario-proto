@@ -18,7 +18,7 @@ const buildFolderTree = (folders: Folder[], terms: Term[]): TreeNodeData[] => {
     if (parent) {
       parent.children = parent.children || []
       parent.children.push({
-        value: `term-${t.id}`,
+        value: `${t.id}`,
         label: t.title,
         children: []
       })
