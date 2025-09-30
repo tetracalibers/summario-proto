@@ -22,7 +22,7 @@ const NetworkGraph = ({ nodes, edges, centerId }: NetworkGraphProps) => {
         label: node.title,
         shape: "dot",
         size: node.id === centerId ? 20 : 12,
-        color: node.id === centerId ? "#D4F6FF" : "#C6E7FF"
+        color: node.id === centerId ? "#FF90BC" : "#C6E7FF"
       }))
     )
 
