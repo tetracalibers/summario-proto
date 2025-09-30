@@ -22,7 +22,7 @@ const NetworkGraph = ({ nodes, edges, centerId }: NetworkGraphProps) => {
         label: node.title,
         shape: "dot",
         size: node.id === centerId ? 20 : 12,
-        color: node.id === centerId ? "#ff9900" : "#97c2fc"
+        color: node.id === centerId ? "#D4F6FF" : "#C6E7FF"
       }))
     )
 
@@ -30,8 +30,7 @@ const NetworkGraph = ({ nodes, edges, centerId }: NetworkGraphProps) => {
       edges.map((edge, index) => ({
         id: index,
         from: edge.source,
-        to: edge.target,
-        arrows: "to"
+        to: edge.target
       }))
     )
 
@@ -42,17 +41,17 @@ const NetworkGraph = ({ nodes, edges, centerId }: NetworkGraphProps) => {
         }
       },
       interaction: {
-        multiselect: true
+        zoomView: false
       },
       nodes: {
         font: {
           size: 14,
-          color: "#333"
+          color: "#295F98"
         },
-        borderWidth: 2
+        borderWidth: 1
       },
       edges: {
-        color: "#cccccc",
+        color: "#D2E0FB",
         width: 1
       }
     }
@@ -73,9 +72,15 @@ const NetworkGraph = ({ nodes, edges, centerId }: NetworkGraphProps) => {
   }, [nodes, edges, centerId])
 
   return (
-    <div>
-      <div style={{ height: 800, width: "100%" }} ref={ref} />
-    </div>
+    <div
+      style={{
+        border: "1px solid var(--mantine-color-gray-3)",
+        borderRadius: "var(--mantine-radius-default)",
+        height: "220px",
+        width: "100%"
+      }}
+      ref={ref}
+    />
   )
 }
 
