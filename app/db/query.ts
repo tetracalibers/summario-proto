@@ -1,6 +1,6 @@
-import { eq, desc, asc } from "drizzle-orm"
+import { eq, desc, asc, or, and } from "drizzle-orm"
 import { db } from "~/db/connection"
-import { folders, termAliases, terms } from "~/db/schema"
+import { folders, termAliases, termEdges, terms } from "~/db/schema"
 
 export const selectTermById = async (id: number) => {
   return db.select().from(terms).where(eq(terms.id, id))
@@ -28,4 +28,19 @@ export const selectAllTermsAndAlias = async () => {
 
 export const selectAllFolders = async () => {
   return db.select().from(folders).orderBy(asc(folders.parentId), asc(folders.id))
+}
+
+// termId を含むすべてのエッジを取得
+export const selectAllEdgesByTermId = async (termId: number) => {
+  return db
+    .select()
+    .from(termEdges)
+    .where(or(eq(termEdges.sourceTermId, termId), eq(termEdges.targetTermId, termId)))
+}
+
+export const selectAllRelatedTerms = async (relatedTermIds: number[]) => {
+  return db
+    .select()
+    .from(terms)
+    .where(and(or(...relatedTermIds.map((id) => eq(terms.id, id)))))
 }

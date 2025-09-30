@@ -1,15 +1,15 @@
 import NetworkGraph from "~/components/network-graph/NetworkGraph"
-import { getOutgoingRelatedTermsDeep } from "~/repository/related"
+import { findRelatedTerms } from "~/service/related-term"
 import type { Route } from "./+types/graph"
 
 export async function loader() {
-  const data = await getOutgoingRelatedTermsDeep(1, 3)
-
-  return { data }
+  // TODO: 本来は /graph/:termId のようなパスから termId を取得する
+  const termId = 1
+  const { nodes, edges } = await findRelatedTerms(termId)
+  return { nodes, edges, centerId: termId }
 }
 
 export default function GraphPage({ loaderData }: Route.ComponentProps) {
-  const { data } = loaderData
-  console.log("loaderData", data)
-  return <NetworkGraph />
+  const { nodes, edges, centerId } = loaderData
+  return <NetworkGraph nodes={nodes} edges={edges} centerId={centerId} />
 }
