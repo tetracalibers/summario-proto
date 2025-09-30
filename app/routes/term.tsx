@@ -5,6 +5,7 @@ import EditorWith from "~/components/editor/EditorWith"
 import type { Route } from "./+types/term"
 import { findRelatedTerms } from "~/service/related-term"
 import NetworkGraph from "~/components/network-graph/NetworkGraph"
+import MiniView from "~/components/mini-view/MiniView"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params
@@ -17,14 +18,25 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { term, graphData }
 }
 
-export default function Term({ loaderData, params }: Route.ComponentProps) {
+export async function action({ request, params }: Route.ActionArgs) {
+  const formData = await request.formData()
+
+  const viewTermId = formData.get("viewTermId")
+  if (!viewTermId) return null
+  if (params.termId === viewTermId) return null
+
+  const term = await getTermById(viewTermId.toString())
+  return { miniviewContent: term.content }
+}
+
+export default function Term({ loaderData, params, actionData }: Route.ComponentProps) {
   const { term, graphData } = loaderData
   const { termId } = params
 
   return (
     <>
       <div className="editor-area">
-        <EditorWith initialContent={term.editorContent}>
+        <EditorWith initialContent={term.content}>
           <Button variant="gradient" gradient={{ from: "gray", to: "cyan", deg: 207 }} radius="sm">
             Cancel
           </Button>
@@ -51,7 +63,7 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
           </Accordion.Item>
         </Accordion>
         <NetworkGraph {...graphData} centerId={Number(termId)} />
-        <div>TODO: MiniView</div>
+        {actionData?.miniviewContent && <MiniView contentJson={actionData.miniviewContent} />}
       </div>
     </>
   )

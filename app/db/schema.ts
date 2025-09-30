@@ -4,12 +4,12 @@ import {
   pgTable,
   serial,
   integer,
-  text,
   varchar,
   timestamp,
   primaryKey,
   unique,
-  index
+  index,
+  jsonb
 } from "drizzle-orm/pg-core"
 
 // ------------------------------
@@ -49,7 +49,12 @@ export const terms = pgTable(
   {
     id: serial("id").primaryKey(),
     title: varchar("title", { length: 255 }).notNull(),
-    content: text("content").notNull().default(""), // HTML文字列
+    content: jsonb("content")
+      .notNull()
+      .default({
+        type: "doc",
+        content: [{ type: "title_block", content: [] }]
+      }),
     folderId: integer("folder_id").references(() => folders.id, { onDelete: "set null" }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()

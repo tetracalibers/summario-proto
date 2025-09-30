@@ -1,11 +1,11 @@
 import { useMemo, type PropsWithChildren } from "react"
 import { useTiptapEditor } from "./use-tiptap-editor"
-import { EditorContext } from "@tiptap/react"
+import { EditorContext, type Content } from "@tiptap/react"
 import TipTapEditor from "./Editor"
 import styles from "./EditorWith.module.css"
 
 interface Props {
-  initialContent: string
+  initialContent?: Content
 }
 
 const EditorWith = ({ children, initialContent }: PropsWithChildren<Props>) => {
