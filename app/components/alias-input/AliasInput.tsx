@@ -4,22 +4,22 @@ import { useSetAtom } from "jotai"
 import { useEffect } from "react"
 
 interface Props {
-  alias: Alias[]
+  initials: Alias[]
 }
 
-export default function AliasInput({ alias }: Props) {
+export default function AliasInput({ initials }: Props) {
   const setUiFromInput = useSetAtom(setUiFromInputAtom)
   const setInitial = useSetAtom(initialAtom)
   useEffect(() => {
-    setInitial(new Map(alias.map((a) => [a.title, a.id])))
-    setUiFromInput(alias.map((a) => a.title))
-  }, [alias, setInitial])
+    setInitial(new Map(initials.map((a) => [a.title, a.id])))
+    setUiFromInput(initials.map((a) => a.title))
+  }, [initials, setInitial])
 
   return (
     <TagsInput
       label="Alias"
       placeholder="Enter"
-      defaultValue={alias.map((a) => a.title)}
+      defaultValue={initials.map((a) => a.title)}
       onChange={(values) => setUiFromInput(values)}
     />
   )

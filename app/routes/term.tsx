@@ -49,7 +49,7 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
       </EditorWith>
       <div className="rightside-area">
         <Stack gap="xs">
-          <AliasInput alias={alias} />
+          <AliasInput initials={alias} />
           <RelatedInput initials={relatedTerms} suggestions={relatedSuggestions} />
         </Stack>
         <RelatedTermView nodes={nodes} edges={edges} termId={termId} />
