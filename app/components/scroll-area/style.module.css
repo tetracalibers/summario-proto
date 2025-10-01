@@ -1,0 +1,6 @@
+.scrollable {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mantine-color-magenta-2) transparent;
+  scrollbar-gutter: stable;
+}

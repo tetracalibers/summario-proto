@@ -3,7 +3,7 @@
     display: grid;
     grid-template-areas:
       ". . ."
-      "search editor rightside"
+      "search controls save"
       "leftside editor rightside"
       "leftside . .";
     grid-template-columns: 1fr 2.5fr minmax(220px, 1fr);
@@ -17,6 +17,20 @@
     grid-area: search;
   }
 
+  .controls-area {
+    grid-area: controls;
+
+    --btn-min: 80px;
+    display: grid;
+    grid-template-columns: minmax(var(--btn-min), 0) minmax(var(--btn-min), 0) 1fr;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .save-area {
+    grid-area: save;
+  }
+
   .leftside-area {
     grid-area: leftside;
     overflow-y: auto;
@@ -24,8 +38,7 @@
 
   .editor-area {
     grid-area: editor;
-    display: grid;
-    grid-template-rows: subgrid;
+    overflow-y: auto;
   }
 
   .rightside-area {
