@@ -1,4 +1,11 @@
-import { selectAllRelatedTerms, selectOutgoingEdgesBySourceIds, selectTermById } from "~/db/query"
+import {
+  selectAllRelatedTerms,
+  selectOutgoingEdgesBySourceIds,
+  selectTermById,
+  selectTermsWithoutId
+} from "~/db/query"
+import { sortTermsByNearestFolder } from "./folder"
+import type { Term } from "~/db/schema"
 
 /**
  * 指定された用語IDに関連するすべての用語を取得する
@@ -32,4 +39,9 @@ export const findRelatedTerms = async (termId: number) => {
       target: edge.targetTermId
     }))
   }
+}
+
+export const getRelatedTermsSuggestions = async (currentTerm: Term) => {
+  const terms = await selectTermsWithoutId(currentTerm.id)
+  return sortTermsByNearestFolder(terms, currentTerm.folderId)
 }

@@ -1,4 +1,4 @@
-import { eq, desc, asc, or, and, inArray, sql } from "drizzle-orm"
+import { eq, desc, asc, or, and, inArray, sql, ne } from "drizzle-orm"
 import { db } from "~/db/connection"
 import { folders, termAliases, termEdges, terms, type Term } from "~/db/schema"
 
@@ -12,6 +12,10 @@ export const selectRecentTerm = async (limit = 1) => {
 
 export const selectAllTerms = async () => {
   return await db.select().from(terms)
+}
+
+export const selectTermsWithoutId = async (excludeId: number) => {
+  return db.select().from(terms).where(ne(terms.id, excludeId)).orderBy(desc(terms.updatedAt))
 }
 
 export const selectAllTermsAndAlias = async () => {

@@ -3,7 +3,7 @@ import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
 import type { Route } from "./+types/term"
-import { findRelatedTerms } from "~/service/related-term"
+import { findRelatedTerms, getRelatedTermsSuggestions } from "~/service/related-term"
 import { getTermAlias } from "~/service/alias"
 import AliasInput from "~/components/alias-input/AliasInput"
 import { useAtomValue } from "jotai"
@@ -18,12 +18,13 @@ export async function loader({ params }: Route.LoaderArgs) {
     findRelatedTerms(termId),
     getTermAlias(termId)
   ])
+  const relatedSuggestions = await getRelatedTermsSuggestions(term)
 
-  return { term, relatedTerms, edges, alias }
+  return { term, relatedTerms, edges, alias, relatedSuggestions }
 }
 
 export default function Term({ loaderData, params }: Route.ComponentProps) {
-  const { term, relatedTerms, edges, alias } = loaderData
+  const { term, relatedTerms, edges, alias, relatedSuggestions } = loaderData
   const { termId } = params
 
   const isDirtyAlias = useAtomValue(dirtyAliasAtom)
@@ -51,6 +52,7 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
               label="Related Terms"
               placeholder="Enter"
               defaultValue={relatedTerms.map((term) => term.title)}
+              data={relatedSuggestions.map((term) => term.title)}
             />
           </Stack>
         </Paper>
