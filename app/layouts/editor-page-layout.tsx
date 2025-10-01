@@ -45,7 +45,6 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
           <Split.Pane grow minHeight="20%">
             <ScrollArea h="100%" pb="0.5rem">
               <BlockTypeMenu />
-              <div>TODO: 参考書籍ブロック</div>
             </ScrollArea>
           </Split.Pane>
         </Split>
