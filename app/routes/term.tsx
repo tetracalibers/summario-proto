@@ -1,4 +1,4 @@
-import { Button, Stack, TagsInput } from "@mantine/core"
+import { Button, Stack } from "@mantine/core"
 import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
@@ -9,6 +9,7 @@ import AliasInput from "~/components/alias-input/AliasInput"
 import { useAtomValue } from "jotai"
 import { dirtyAliasAtom } from "~/components/alias-input/atoms"
 import RelatedTermView from "~/components/related-term-view/RelatedTermView"
+import RelatedInput from "~/components/related-input/RelatedInput"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const termId = Number(params.termId)
@@ -49,13 +50,7 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
       <div className="rightside-area">
         <Stack gap="xs">
           <AliasInput alias={alias} />
-          <TagsInput
-            label="Related Terms"
-            placeholder="Enter"
-            defaultValue={relatedTerms.map((term) => term.title)}
-            data={relatedSuggestions.map((term) => term.title)}
-            comboboxProps={{ shadow: "sm" }}
-          />
+          <RelatedInput initials={relatedTerms} suggestions={relatedSuggestions} />
         </Stack>
         <RelatedTermView nodes={nodes} edges={edges} termId={termId} />
       </div>
