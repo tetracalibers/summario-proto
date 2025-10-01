@@ -30,17 +30,19 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
 
   return (
     <>
-      <div className="editor-area">
-        <EditorWith initialContent={term.content}>
+      <EditorWith initialContent={term.content}>
+        <div className="controls-area">
           <Button variant="gradient" gradient={{ from: "gray", to: "cyan", deg: 207 }} radius="sm">
             Cancel
           </Button>
           <Button variant="gradient" gradient={{ from: "pink", to: "red", deg: 90 }} radius="sm">
             Delete
           </Button>
+        </div>
+        <div className="save-area">
           <SaveButton isDirtyList={[isDirtyAlias]} />
-        </EditorWith>
-      </div>
+        </div>
+      </EditorWith>
       <div className="rightside-area">
         <Accordion variant="contained" multiple defaultValue={["alias"]}>
           <Accordion.Item value="alias">
