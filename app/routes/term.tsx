@@ -8,6 +8,8 @@ import NetworkGraph from "~/components/network-graph/NetworkGraph"
 import MiniView from "~/components/mini-view/MiniView"
 import { getTermAlias } from "~/service/alias"
 import AliasInput from "~/components/alias-input/AliasInput"
+import { useAtomValue } from "jotai"
+import { dirtyAliasAtom } from "~/components/alias-input/atoms"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const termId = Number(params.termId)
@@ -36,6 +38,8 @@ export default function Term({ loaderData, params, actionData }: Route.Component
   const { term, graphData, alias } = loaderData
   const { termId } = params
 
+  const isDirtyAlias = useAtomValue(dirtyAliasAtom)
+
   return (
     <>
       <div className="editor-area">
@@ -46,7 +50,7 @@ export default function Term({ loaderData, params, actionData }: Route.Component
           <Button variant="gradient" gradient={{ from: "pink", to: "red", deg: 90 }} radius="sm">
             Delete
           </Button>
-          <SaveButton />
+          <SaveButton isDirtyList={[isDirtyAlias]} />
         </EditorWith>
       </div>
       <div className="rightside-area">
