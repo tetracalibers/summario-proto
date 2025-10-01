@@ -4,12 +4,11 @@ import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
 import type { Route } from "./+types/term"
 import { findRelatedTerms } from "~/service/related-term"
-import NetworkGraph from "~/components/network-graph/NetworkGraph"
-import MiniView from "~/components/mini-view/MiniView"
 import { getTermAlias } from "~/service/alias"
 import AliasInput from "~/components/alias-input/AliasInput"
 import { useAtomValue } from "jotai"
 import { dirtyAliasAtom } from "~/components/alias-input/atoms"
+import RelatedTermView from "~/components/related-term-view/RelatedTermView"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const termId = Number(params.termId)
@@ -23,18 +22,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { term, graphData, alias }
 }
 
-export async function action({ request, params }: Route.ActionArgs) {
-  const formData = await request.formData()
-
-  const viewTermId = formData.get("viewTermId")
-  if (!viewTermId) return null
-  if (params.termId === viewTermId) return null
-
-  const term = await getTermById(Number(viewTermId))
-  return { miniviewContent: term.content }
-}
-
-export default function Term({ loaderData, params, actionData }: Route.ComponentProps) {
+export default function Term({ loaderData, params }: Route.ComponentProps) {
   const { term, graphData, alias } = loaderData
   const { termId } = params
 
@@ -66,8 +54,7 @@ export default function Term({ loaderData, params, actionData }: Route.Component
             <Accordion.Panel>Related Input</Accordion.Panel>
           </Accordion.Item>
         </Accordion>
-        <NetworkGraph {...graphData} centerId={Number(termId)} />
-        {actionData?.miniviewContent && <MiniView contentJson={actionData.miniviewContent} />}
+        <RelatedTermView {...graphData} termId={termId} />
       </div>
     </>
   )
