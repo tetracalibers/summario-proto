@@ -1,12 +1,14 @@
-import { Outlet } from "react-router"
 import "./editor-page.css"
+
+import { Outlet } from "react-router"
 import type { Route } from "./+types/editor-page-layout"
 import { getFolderPath, getFolderTree } from "~/service/folder"
 import { getAllSearchKeywords } from "~/service/search"
-import { Autocomplete, Paper, ScrollArea, type TreeNodeData } from "@mantine/core"
+import { Autocomplete, Paper, type TreeNodeData } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
 import FolderTree from "~/components/folder-tree/FolderTree"
 import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
+import ScrollArea from "~/components/scroll-area/ScrollArea"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params
@@ -41,7 +43,7 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
           </Split.Pane>
           <Split.Resizer />
           <Split.Pane grow minHeight="20%">
-            <ScrollArea h="100%" pr="1rem" pb="1rem">
+            <ScrollArea h="100%" pb="0.5rem">
               <BlockTypeMenu />
               <div>TODO: 参考書籍ブロック</div>
             </ScrollArea>
