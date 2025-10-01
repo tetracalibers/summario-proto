@@ -1,4 +1,4 @@
-import { Accordion, Button, TagsInput } from "@mantine/core"
+import { Accordion, Button } from "@mantine/core"
 import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
@@ -7,6 +7,7 @@ import { findRelatedTerms } from "~/service/related-term"
 import NetworkGraph from "~/components/network-graph/NetworkGraph"
 import MiniView from "~/components/mini-view/MiniView"
 import { getTermAlias } from "~/service/alias"
+import AliasInput from "~/components/alias-input/AliasInput"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const termId = Number(params.termId)
@@ -53,11 +54,7 @@ export default function Term({ loaderData, params, actionData }: Route.Component
           <Accordion.Item value="alias">
             <Accordion.Control>エイリアスの設定</Accordion.Control>
             <Accordion.Panel>
-              <TagsInput
-                label="Press Enter to submit a alias"
-                placeholder="Type and press enter..."
-                defaultValue={alias.map((a) => a.title)}
-              />
+              <AliasInput alias={alias} />
             </Accordion.Panel>
           </Accordion.Item>
           <Accordion.Item value="related">
