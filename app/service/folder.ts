@@ -14,14 +14,15 @@ const buildFolderTree = (folders: Folder[], terms: Term[]): TreeNodeData[] => {
 
   for (const f of folders) byId.set(f.id, rawDataToUIData(f))
   for (const t of terms) {
-    const parent = byId.get(t.folderId!)
+    if (!t.folderId) {
+      roots.push({ value: `${t.id}`, label: t.title, children: [] })
+      continue
+    }
+
+    const parent = byId.get(t.folderId)
     if (parent) {
       parent.children = parent.children || []
-      parent.children.push({
-        value: `${t.id}`,
-        label: t.title,
-        children: []
-      })
+      parent.children.push({ value: `${t.id}`, label: t.title, children: [] })
     }
   }
 
