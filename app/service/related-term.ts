@@ -1,6 +1,6 @@
 import {
+  selectAllEdgesByTermId,
   selectAllRelatedTerms,
-  selectOutgoingEdgesBySourceIds,
   selectTermById,
   selectTermsWithoutId
 } from "~/db/query"
@@ -13,7 +13,7 @@ import type { Term } from "~/db/schema"
  */
 export const findRelatedTerms = async (termId: number) => {
   // termId を含むすべてのエッジを取得
-  const edges = await selectOutgoingEdgesBySourceIds([termId])
+  const edges = await selectAllEdgesByTermId(termId)
 
   // 関連するすべての termId をユニークに抽出
   const relatedTermIds = [
