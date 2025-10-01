@@ -1,37 +1,32 @@
-import { Accordion, Button, TagsInput } from "@mantine/core"
+import { Accordion, Button } from "@mantine/core"
 import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
 import type { Route } from "./+types/term"
 import { findRelatedTerms } from "~/service/related-term"
-import NetworkGraph from "~/components/network-graph/NetworkGraph"
-import MiniView from "~/components/mini-view/MiniView"
+import { getTermAlias } from "~/service/alias"
+import AliasInput from "~/components/alias-input/AliasInput"
+import { useAtomValue } from "jotai"
+import { dirtyAliasAtom } from "~/components/alias-input/atoms"
+import RelatedTermView from "~/components/related-term-view/RelatedTermView"
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { termId } = params
-  const [term, graphData] = await Promise.all([
+  const termId = Number(params.termId)
+
+  const [term, graphData, alias] = await Promise.all([
     getTermById(termId),
-    findRelatedTerms(Number(termId))
+    findRelatedTerms(termId),
+    getTermAlias(termId)
   ])
-  if (!term) throw new Response("No term found", { status: 404 })
 
-  return { term, graphData }
+  return { term, graphData, alias }
 }
 
-export async function action({ request, params }: Route.ActionArgs) {
-  const formData = await request.formData()
-
-  const viewTermId = formData.get("viewTermId")
-  if (!viewTermId) return null
-  if (params.termId === viewTermId) return null
-
-  const term = await getTermById(viewTermId.toString())
-  return { miniviewContent: term.content }
-}
-
-export default function Term({ loaderData, params, actionData }: Route.ComponentProps) {
-  const { term, graphData } = loaderData
+export default function Term({ loaderData, params }: Route.ComponentProps) {
+  const { term, graphData, alias } = loaderData
   const { termId } = params
+
+  const isDirtyAlias = useAtomValue(dirtyAliasAtom)
 
   return (
     <>
@@ -43,7 +38,7 @@ export default function Term({ loaderData, params, actionData }: Route.Component
           <Button variant="gradient" gradient={{ from: "pink", to: "red", deg: 90 }} radius="sm">
             Delete
           </Button>
-          <SaveButton />
+          <SaveButton isDirtyList={[isDirtyAlias]} />
         </EditorWith>
       </div>
       <div className="rightside-area">
@@ -51,10 +46,7 @@ export default function Term({ loaderData, params, actionData }: Route.Component
           <Accordion.Item value="alias">
             <Accordion.Control>エイリアスの設定</Accordion.Control>
             <Accordion.Panel>
-              <TagsInput
-                label="Press Enter to submit a alias"
-                placeholder="Type and press enter..."
-              />
+              <AliasInput alias={alias} />
             </Accordion.Panel>
           </Accordion.Item>
           <Accordion.Item value="related">
@@ -62,8 +54,7 @@ export default function Term({ loaderData, params, actionData }: Route.Component
             <Accordion.Panel>Related Input</Accordion.Panel>
           </Accordion.Item>
         </Accordion>
-        <NetworkGraph {...graphData} centerId={Number(termId)} />
-        {actionData?.miniviewContent && <MiniView contentJson={actionData.miniviewContent} />}
+        <RelatedTermView {...graphData} termId={termId} />
       </div>
     </>
   )

@@ -26,6 +26,13 @@ export const selectAllTermsAndAlias = async () => {
     .orderBy(desc(terms.updatedAt))
 }
 
+export const selectAllAliasByTermId = async (termId: number) => {
+  return db
+    .select({ id: termAliases.id, title: termAliases.title })
+    .from(termAliases)
+    .where(eq(termAliases.termId, termId))
+}
+
 // その用語が所属するフォルダのパスを表すフォルダidの配列を取得
 export const queryTermPath = async (term: Term): Promise<string[] | null> => {
   if (!term.folderId) return null

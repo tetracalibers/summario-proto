@@ -1,17 +1,16 @@
 import { useEffect, useRef } from "react"
 import { Network } from "vis-network"
 import { DataSet } from "vis-data"
-import { useSubmit } from "react-router"
 
-interface NetworkGraphProps {
+export interface NetworkGraphProps {
   nodes: { id: number; title: string }[]
   edges: { source: number; target: number }[]
   centerId: number
+  onNodeClick: (nodeId: number) => void
 }
 
-const NetworkGraph = ({ nodes, edges, centerId }: NetworkGraphProps) => {
+const NetworkGraph = ({ nodes, edges, centerId, onNodeClick }: NetworkGraphProps) => {
   const ref = useRef<HTMLDivElement>(null)
-  const submit = useSubmit()
 
   useEffect(() => {
     if (!ref.current) {
@@ -63,7 +62,7 @@ const NetworkGraph = ({ nodes, edges, centerId }: NetworkGraphProps) => {
     network.on("click", (params: { nodes: (string | number)[] }) => {
       if (params.nodes.length > 0) {
         const nodeId = params.nodes[0]
-        submit({ viewTermId: String(nodeId) }, { action: `/terms/${centerId}`, method: "post" })
+        onNodeClick(Number(nodeId))
       }
     })
 

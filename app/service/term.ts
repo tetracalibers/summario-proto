@@ -1,7 +1,7 @@
 import { selectRecentTerm, selectTermById } from "~/db/query"
 
-export const getTermById = async (id: string) => {
-  const [term] = await selectTermById(Number(id))
+export const getTermById = async (id: number) => {
+  const [term] = await selectTermById(id)
   return term
 }
 
