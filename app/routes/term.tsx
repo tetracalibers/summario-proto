@@ -1,4 +1,4 @@
-import { Button, Paper, Stack, TagsInput } from "@mantine/core"
+import { Button, Stack, TagsInput } from "@mantine/core"
 import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
@@ -47,17 +47,15 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
         </div>
       </EditorWith>
       <div className="rightside-area">
-        <Paper shadow="0" withBorder p="1rem" pt="0.6rem">
-          <Stack gap="sm">
-            <AliasInput alias={alias} />
-            <TagsInput
-              label="Related Terms"
-              placeholder="Enter"
-              defaultValue={relatedTerms.map((term) => term.title)}
-              data={relatedSuggestions.map((term) => term.title)}
-            />
-          </Stack>
-        </Paper>
+        <Stack gap="sm">
+          <AliasInput alias={alias} />
+          <TagsInput
+            label="Related Terms"
+            placeholder="Enter"
+            defaultValue={relatedTerms.map((term) => term.title)}
+            data={relatedSuggestions.map((term) => term.title)}
+          />
+        </Stack>
         <RelatedTermView nodes={nodes} edges={edges} termId={termId} />
       </div>
     </>
