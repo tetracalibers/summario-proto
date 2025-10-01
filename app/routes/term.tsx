@@ -13,18 +13,20 @@ import RelatedTermView from "~/components/related-term-view/RelatedTermView"
 export async function loader({ params }: Route.LoaderArgs) {
   const termId = Number(params.termId)
 
-  const [term, { nodes: relatedTerms, edges }, alias] = await Promise.all([
+  const [term, { nodes, edges }, alias] = await Promise.all([
     getTermById(termId),
     findRelatedTerms(termId),
     getTermAlias(termId)
   ])
+
+  const relatedTerms = nodes.filter((t) => t.id !== term.id)
   const relatedSuggestions = await getRelatedTermsSuggestions(term)
 
-  return { term, relatedTerms, edges, alias, relatedSuggestions }
+  return { term, nodes, edges, alias, relatedTerms, relatedSuggestions }
 }
 
 export default function Term({ loaderData, params }: Route.ComponentProps) {
-  const { term, relatedTerms, edges, alias, relatedSuggestions } = loaderData
+  const { term, nodes, edges, alias, relatedSuggestions, relatedTerms } = loaderData
   const { termId } = params
 
   const isDirtyAlias = useAtomValue(dirtyAliasAtom)
@@ -56,7 +58,7 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
             />
           </Stack>
         </Paper>
-        <RelatedTermView nodes={relatedTerms} edges={edges} termId={termId} />
+        <RelatedTermView nodes={nodes} edges={edges} termId={termId} />
       </div>
     </>
   )
