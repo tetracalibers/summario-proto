@@ -6,16 +6,18 @@ import type { Route } from "./+types/term"
 import { findRelatedTerms } from "~/service/related-term"
 import NetworkGraph from "~/components/network-graph/NetworkGraph"
 import MiniView from "~/components/mini-view/MiniView"
+import { getTermAlias } from "~/service/alias"
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { termId } = params
-  const [term, graphData] = await Promise.all([
-    getTermById(termId),
-    findRelatedTerms(Number(termId))
-  ])
-  if (!term) throw new Response("No term found", { status: 404 })
+  const termId = Number(params.termId)
 
-  return { term, graphData }
+  const [term, graphData, alias] = await Promise.all([
+    getTermById(termId),
+    findRelatedTerms(termId),
+    getTermAlias(termId)
+  ])
+
+  return { term, graphData, alias }
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
@@ -25,12 +27,12 @@ export async function action({ request, params }: Route.ActionArgs) {
   if (!viewTermId) return null
   if (params.termId === viewTermId) return null
 
-  const term = await getTermById(viewTermId.toString())
+  const term = await getTermById(Number(viewTermId))
   return { miniviewContent: term.content }
 }
 
 export default function Term({ loaderData, params, actionData }: Route.ComponentProps) {
-  const { term, graphData } = loaderData
+  const { term, graphData, alias } = loaderData
   const { termId } = params
 
   return (
@@ -54,6 +56,7 @@ export default function Term({ loaderData, params, actionData }: Route.Component
               <TagsInput
                 label="Press Enter to submit a alias"
                 placeholder="Type and press enter..."
+                defaultValue={alias.map((a) => a.title)}
               />
             </Accordion.Panel>
           </Accordion.Item>
