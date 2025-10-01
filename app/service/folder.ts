@@ -10,33 +10,55 @@ const rawDataToUIData = (folder: Folder): TreeNodeData => ({
 
 const buildFolderTree = (folders: Folder[], terms: Term[]): TreeNodeData[] => {
   const byId = new Map<number, TreeNodeData>()
-  const roots: TreeNodeData[] = []
 
+  // 先に全フォルダのノードを作っておく
   for (const f of folders) byId.set(f.id, rawDataToUIData(f))
+
+  // ルート候補を「親あり」「親なし（孤児）」で分けて保持
+  const properRoots: TreeNodeData[] = [] // 親参照が正しいルート
+  const orphanRoots: TreeNodeData[] = [] // 親が存在しない（孤児）フォルダ
+
+  // フォルダの親子付け
+  for (const f of folders) {
+    const node = byId.get(f.id)!
+    if (f.parentId == null) {
+      properRoots.push(node)
+    } else {
+      const parent = byId.get(f.parentId)
+      if (parent) {
+        ;(parent.children ||= []).push(node)
+      } else {
+        // 親が見つからないフォルダは最後に回す
+        orphanRoots.push(node)
+      }
+    }
+  }
+
+  // 用語の親付け。親がない（folderIdなし or 親フォルダ不在）ものは最後に回す
+  const rootTerms: TreeNodeData[] = []
   for (const t of terms) {
+    const termNode: TreeNodeData = { value: `${t.id}`, label: t.title, children: [] }
+
     if (!t.folderId) {
-      roots.push({ value: `${t.id}`, label: t.title, children: [] })
+      // ルート直下の用語（親なし）→ 最後にまとめて追加
+      rootTerms.push(termNode)
       continue
     }
 
     const parent = byId.get(t.folderId)
     if (parent) {
-      parent.children = parent.children || []
-      parent.children.push({ value: `${t.id}`, label: t.title, children: [] })
+      ;(parent.children ||= []).push(termNode)
+    } else {
+      // 親フォルダが存在しない用語（実質的に親なし）
+      rootTerms.push(termNode)
     }
   }
 
-  for (const f of folders) {
-    const node = byId.get(f.id)!
-    if (f.parentId == null) {
-      roots.push(node)
-    } else {
-      const parent = byId.get(f.parentId)
-      if (parent) parent.children?.push(node)
-      else roots.push(node) // 孤児対策（親が見つからない場合は根として扱う）
-    }
-  }
-  return roots
+  // 並び順：
+  // 1) 親が正しく存在するルートフォルダ
+  // 2) 親がない用語（folderIdなし or 親不在）
+  // 3) 親がないフォルダ（孤児）
+  return [...properRoots, ...rootTerms, ...orphanRoots]
 }
 
 export const getFolderTree = async (): Promise<TreeNodeData[]> => {
