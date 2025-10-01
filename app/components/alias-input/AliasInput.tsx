@@ -17,7 +17,7 @@ export default function AliasInput({ alias }: Props) {
 
   return (
     <TagsInput
-      label="Press Enter to submit a alias"
+      label="Alias"
       placeholder="Enter"
       defaultValue={alias.map((a) => a.title)}
       onChange={(values) => setUiFromInput(values)}

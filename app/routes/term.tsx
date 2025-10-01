@@ -1,4 +1,4 @@
-import { Accordion, Button } from "@mantine/core"
+import { Button, Paper, Stack, TagsInput } from "@mantine/core"
 import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
@@ -44,18 +44,12 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
         </div>
       </EditorWith>
       <div className="rightside-area">
-        <Accordion variant="contained" multiple defaultValue={["alias"]}>
-          <Accordion.Item value="alias">
-            <Accordion.Control>エイリアスの設定</Accordion.Control>
-            <Accordion.Panel>
-              <AliasInput alias={alias} />
-            </Accordion.Panel>
-          </Accordion.Item>
-          <Accordion.Item value="related">
-            <Accordion.Control>関連用語の設定</Accordion.Control>
-            <Accordion.Panel>Related Input</Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
+        <Paper shadow="0" withBorder p="1rem" pt="0.6rem">
+          <Stack gap="sm">
+            <AliasInput alias={alias} />
+            <TagsInput label="Related Terms" placeholder="Enter" />
+          </Stack>
+        </Paper>
         <RelatedTermView {...graphData} termId={termId} />
       </div>
     </>
