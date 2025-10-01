@@ -54,6 +54,7 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
             placeholder="Enter"
             defaultValue={relatedTerms.map((term) => term.title)}
             data={relatedSuggestions.map((term) => term.title)}
+            comboboxProps={{ shadow: "sm" }}
           />
         </Stack>
         <RelatedTermView nodes={nodes} edges={edges} termId={termId} />
