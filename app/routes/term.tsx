@@ -47,7 +47,7 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
         </div>
       </EditorWith>
       <div className="rightside-area">
-        <Stack gap="sm">
+        <Stack gap="xs">
           <AliasInput alias={alias} />
           <TagsInput
             label="Related Terms"
