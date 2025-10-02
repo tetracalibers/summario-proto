@@ -87,13 +87,18 @@ export const selectOutgoingEdgesBySourceIds = async (sourceIds: number[]) => {
 //     .where(or(eq(termEdges.sourceTermId, termId), eq(termEdges.targetTermId, termId)))
 // }
 
-// centerIdの関連ノードをすべて取得
+// centerIdの関連ノード（双方向）をすべて取得
 export const selectAllRelatedTerms = async (centerId: number) => {
   return db
     .select({ id: terms.id, title: terms.title })
     .from(terms)
-    .leftJoin(termEdges, eq(termEdges.targetTermId, terms.id))
-    .where(eq(termEdges.sourceTermId, centerId))
+    .innerJoin(
+      termEdges,
+      or(
+        and(eq(termEdges.sourceTermId, terms.id), eq(termEdges.targetTermId, centerId)),
+        and(eq(termEdges.targetTermId, terms.id), eq(termEdges.sourceTermId, centerId))
+      )
+    )
 }
 
 // export const selectAllRelatedTerms = async (relatedTermIds: number[]) => {
