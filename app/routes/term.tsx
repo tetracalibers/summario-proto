@@ -3,7 +3,7 @@ import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
 import type { Route } from "./+types/term"
-import { findRelatedTerms, getRelatedTermsSuggestions } from "~/service/related-term"
+import { getRelatedTerms, getRelatedTermsSuggestions } from "~/service/related-term"
 import { getTermAlias } from "~/service/alias"
 import AliasInput from "~/components/alias-input/AliasInput"
 import RelatedTermView from "~/components/related-term-view/RelatedTermView"
@@ -12,21 +12,18 @@ import RelatedInput from "~/components/related-input/RelatedInput"
 export async function loader({ params }: Route.LoaderArgs) {
   const termId = Number(params.termId)
 
-  const [term, { nodes, edges }, alias] = await Promise.all([
+  const [term, alias, nodes] = await Promise.all([
     getTermById(termId),
-    findRelatedTerms(termId),
-    getTermAlias(termId)
+    getTermAlias(termId),
+    getRelatedTerms(termId)
   ])
-
-  const relatedTerms = nodes.filter((t) => t.id !== term.id)
   const relatedSuggestions = await getRelatedTermsSuggestions(term)
 
-  return { term, nodes, edges, alias, relatedTerms, relatedSuggestions }
+  return { term, nodes, alias, relatedSuggestions }
 }
 
-export default function Term({ loaderData, params }: Route.ComponentProps) {
-  const { term, nodes, edges, alias, relatedSuggestions, relatedTerms } = loaderData
-  const { termId } = params
+export default function Term({ loaderData }: Route.ComponentProps) {
+  const { term, nodes, alias, relatedSuggestions } = loaderData
 
   return (
     <>
@@ -46,9 +43,12 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
       <div className="rightside-area">
         <Stack gap="xs">
           <AliasInput initials={alias} />
-          <RelatedInput initials={relatedTerms} suggestions={relatedSuggestions} />
+          <RelatedInput
+            initials={nodes.filter((n) => n.id !== term.id)}
+            suggestions={relatedSuggestions}
+          />
         </Stack>
-        <RelatedTermView nodes={nodes} edges={edges} termId={termId} />
+        <RelatedTermView centerNode={term} />
       </div>
     </>
   )

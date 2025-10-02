@@ -2,14 +2,14 @@ import { useEffect, useRef } from "react"
 import { Network } from "vis-network"
 import { DataSet } from "vis-data"
 
-export interface NetworkGraphProps {
+interface Props {
   nodes: { id: number; title: string }[]
   edges: { source: number; target: number }[]
   centerId: number
   onNodeClick: (nodeId: number) => void
 }
 
-const NetworkGraph = ({ nodes, edges, centerId, onNodeClick }: NetworkGraphProps) => {
+const NetworkGraph = ({ nodes, edges, centerId, onNodeClick }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
