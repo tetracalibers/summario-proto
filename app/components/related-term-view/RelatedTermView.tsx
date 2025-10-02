@@ -3,7 +3,14 @@ import MiniView from "../mini-view/MiniView"
 import NetworkGraph from "../network-graph/NetworkGraph"
 import type { loader } from "~/routes/miniview"
 import { useAtomValue, useSetAtom } from "jotai"
-import { centerNodeAtom, edgesAtom, nodesAtom, type Node } from "./atoms"
+import {
+  centerNodeAtom,
+  edgesAtom,
+  existsMiniviewAtomInNodes,
+  miniviewNodeIdAtom,
+  nodesAtom,
+  type Node
+} from "./atoms"
 import { useEffect } from "react"
 
 interface Props {
@@ -15,10 +22,14 @@ export default function RelatedTermView({ centerNode }: Props) {
 
   const nodes = useAtomValue(nodesAtom)
   const edges = useAtomValue(edgesAtom)
+
   const setCenterNode = useSetAtom(centerNodeAtom)
   useEffect(() => {
     setCenterNode(centerNode)
   }, [centerNode])
+
+  const setMiniviewNodeId = useSetAtom(miniviewNodeIdAtom)
+  const existsInNodes = useAtomValue(existsMiniviewAtomInNodes)
 
   return (
     <>
@@ -28,9 +39,10 @@ export default function RelatedTermView({ centerNode }: Props) {
         centerId={centerNode.id}
         onNodeClick={(nodeId) => {
           fetcher.load(`/miniview/${nodeId}`)
+          setMiniviewNodeId(nodeId)
         }}
       />
-      {fetcher.data && <MiniView contentJson={fetcher.data} />}
+      {fetcher.data && existsInNodes && <MiniView contentJson={fetcher.data} />}
     </>
   )
 }

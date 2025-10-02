@@ -19,3 +19,16 @@ export const edgesAtom = atom<Edge[]>((get) => {
   const relatedNodes = get(relatedNodesAtom)
   return relatedNodes.map((node) => ({ source: centerNode.id, target: node.id }))
 })
+
+const nodeIdsAtom = atom<Set<number>>((get) => {
+  return new Set(get(nodesAtom).map((n) => n.id))
+})
+
+export const miniviewNodeIdAtom = atom<number | null>(null)
+
+export const existsMiniviewAtomInNodes = atom((get) => {
+  const miniviewNodeId = get(miniviewNodeIdAtom)
+  if (miniviewNodeId === null) return false
+  const nodeIds = get(nodeIdsAtom)
+  return nodeIds.has(miniviewNodeId)
+})
