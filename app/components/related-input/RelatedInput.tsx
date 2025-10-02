@@ -1,11 +1,11 @@
 import { TagsInput } from "@mantine/core"
 import { useSetAtom } from "jotai"
 import { useEffect } from "react"
-import { initialAtom, optionsAtom, setUiFromInputAtom } from "./atoms"
+import { initialAtom, optionsAtom, setUiFromInputAtom, type Term } from "./atoms"
 
 interface Props {
-  initials: { id: number; title: string }[]
-  suggestions: { id: number; title: string }[]
+  initials: Term[]
+  suggestions: Term[]
 }
 
 export default function RelatedInput({ initials, suggestions }: Props) {
@@ -13,8 +13,8 @@ export default function RelatedInput({ initials, suggestions }: Props) {
   const setInitial = useSetAtom(initialAtom)
   const setOptions = useSetAtom(optionsAtom)
   useEffect(() => {
-    setInitial(initials)
-    setOptions(suggestions)
+    setInitial(new Map(initials.map((a) => [a.title, a.id])))
+    setOptions(new Map(suggestions.map((a) => [a.title, a.id])))
     setUiFromInput(initials.map((a) => a.title))
   }, [])
 

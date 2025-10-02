@@ -1,17 +1,10 @@
 import { atom } from "jotai"
 
 type TermId = number
-type Term = { id: TermId; title: string }
+export type Term = { id: TermId; title: string }
 
-export const initialAtom = atom<Term[]>([]) // サーバーからの元状態
-export const optionsAtom = atom<Term[]>([]) // サーバーからの候補一覧
-
-const initialMapAtom = atom<Map<string, TermId>>((get) => {
-  return new Map(get(initialAtom).map((a) => [a.title, a.id]))
-})
-const optionsMapAtom = atom<Map<string, TermId>>((get) => {
-  return new Map(get(optionsAtom).map((a) => [a.title, a.id]))
-})
+export const initialAtom = atom<Map<string, TermId>>(new Map<string, TermId>()) // サーバーからの元状態
+export const optionsAtom = atom<Map<string, TermId>>(new Map<string, TermId>()) // サーバーからの候補一覧
 
 // ---- UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映） ----
 const uiValuesAtom = atom<string[]>([])
@@ -28,21 +21,21 @@ export const setUiFromInputAtom = atom(null, (_get, set, values: string[]) => {
 // 入力欄の値をTermオブジェクトに変換するための atom
 export const relatedNodesAtom = atom((get) => {
   const ui = get(uiValuesAtom)
-  const opts = get(optionsMapAtom)
+  const opts = get(optionsAtom)
   return ui.map((name) => ({ id: opts.get(name)!, title: name }))
 })
 
 // 追加：UIにあるが initial には無い名前
 const toAddNamesAtom = atom<string[]>((get) => {
   const ui = get(uiValuesAtom)
-  const init = get(initialMapAtom)
+  const init = get(initialAtom)
   return Array.from(ui).filter((name) => !init.has(name))
 })
 
 // 削除：initial にはあるが UI には無い → その name に紐づく既存 ID すべて
 const toRemoveIdsAtom = atom<TermId[]>((get) => {
   const uiNameSet = get(uiNameSetAtom)
-  const init = get(initialMapAtom)
+  const init = get(initialAtom)
   return Array.from(init)
     .filter(([name]) => !uiNameSet.has(name))
     .map(([, id]) => id)
