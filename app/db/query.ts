@@ -79,14 +79,6 @@ export const selectOutgoingEdgesBySourceIds = async (sourceIds: number[]) => {
     .where(inArray(termEdges.sourceTermId, sourceIds))
 }
 
-// termId を含むすべてのエッジを取得
-// export const selectAllEdgesByTermId = async (termId: number) => {
-//   return db
-//     .select()
-//     .from(termEdges)
-//     .where(or(eq(termEdges.sourceTermId, termId), eq(termEdges.targetTermId, termId)))
-// }
-
 // centerIdの関連ノード（双方向）をすべて取得
 export const selectAllRelatedTerms = async (centerId: number) => {
   return db
@@ -100,10 +92,3 @@ export const selectAllRelatedTerms = async (centerId: number) => {
       )
     )
 }
-
-// export const selectAllRelatedTerms = async (relatedTermIds: number[]) => {
-//   return db
-//     .select()
-//     .from(terms)
-//     .where(and(or(...relatedTermIds.map((id) => eq(terms.id, id)))))
-// }
