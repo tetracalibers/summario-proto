@@ -42,7 +42,31 @@ export default function RelatedTermView({ centerNode }: Props) {
           setMiniviewNodeId(nodeId)
         }}
       />
-      {fetcher.data && existsInNodes && <MiniView contentJson={fetcher.data} />}
+      <div
+        style={{
+          border: "1px solid var(--mantine-color-gray-3)",
+          borderRadius: "var(--mantine-radius-default)",
+          padding: "0.75rem",
+          overflowY: "auto"
+        }}
+      >
+        {fetcher.data && existsInNodes ? (
+          <MiniView contentJson={fetcher.data} />
+        ) : (
+          <p
+            style={{
+              display: "grid",
+              placeItems: "center",
+              height: "100%",
+              margin: 0,
+              textAlign: "center",
+              color: "var(--mantine-color-gray-5)"
+            }}
+          >
+            Clicking a node on the graph...
+          </p>
+        )}
+      </div>
     </>
   )
 }

@@ -17,17 +17,8 @@ export default function MiniView({ contentJson }: Props) {
   }, [contentJson])
 
   return (
-    <div
-      style={{
-        border: "1px solid var(--mantine-color-gray-3)",
-        borderRadius: "var(--mantine-radius-default)",
-        padding: "0.75rem",
-        overflowY: "auto"
-      }}
-    >
-      <Typography style={{ fontSizeAdjust: "0.4", lineHeight: 1.2 }}>
-        <div dangerouslySetInnerHTML={{ __html: output }} />
-      </Typography>
-    </div>
+    <Typography style={{ fontSizeAdjust: "0.4", lineHeight: 1.2 }}>
+      <div dangerouslySetInnerHTML={{ __html: output }} />
+    </Typography>
   )
 }
