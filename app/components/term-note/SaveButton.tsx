@@ -1,13 +1,14 @@
 import { Button } from "@mantine/core"
 import { useCurrentEditor, useEditorState } from "@tiptap/react"
+import { useAtomValue } from "jotai"
 import type { ButtonHTMLAttributes } from "react"
 import { Form } from "react-router"
+import { dirtyAliasAtom } from "../alias-input/atoms"
+import { dirtyRelatedAtom } from "../related-input/atoms"
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  isDirtyList: boolean[]
-}
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
-const SaveButton = ({ isDirtyList, ...attrs }: Props) => {
+const SaveButton = (props: Props) => {
   const { editor } = useCurrentEditor()
   const editorState = useEditorState({
     editor,
@@ -18,6 +19,10 @@ const SaveButton = ({ isDirtyList, ...attrs }: Props) => {
       }
     }
   })
+
+  const isDirtyAlias = useAtomValue(dirtyAliasAtom)
+  const isDirtyRelated = useAtomValue(dirtyRelatedAtom)
+
   return (
     <Form method="post" style={{ display: "grid" }}>
       <Button
@@ -25,8 +30,8 @@ const SaveButton = ({ isDirtyList, ...attrs }: Props) => {
         variant="gradient"
         gradient={{ from: "grape", to: "indigo", deg: 90 }}
         radius="sm"
-        disabled={[editorState?.isDirty, ...isDirtyList].every((isDirty) => !isDirty)}
-        {...attrs}
+        disabled={[editorState?.isDirty, isDirtyAlias, isDirtyRelated].every((isDirty) => !isDirty)}
+        {...props}
       >
         Save
       </Button>

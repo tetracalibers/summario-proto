@@ -6,8 +6,6 @@ import type { Route } from "./+types/term"
 import { findRelatedTerms, getRelatedTermsSuggestions } from "~/service/related-term"
 import { getTermAlias } from "~/service/alias"
 import AliasInput from "~/components/alias-input/AliasInput"
-import { useAtomValue } from "jotai"
-import { dirtyAliasAtom } from "~/components/alias-input/atoms"
 import RelatedTermView from "~/components/related-term-view/RelatedTermView"
 import RelatedInput from "~/components/related-input/RelatedInput"
 
@@ -30,8 +28,6 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
   const { term, nodes, edges, alias, relatedSuggestions, relatedTerms } = loaderData
   const { termId } = params
 
-  const isDirtyAlias = useAtomValue(dirtyAliasAtom)
-
   return (
     <>
       <EditorWith initialContent={term.content}>
@@ -44,7 +40,7 @@ export default function Term({ loaderData, params }: Route.ComponentProps) {
           </Button>
         </div>
         <div className="save-area">
-          <SaveButton isDirtyList={[isDirtyAlias]} />
+          <SaveButton />
         </div>
       </EditorWith>
       <div className="rightside-area">
