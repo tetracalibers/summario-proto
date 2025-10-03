@@ -1,4 +1,4 @@
-import { eq, desc, asc, or, and, inArray, sql } from "drizzle-orm"
+import { eq, desc, asc, or, and, inArray, sql, ne } from "drizzle-orm"
 import { db } from "~/db/connection"
 import { folders, termAliases, termEdges, terms, type Term } from "~/db/schema"
 
@@ -12,6 +12,10 @@ export const selectRecentTerm = async (limit = 1) => {
 
 export const selectAllTerms = async () => {
   return await db.select().from(terms)
+}
+
+export const selectTermsWithoutId = async (excludeId: number) => {
+  return db.select().from(terms).where(ne(terms.id, excludeId)).orderBy(desc(terms.updatedAt))
 }
 
 export const selectAllTermsAndAlias = async () => {
@@ -75,9 +79,16 @@ export const selectOutgoingEdgesBySourceIds = async (sourceIds: number[]) => {
     .where(inArray(termEdges.sourceTermId, sourceIds))
 }
 
-export const selectAllRelatedTerms = async (relatedTermIds: number[]) => {
+// centerIdの関連ノード（双方向）をすべて取得
+export const selectAllRelatedTerms = async (centerId: number) => {
   return db
-    .select()
+    .select({ id: terms.id, title: terms.title })
     .from(terms)
-    .where(and(or(...relatedTermIds.map((id) => eq(terms.id, id)))))
+    .innerJoin(
+      termEdges,
+      or(
+        and(eq(termEdges.sourceTermId, terms.id), eq(termEdges.targetTermId, centerId)),
+        and(eq(termEdges.targetTermId, terms.id), eq(termEdges.sourceTermId, centerId))
+      )
+    )
 }
