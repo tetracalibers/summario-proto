@@ -35,3 +35,16 @@ export const aliasSavePayloadAtom = atom((get) => ({
   add: Array.from(get(toAddNamesAtom)), // string[]
   remove: Array.from(get(toRemoveIdsAtom)) // AliasId[]
 }))
+
+export const resetAliasDiffAtom = atom(
+  null,
+  (get, set, created: { title: string; id: AliasId }[], removed: { title: string }[]) => {
+    // initial に created を追加、removed を削除
+    const init = new Map(get(initialAtom))
+    created.forEach((item) => init.set(item.title, item.id))
+    removed.forEach((item) => init.delete(item.title))
+
+    set(initialAtom, init)
+    set(uiAtom, Array.from(init.keys())) // UIも同期
+  }
+)

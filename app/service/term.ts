@@ -18,28 +18,84 @@ export const getRecentTerm = async () => {
   return terms
 }
 
+interface SaveSuccess {
+  ok: true
+  alias: { created: { id: number; title: string }[]; deleted: { id: number; title: string }[] }
+  related: { created: { id: number; title: string }[]; deleted: { id: number; title: string }[] }
+}
+interface SaveFailure {
+  ok: false
+  rejected: { key: string; targets: (number | string)[] }[]
+}
+
 export const saveTermContentAndMeta = async (
   termId: number,
   payload: {
-    content: any
+    content?: any
     alias: { add: string[]; remove: number[] }
     related: { add: number[]; remove: number[] }
   }
-) => {
+): Promise<SaveSuccess | SaveFailure> => {
   // すべて非同期に実行
   const { content, alias, related } = payload
-  return Promise.all([
-    // content
-    updateTermContent(termId, content),
-    // alias
-    alias.add && alias.add.length > 0 ? insertAliases(termId, alias.add) : Promise.resolve(),
-    alias.remove && alias.remove.length > 0 ? deleteAliases(alias.remove) : Promise.resolve(),
-    // related
-    related.add && related.add.length > 0
-      ? insertTermEdges(termId, related.add)
-      : Promise.resolve(),
-    related.remove && related.remove.length > 0
-      ? deleteTermEdges(termId, related.remove)
-      : Promise.resolve()
-  ])
+
+  const tasks = [
+    {
+      key: "content",
+      condition: content !== undefined,
+      action: () => updateTermContent(termId, content),
+      targets: [termId]
+    },
+    {
+      key: "alias.add",
+      condition: alias.add && alias.add.length > 0,
+      action: () => insertAliases(termId, alias.add),
+      targets: alias.add
+    },
+    {
+      key: "alias.remove",
+      condition: alias.remove && alias.remove.length > 0,
+      action: () => deleteAliases(alias.remove),
+      targets: alias.remove
+    },
+    {
+      key: "related.add",
+      condition: related.add && related.add.length > 0,
+      action: () => insertTermEdges(termId, related.add),
+      targets: related.add
+    },
+    {
+      key: "related.remove",
+      condition: related.remove && related.remove.length > 0,
+      action: () => deleteTermEdges(termId, related.remove),
+      targets: related.remove
+    }
+  ]
+
+  const results = await Promise.allSettled(
+    tasks.map((t) => (t.condition ? t.action() : Promise.resolve([])))
+  )
+
+  const rejected = results
+    .filter((r) => r.status === "rejected")
+    .map((_, i) => {
+      const t = tasks[i]
+      return { key: t.key, targets: t.targets }
+    })
+
+  if (rejected.length > 0) {
+    console.error("Failed to update term:", rejected)
+    return { ok: false, rejected }
+  }
+
+  const createdAliases = results[1].status === "fulfilled" ? results[1].value : []
+  const deletedAliases = results[2].status === "fulfilled" ? results[2].value : []
+  const createdEdges = results[3].status === "fulfilled" ? results[3].value : []
+  const deletedEdges = results[4].status === "fulfilled" ? results[4].value : []
+
+  return {
+    ok: true,
+    alias: { created: createdAliases, deleted: deletedAliases },
+    related: { created: createdEdges, deleted: deletedEdges }
+  }
 }

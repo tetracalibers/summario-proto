@@ -4,5 +4,5 @@ import type { Route } from "./+types/save"
 export async function action({ request, params }: Route.ActionArgs) {
   const termId = Number(params.termId)
   const data = await request.json()
-  await saveTermContentAndMeta(termId, data)
+  return saveTermContentAndMeta(termId, data)
 }

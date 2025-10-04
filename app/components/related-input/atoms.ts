@@ -41,3 +41,16 @@ export const relatedSavePayloadAtom = atom((get) => ({
   add: Array.from(get(toAddIdsAtom)), // TermId[]
   remove: Array.from(get(toRemoveIdsAtom)) // TermId[]
 }))
+
+export const resetRelatedDiffAtom = atom(
+  null,
+  (get, set, created: { title: string }[], removed: { title: string }[]) => {
+    // initial に created を追加、removed を削除
+    const init = new Set(get(initialAtom))
+    created.forEach((item) => init.add(item.title))
+    removed.forEach((item) => init.delete(item.title))
+
+    set(initialAtom, init)
+    set(uiAtom, Array.from(init)) // UIも同期
+  }
+)
