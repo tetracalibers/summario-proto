@@ -1,45 +1,75 @@
-import { atom } from "jotai"
+import { atom, type Atom, type Getter } from "jotai"
 
-export type AliasId = number
-export type Alias = { id: AliasId; title: string }
+type AliasTitle = string
+type AliasId = number
+export type Alias = { id: AliasId; title: AliasTitle }
 
-export const initialAtom = atom<Map<string, AliasId>>(new Map<string, AliasId>()) // サーバーからの元状態
+// タイトル集合の差分だけを返すヘルパー
+const createDiffTitlesAtom = <T extends string>(
+  getLeft: (get: Getter) => Iterable<T>,
+  getRight: (get: Getter) => Iterable<T>
+) => {
+  return atom<T[]>((get) => {
+    const left = new Set(getLeft(get))
+    const right = new Set(getRight(get))
+    return [...left].filter((name) => !right.has(name))
+  })
+}
 
-// ---- UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映） ----
-const uiValuesAtom = atom<string[]>([])
+// タイトル配列を ID 配列へ変換するヘルパー
+const mapTitlesToIdsAtom = <T extends string, Id>(
+  titlesAtom: Atom<Iterable<T>>,
+  optionsAtom: Atom<Map<T, Id>>
+) => {
+  return atom<Id[]>((get) => {
+    const titles = get(titlesAtom)
+    const options = get(optionsAtom)
+    const ids: Id[] = []
+    for (const name of titles) {
+      const id = options.get(name)
+      if (id !== undefined) ids.push(id)
+    }
+    return ids
+  })
+}
 
-const uiNameSetAtom = atom<Set<string>>((get) => {
-  return new Set(get(uiValuesAtom))
-})
+export const initialAtom = atom<Map<AliasTitle, AliasId>>(new Map<AliasTitle, AliasId>()) // サーバーからの元状態
 
-// 入力欄 onChange から呼ぶ write-only atom
-export const setUiFromInputAtom = atom(null, (_get, set, values: string[]) => {
-  set(uiValuesAtom, values)
-})
+// UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映）
+export const uiAtom = atom<AliasTitle[]>([])
+const uiSetAtom = atom((get) => new Set(get(uiAtom)))
 
-// 追加：UIにあるが initial には無い名前
-const toAddNamesAtom = atom<string[]>((get) => {
-  const ui = get(uiValuesAtom)
-  const init = get(initialAtom)
-  return Array.from(ui).filter((name) => !init.has(name))
-})
+// 追加：UIにあるが initial には無い
+const toAddTitlesAtom = createDiffTitlesAtom(
+  (get) => get(uiAtom),
+  (get) => get(initialAtom).keys()
+)
 
-// 削除：initial にはあるが UI には無い → その name に紐づく既存 ID すべて
-const toRemoveIdsAtom = atom<AliasId[]>((get) => {
-  const uiNameSet = get(uiNameSetAtom)
-  const init = get(initialAtom)
-  return Array.from(init)
-    .filter(([name]) => !uiNameSet.has(name))
-    .map(([, id]) => id)
-})
+// 削除：initial にはあるが UI には無い
+const toRemoveTitlesAtom = createDiffTitlesAtom(
+  (get) => get(initialAtom).keys(),
+  (get) => get(uiSetAtom)
+)
+// その title に紐づく id すべて
+const toRemoveIdsAtom = mapTitlesToIdsAtom(toRemoveTitlesAtom, initialAtom)
 
 // Save活性（差分があるか）
 export const dirtyAliasAtom = atom((get) => {
-  return get(toAddNamesAtom).length > 0 || get(toRemoveIdsAtom).length > 0
+  return get(toAddTitlesAtom).length > 0 || get(toRemoveIdsAtom).length > 0
 })
 
 // 保存ペイロード（差分）
-export const savePayloadAtom = atom((get) => ({
-  add: Array.from(get(toAddNamesAtom)), // string[]
-  remove: Array.from(get(toRemoveIdsAtom)) // AliasId[]
+export const aliasSavePayloadAtom = atom((get) => ({
+  add: Array.from(get(toAddTitlesAtom)),
+  remove: Array.from(get(toRemoveIdsAtom))
 }))
+
+export const resetAliasDiffAtom = atom(null, (get, set, created: Alias[], removed: Alias[]) => {
+  // initial に created を追加、removed を削除
+  const init = new Map(get(initialAtom))
+  created.forEach((item) => init.set(item.title, item.id))
+  removed.forEach((item) => init.delete(item.title))
+
+  set(initialAtom, init)
+  set(uiAtom, Array.from(init.keys())) // UIも同期
+})

@@ -3,7 +3,7 @@
     display: grid;
     grid-template-areas:
       ". . ."
-      "search controls save"
+      "leftside controls save"
       "leftside editor rightside"
       "leftside . .";
     grid-template-columns: 1fr 2.5fr minmax(220px, 1fr);

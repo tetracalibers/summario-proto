@@ -57,7 +57,10 @@ export const terms = pgTable(
       }),
     folderId: integer("folder_id").references(() => folders.id, { onDelete: "set null" }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .$onUpdateFn(() => new Date())
+      .notNull()
   },
   (t) => [
     // タイトル検索向け（LIKE/ILIKE/トライグラム）用

@@ -1,53 +1,98 @@
-import { atom } from "jotai"
+import { atom, type Atom, type Getter } from "jotai"
 
+type TermTitle = string
 type TermId = number
-export type Term = { id: TermId; title: string }
+export type Term = { id: TermId; title: TermTitle }
 
-export const initialAtom = atom<Map<string, TermId>>(new Map<string, TermId>()) // サーバーからの元状態
-export const optionsAtom = atom<Map<string, TermId>>(new Map<string, TermId>()) // サーバーからの候補一覧
+// タイトル集合の差分だけを返すヘルパー
+const createDiffTitlesAtom = <T extends string>(
+  getLeft: (get: Getter) => Iterable<T>,
+  getRight: (get: Getter) => Iterable<T>
+) => {
+  return atom<T[]>((get) => {
+    const left = new Set(getLeft(get))
+    const right = new Set(getRight(get))
+    return [...left].filter((name) => !right.has(name))
+  })
+}
 
-// ---- UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映） ----
-const uiValuesAtom = atom<string[]>([])
+// タイトル配列を ID 配列へ変換するヘルパー
+const mapTitlesToIdsAtom = <T extends string, Id>(
+  titlesAtom: Atom<Iterable<T>>,
+  optionsAtom: Atom<Map<T, Id>>
+) => {
+  return atom<Id[]>((get) => {
+    const titles = get(titlesAtom)
+    const options = get(optionsAtom)
+    const ids: Id[] = []
+    for (const name of titles) {
+      const id = options.get(name)
+      if (id !== undefined) ids.push(id)
+    }
+    return ids
+  })
+}
 
-const uiNameSetAtom = atom<Set<string>>((get) => {
-  return new Set(get(uiValuesAtom))
-})
+// タイトル配列をTermオブジェクト配列へ変換するヘルパー
+const mapTitlesToTermsAtom = <T extends string, Id extends number>(
+  titlesAtom: Atom<Iterable<T>>,
+  optionsAtom: Atom<Map<T, Id>>
+) => {
+  return atom<Term[]>((get) => {
+    const titles = get(titlesAtom)
+    const options = get(optionsAtom)
+    const terms: Term[] = []
+    for (const name of titles) {
+      const id = options.get(name)
+      if (id !== undefined) terms.push({ id, title: name })
+    }
+    return terms
+  })
+}
 
-// 入力欄 onChange から呼ぶ write-only atom
-export const setUiFromInputAtom = atom(null, (_get, set, values: string[]) => {
-  set(uiValuesAtom, values)
-})
+export const initialAtom = atom<Map<TermTitle, TermId>>(new Map<TermTitle, TermId>()) // サーバーからの元状態
+export const optionsAtom = atom<Map<TermTitle, TermId>>(new Map<TermTitle, TermId>()) // サーバーからの候補一覧
 
-// 入力欄の値をTermオブジェクトに変換するための atom
-export const relatedNodesAtom = atom((get) => {
-  const ui = get(uiValuesAtom)
-  const opts = get(optionsAtom)
-  return ui.map((name) => ({ id: opts.get(name)!, title: name }))
-})
+// UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映）
+export const uiAtom = atom<TermTitle[]>([])
+const uiSetAtom = atom((get) => new Set(get(uiAtom)))
 
-// 追加：UIにあるが initial には無い名前
-const toAddNamesAtom = atom<string[]>((get) => {
-  const ui = get(uiValuesAtom)
-  const init = get(initialAtom)
-  return Array.from(ui).filter((name) => !init.has(name))
-})
+// 入力欄の値をTermオブジェクトに変換
+export const relatedTermsAtom = mapTitlesToTermsAtom<TermTitle, TermId>(uiAtom, optionsAtom)
 
-// 削除：initial にはあるが UI には無い → その name に紐づく既存 ID すべて
-const toRemoveIdsAtom = atom<TermId[]>((get) => {
-  const uiNameSet = get(uiNameSetAtom)
-  const init = get(initialAtom)
-  return Array.from(init)
-    .filter(([name]) => !uiNameSet.has(name))
-    .map(([, id]) => id)
-})
+// 追加：UIにあるが initial には無い
+const toAddTitlesAtom = createDiffTitlesAtom<TermTitle>(
+  (get) => get(uiSetAtom),
+  (get) => get(initialAtom).keys()
+)
+// その title に紐づく id すべて
+const toAddIdsAtom = mapTitlesToIdsAtom<TermTitle, TermId>(toAddTitlesAtom, optionsAtom)
+
+// 削除：initial にはあるが UI には無い
+const toRemoveTitlesAtom = createDiffTitlesAtom<TermTitle>(
+  (get) => get(initialAtom).keys(),
+  (get) => get(uiSetAtom)
+)
+// その title に紐づく id すべて
+const toRemoveIdsAtom = mapTitlesToIdsAtom<TermTitle, TermId>(toRemoveTitlesAtom, optionsAtom)
 
 // Save活性（差分があるか）
 export const dirtyRelatedAtom = atom((get) => {
-  return get(toAddNamesAtom).length > 0 || get(toRemoveIdsAtom).length > 0
+  return get(toAddIdsAtom).length > 0 || get(toRemoveIdsAtom).length > 0
 })
 
 // 保存ペイロード（差分）
-export const savePayloadAtom = atom((get) => ({
-  add: Array.from(get(toAddNamesAtom)), // string[]
+export const relatedSavePayloadAtom = atom((get) => ({
+  add: Array.from(get(toAddIdsAtom)), // TermId[]
   remove: Array.from(get(toRemoveIdsAtom)) // TermId[]
 }))
+
+export const resetRelatedDiffAtom = atom(null, (get, set, created: Term[], removed: Term[]) => {
+  // initial に created を追加、removed を削除
+  const init = new Map(get(initialAtom))
+  created.forEach((item) => init.set(item.title, item.id))
+  removed.forEach((item) => init.delete(item.title))
+
+  set(initialAtom, init)
+  set(uiAtom, Array.from(init.keys())) // UIも同期
+})
