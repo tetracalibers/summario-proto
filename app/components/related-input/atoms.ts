@@ -12,9 +12,15 @@ const uiSetAtom = atom((get) => new Set(get(uiAtom)))
 
 // 入力欄の値をTermオブジェクトに変換するための atom
 export const relatedNodesAtom = atom((get) => {
-  const ui = get(uiSetAtom)
-  const opts = get(optionsAtom)
-  return Array.from(ui).map((name) => ({ id: opts.get(name)!, title: name }))
+  const ui = get(uiAtom)
+  const options = get(optionsAtom)
+  return ui
+    .map((name) => {
+      const id = options.get(name)
+      if (!id) return null
+      return { id, title: name }
+    })
+    .filter((v): v is Term => v !== null)
 })
 
 // 追加：UIにあるが initial には無い名前
