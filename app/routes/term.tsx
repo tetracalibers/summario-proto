@@ -48,7 +48,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
             suggestions={relatedSuggestions}
           />
         </Stack>
-        <RelatedTermView centerNode={term} />
+        <RelatedTermView centerNode={{ id: term.id, title: term.title }} />
       </div>
     </>
   )
