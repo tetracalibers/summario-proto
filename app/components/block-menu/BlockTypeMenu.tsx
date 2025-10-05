@@ -1,5 +1,6 @@
 import BLOCK_TYPES from "./block-type.json"
 import { Stack } from "@mantine/core"
+import { IconGripVertical } from "@tabler/icons-react"
 import styles from "./card.module.css"
 
 const BlockTypeMenu = () => {
@@ -22,6 +23,9 @@ const BlockTypeMenu = () => {
             <div className={styles.card_subtitle}>{block.label_ja}</div>
           </div>
           <div className={styles.card_content}>{block.description}</div>
+          <div className={styles.card_icon} title="Drag into Editor">
+            <IconGripVertical size="16px" />
+          </div>
         </div>
       ))}
     </Stack>
