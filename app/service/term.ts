@@ -78,9 +78,9 @@ export const saveTermContentAndMeta = async (
 
   const rejected = results
     .filter((r) => r.status === "rejected")
-    .map((_, i) => {
+    .map((r, i) => {
       const t = tasks[i]
-      return { key: t.key, targets: t.targets }
+      return { key: t.key, targets: t.targets, reason: r.reason }
     })
 
   if (rejected.length > 0) {
