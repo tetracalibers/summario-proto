@@ -18,6 +18,11 @@ export const getRecentTerm = async () => {
   return terms
 }
 
+interface Rejected {
+  key: string
+  targets: (number | string)[]
+  reason: PromiseRejectedResult["reason"]
+}
 interface SaveSuccess {
   ok: true
   alias: { created: { id: number; title: string }[]; deleted: { id: number; title: string }[] }
@@ -25,7 +30,7 @@ interface SaveSuccess {
 }
 interface SaveFailure {
   ok: false
-  rejected: { key: string; targets: (number | string)[] }[]
+  rejected: Rejected[]
 }
 
 export const saveTermContentAndMeta = async (
@@ -75,12 +80,12 @@ export const saveTermContentAndMeta = async (
     tasks.map((t) => (t.condition ? t.action() : Promise.resolve([])))
   )
 
-  const rejected = results
-    .filter((r) => r.status === "rejected")
-    .map((r, i) => {
-      const t = tasks[i]
-      return { key: t.key, targets: t.targets, reason: r.reason }
-    })
+  const rejected: Rejected[] = []
+  results.forEach((result, idx) => {
+    if (result.status !== "rejected") return
+    const task = tasks[idx]
+    rejected.push({ key: task.key, targets: task.targets, reason: result.reason })
+  })
 
   if (rejected.length > 0) {
     console.error("Failed to update term:", rejected)
