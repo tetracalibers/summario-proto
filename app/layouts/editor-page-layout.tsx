@@ -26,9 +26,9 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="editor-page">
-      <div className="search-area">
+      {/* <div className="search-area">
         <Autocomplete placeholder="Search by Title or Alias" data={searchKeywords} />
-      </div>
+      </div> */}
       <div className="leftside-area">
         <Split orientation="horizontal" h="100%" spacing="md">
           <Split.Pane>
