@@ -1,48 +1,80 @@
-import { atom } from "jotai"
+import { atom, type Atom, type Getter } from "jotai"
 
 type TermTitle = string
 type TermId = number
 export type Term = { id: TermId; title: TermTitle }
 
+// タイトル集合の差分だけを返すヘルパー
+const createDiffTitlesAtom = <T extends string>(
+  getLeft: (get: Getter) => Iterable<T>,
+  getRight: (get: Getter) => Iterable<T>
+) => {
+  return atom<T[]>((get) => {
+    const left = new Set(getLeft(get))
+    const right = new Set(getRight(get))
+    return [...left].filter((name) => !right.has(name))
+  })
+}
+
+// タイトル配列を ID 配列へ変換するヘルパー
+const mapTitlesToIdsAtom = <T extends string, Id>(
+  titlesAtom: Atom<Iterable<T>>,
+  optionsAtom: Atom<Map<T, Id>>
+) => {
+  return atom<Id[]>((get) => {
+    const titles = get(titlesAtom)
+    const options = get(optionsAtom)
+    const ids: Id[] = []
+    for (const name of titles) {
+      const id = options.get(name)
+      if (id !== undefined) ids.push(id)
+    }
+    return ids
+  })
+}
+
+// タイトル配列をTermオブジェクト配列へ変換するヘルパー
+const mapTitlesToTermsAtom = <T extends string, Id extends number>(
+  titlesAtom: Atom<Iterable<T>>,
+  optionsAtom: Atom<Map<T, Id>>
+) => {
+  return atom<Term[]>((get) => {
+    const titles = get(titlesAtom)
+    const options = get(optionsAtom)
+    const terms: Term[] = []
+    for (const name of titles) {
+      const id = options.get(name)
+      if (id !== undefined) terms.push({ id, title: name })
+    }
+    return terms
+  })
+}
+
 export const initialAtom = atom<Map<TermTitle, TermId>>(new Map<TermTitle, TermId>()) // サーバーからの元状態
 export const optionsAtom = atom<Map<TermTitle, TermId>>(new Map<TermTitle, TermId>()) // サーバーからの候補一覧
 
-// ---- UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映） ----
+// UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映）
 export const uiAtom = atom<TermTitle[]>([])
 const uiSetAtom = atom((get) => new Set(get(uiAtom)))
 
-//
+// 入力欄の値をTermオブジェクトに変換
+export const relatedNodesAtom = mapTitlesToTermsAtom<TermTitle, TermId>(uiAtom, optionsAtom)
 
-// 入力欄の値をTermオブジェクトに変換するための atom
-export const relatedNodesAtom = atom((get) => {
-  const ui = get(uiAtom)
-  const options = get(optionsAtom)
-  return ui
-    .map((name) => {
-      const id = options.get(name)
-      if (!id) return null
-      return { id, title: name }
-    })
-    .filter((v): v is Term => v !== null)
-})
+// 追加：UIにあるが initial には無い
+const toAddTitlesAtom = createDiffTitlesAtom<TermTitle>(
+  (get) => get(uiSetAtom),
+  (get) => get(initialAtom).keys()
+)
+// その title に紐づく id すべて
+const toAddIdsAtom = mapTitlesToIdsAtom<TermTitle, TermId>(toAddTitlesAtom, optionsAtom)
 
-// 追加：UIにあるが initial には無い名前
-const toAddIdsAtom = atom<TermId[]>((get) => {
-  const ui = get(uiSetAtom)
-  const init = get(initialAtom)
-  return Array.from(ui)
-    .filter((name) => !init.has(name))
-    .map((name) => get(optionsAtom).get(name)!)
-})
-
-// 削除：initial にはあるが UI には無い → その name に紐づく既存 ID すべて
-const toRemoveIdsAtom = atom<TermId[]>((get) => {
-  const ui = get(uiSetAtom)
-  const init = get(initialAtom)
-  return Array.from(init)
-    .filter(([name, _]) => !ui.has(name))
-    .map(([_, id]) => id)
-})
+// 削除：initial にはあるが UI には無い
+const toRemoveTitlesAtom = createDiffTitlesAtom<TermTitle>(
+  (get) => get(initialAtom).keys(),
+  (get) => get(uiSetAtom)
+)
+// その title に紐づく id すべて
+const toRemoveIdsAtom = mapTitlesToIdsAtom<TermTitle, TermId>(toRemoveTitlesAtom, optionsAtom)
 
 // Save活性（差分があるか）
 export const dirtyRelatedAtom = atom((get) => {
@@ -55,15 +87,12 @@ export const relatedSavePayloadAtom = atom((get) => ({
   remove: Array.from(get(toRemoveIdsAtom)) // TermId[]
 }))
 
-export const resetRelatedDiffAtom = atom(
-  null,
-  (get, set, created: { title: TermTitle; id: TermId }[], removed: { title: TermTitle }[]) => {
-    // initial に created を追加、removed を削除
-    const init = new Map(get(initialAtom))
-    created.forEach((item) => init.set(item.title, item.id))
-    removed.forEach((item) => init.delete(item.title))
+export const resetRelatedDiffAtom = atom(null, (get, set, created: Term[], removed: Term[]) => {
+  // initial に created を追加、removed を削除
+  const init = new Map(get(initialAtom))
+  created.forEach((item) => init.set(item.title, item.id))
+  removed.forEach((item) => init.delete(item.title))
 
-    set(initialAtom, init)
-    set(uiAtom, Array.from(init.keys())) // UIも同期
-  }
-)
+  set(initialAtom, init)
+  set(uiAtom, Array.from(init.keys())) // UIも同期
+})
