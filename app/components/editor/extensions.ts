@@ -33,6 +33,7 @@ const CustomDocumentControl = Extension.create({
           const range = { from: 1, to: titleLength + 1 }
           return chain().insertContentAt(range, "").run()
         },
+      // ref: https://github.com/ueberdosis/tiptap/issues/491
       clearHistory: () => () => {
         const newEditorState = EditorState.create({
           doc: this.editor.state.doc,
