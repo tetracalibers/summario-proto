@@ -58,7 +58,7 @@ export const uiAtom = atom<TermTitle[]>([])
 const uiSetAtom = atom((get) => new Set(get(uiAtom)))
 
 // 入力欄の値をTermオブジェクトに変換
-export const relatedNodesAtom = mapTitlesToTermsAtom<TermTitle, TermId>(uiAtom, optionsAtom)
+export const relatedTermsAtom = mapTitlesToTermsAtom<TermTitle, TermId>(uiAtom, optionsAtom)
 
 // 追加：UIにあるが initial には無い
 const toAddTitlesAtom = createDiffTitlesAtom<TermTitle>(
