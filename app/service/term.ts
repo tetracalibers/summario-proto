@@ -36,7 +36,6 @@ export const saveTermContentAndMeta = async (
     related: { add: number[]; remove: number[] }
   }
 ): Promise<SaveSuccess | SaveFailure> => {
-  // すべて非同期に実行
   const { content, alias, related } = payload
 
   const tasks = [
