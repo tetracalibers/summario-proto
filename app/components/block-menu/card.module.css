@@ -4,6 +4,9 @@
   padding: 1rem;
   border: 1px solid var(--mantine-color-gray-3);
   border-radius: var(--mantine-radius-default);
+  position: relative;
+  cursor: grab;
+  z-index: 2; /** drag時にスクロールバーが乗るのを防ぐ */
 }
 
 .card_title {
@@ -21,4 +24,13 @@
 .card_content {
   font-size: 0.85rem;
   padding: 0;
+}
+
+.card_icon {
+  display: flex;
+  height: fit-content;
+  color: var(--mantine-color-gray-4);
+  position: absolute;
+  top: 0.5rem;
+  right: 0.25rem;
 }
