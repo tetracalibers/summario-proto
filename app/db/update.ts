@@ -1,6 +1,6 @@
 import { db } from "~/db/connection"
-import { termAliases, terms } from "./schema"
-import { eq, inArray, sql } from "drizzle-orm"
+import { termAliases, termEdges, terms } from "./schema"
+import { eq, inArray, or, and } from "drizzle-orm"
 
 export const updateTermContent = async (termId: number, content: string) => {
   return db
@@ -30,18 +30,36 @@ export const insertTermEdges = async (
   termId: number,
   relatedTermIds: number[]
 ): Promise<{ id: number; title: string }[]> => {
-  const values = relatedTermIds
-    .map((relatedId) => {
-      const [sourceTermId, targetTermId] =
-        termId < relatedId ? [termId, relatedId] : [relatedId, termId]
-      return `(${sourceTermId}, ${targetTermId})`
+  if (relatedTermIds.length === 0) return []
+
+  // source/target を小さい順にそろえて無向辺の重複を防ぐ
+  const edgeValues = relatedTermIds.map((relatedId) => {
+    const [sourceTermId, targetTermId] =
+      termId < relatedId ? [termId, relatedId] : [relatedId, termId]
+    return { sourceTermId, targetTermId }
+  })
+
+  // INSERT ... ON CONFLICT DO NOTHING RETURNING ... を CTE 化
+  const ins = db.$with("ins").as(
+    db.insert(termEdges).values(edgeValues).onConflictDoNothing().returning({
+      sourceId: termEdges.sourceTermId,
+      targetId: termEdges.targetTermId
     })
-    .join(", ")
+  )
 
-  if (values.length === 0) return []
+  // CTE で返った source/target に紐づく terms をそのまま 1 ステートメントで取得
+  const rows = await db
+    .with(ins)
+    .selectDistinct({ id: terms.id, title: terms.title })
+    .from(terms)
+    .where(
+      or(
+        inArray(terms.id, db.select({ id: ins.sourceId }).from(ins)),
+        inArray(terms.id, db.select({ id: ins.targetId }).from(ins))
+      )
+    )
 
-  const query = sql`INSERT INTO term_edges (source_term_id, target_term_id) VALUES ${sql.raw(values)} ON CONFLICT DO NOTHING RETURNING (SELECT id, title FROM terms WHERE terms.id = term_edges.source_term_id OR terms.id = term_edges.target_term_id)`
-  return db.execute(query)
+  return rows
 }
 
 export const deleteTermEdges = async (
@@ -50,6 +68,33 @@ export const deleteTermEdges = async (
 ): Promise<{ id: number; title: string }[]> => {
   if (relatedTermIds.length === 0) return []
 
-  const query = sql`DELETE FROM term_edges WHERE (source_term_id = ${termId} AND target_term_id IN (${sql.raw(relatedTermIds.join(", "))})) OR (target_term_id = ${termId} AND source_term_id IN (${sql.raw(relatedTermIds.join(", "))})) RETURNING (SELECT id, title FROM terms WHERE terms.id = term_edges.source_term_id OR terms.id = term_edges.target_term_id)`
-  return db.execute(query)
+  // DELETE ... RETURNING を CTE 化
+  const del = db.$with("del").as(
+    db
+      .delete(termEdges)
+      .where(
+        or(
+          and(eq(termEdges.sourceTermId, termId), inArray(termEdges.targetTermId, relatedTermIds)),
+          and(eq(termEdges.targetTermId, termId), inArray(termEdges.sourceTermId, relatedTermIds))
+        )
+      )
+      .returning({
+        sourceId: termEdges.sourceTermId,
+        targetId: termEdges.targetTermId
+      })
+  )
+
+  // 直前に削除されたエッジに関係する term だけを返す（重複は DISTINCT で排除）
+  const rows = await db
+    .with(del)
+    .selectDistinct({ id: terms.id, title: terms.title })
+    .from(terms)
+    .where(
+      or(
+        inArray(terms.id, db.select({ id: del.sourceId }).from(del)),
+        inArray(terms.id, db.select({ id: del.targetId }).from(del))
+      )
+    )
+
+  return rows
 }
