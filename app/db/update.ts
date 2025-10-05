@@ -3,7 +3,11 @@ import { termAliases, terms } from "./schema"
 import { eq, inArray, sql } from "drizzle-orm"
 
 export const updateTermContent = async (termId: number, content: string) => {
-  return db.update(terms).set({ content }).where(eq(terms.id, termId))
+  return db
+    .update(terms)
+    .set({ content })
+    .where(eq(terms.id, termId))
+    .returning({ id: terms.id, title: terms.title })
 }
 
 export const insertAliases = async (termId: number, aliases: string[]) => {
