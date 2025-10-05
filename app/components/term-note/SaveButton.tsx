@@ -39,7 +39,7 @@ const SaveButton = (props: Props) => {
 
   const createSavePayload = useAtomCallback(
     useCallback(
-      async (get) => {
+      (get) => {
         if (!editor) return null
         if (!editorState) return null
 
@@ -76,8 +76,8 @@ const SaveButton = (props: Props) => {
       gradient={{ from: "grape", to: "indigo", deg: 90 }}
       radius="sm"
       disabled={[editorState?.isDirty, isDirtyAlias, isDirtyRelated].every((isDirty) => !isDirty)}
-      onClick={async () => {
-        const payload = await createSavePayload()
+      onClick={() => {
+        const payload = createSavePayload()
         if (!payload) return
         fetcher.submit(payload as any, {
           method: "post",
