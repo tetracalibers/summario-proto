@@ -17,7 +17,7 @@ export default function RelatedInput({ initials, suggestions }: Props) {
     setInitial(new Map(initials.map((a) => [a.title, a.id])))
     setOptions(new Map(suggestions.map((a) => [a.title, a.id])))
     setUiFromInput(initials.map((a) => a.title))
-  }, [])
+  }, [initials, suggestions])
 
   return (
     <TagsInput

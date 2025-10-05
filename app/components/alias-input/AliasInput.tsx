@@ -13,7 +13,7 @@ export default function AliasInput({ initials }: Props) {
   useEffect(() => {
     setInitial(new Map(initials.map((a) => [a.title, a.id])))
     setUiFromInput(initials.map((a) => a.title))
-  }, [])
+  }, [initials])
 
   return (
     <TagsInput
