@@ -1,14 +1,17 @@
 import { atom } from "jotai"
 
+type TermTitle = string
 type TermId = number
-export type Term = { id: TermId; title: string }
+export type Term = { id: TermId; title: TermTitle }
 
-export const initialAtom = atom<Map<string, TermId>>(new Map<string, TermId>()) // サーバーからの元状態
-export const optionsAtom = atom<Map<string, TermId>>(new Map<string, TermId>()) // サーバーからの候補一覧
+export const initialAtom = atom<Map<TermTitle, TermId>>(new Map<TermTitle, TermId>()) // サーバーからの元状態
+export const optionsAtom = atom<Map<TermTitle, TermId>>(new Map<TermTitle, TermId>()) // サーバーからの候補一覧
 
 // ---- UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映） ----
-export const uiAtom = atom<string[]>([])
+export const uiAtom = atom<TermTitle[]>([])
 const uiSetAtom = atom((get) => new Set(get(uiAtom)))
+
+//
 
 // 入力欄の値をTermオブジェクトに変換するための atom
 export const relatedNodesAtom = atom((get) => {
@@ -54,7 +57,7 @@ export const relatedSavePayloadAtom = atom((get) => ({
 
 export const resetRelatedDiffAtom = atom(
   null,
-  (get, set, created: { title: string; id: TermId }[], removed: { title: string }[]) => {
+  (get, set, created: { title: TermTitle; id: TermId }[], removed: { title: TermTitle }[]) => {
     // initial に created を追加、removed を削除
     const init = new Map(get(initialAtom))
     created.forEach((item) => init.set(item.title, item.id))
