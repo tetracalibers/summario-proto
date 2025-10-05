@@ -26,10 +26,7 @@ export const deleteAliases = async (aliasIds: number[]) => {
     .returning({ id: termAliases.id, title: termAliases.title })
 }
 
-export const insertTermEdges = async (
-  termId: number,
-  relatedTermIds: number[]
-): Promise<{ id: number; title: string }[]> => {
+export const insertTermEdges = async (termId: number, relatedTermIds: number[]) => {
   if (relatedTermIds.length === 0) return []
 
   // source/target を小さい順にそろえて無向辺の重複を防ぐ
@@ -62,10 +59,7 @@ export const insertTermEdges = async (
   return rows
 }
 
-export const deleteTermEdges = async (
-  termId: number,
-  relatedTermIds: number[]
-): Promise<{ id: number; title: string }[]> => {
+export const deleteTermEdges = async (termId: number, relatedTermIds: number[]) => {
   if (relatedTermIds.length === 0) return []
 
   // DELETE ... RETURNING を CTE 化
