@@ -35,7 +35,7 @@ const SaveButton = (props: Props) => {
   const isDirtyRelated = useAtomValue(dirtyRelatedAtom)
 
   const resetAliasDiff = useSetAtom(resetAliasDiffAtom)
-  const resetRelatedDiff = useSetAtom(resetRelatedDiffAtom) // trueで初期化
+  const resetRelatedDiff = useSetAtom(resetRelatedDiffAtom)
 
   const createSavePayload = useAtomCallback(
     useCallback(
