@@ -12,9 +12,7 @@ import {
 import { useAtomCallback } from "jotai/utils"
 import type { action } from "~/routes/api/save"
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  onSuccess?: () => void
-}
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const SaveButton = (props: Props) => {
   const { termId } = useParams()
