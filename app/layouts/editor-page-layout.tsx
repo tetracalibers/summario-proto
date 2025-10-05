@@ -3,8 +3,7 @@ import "./editor-page.css"
 import { Outlet } from "react-router"
 import type { Route } from "./+types/editor-page-layout"
 import { getFolderPath, getFolderTree } from "~/service/folder"
-import { getAllSearchKeywords } from "~/service/search"
-import { Autocomplete, Paper, type TreeNodeData } from "@mantine/core"
+import { Paper, type TreeNodeData } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
 import FolderTree from "~/components/folder-tree/FolderTree"
 import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
@@ -13,16 +12,15 @@ import ScrollArea from "~/components/scroll-area/ScrollArea"
 export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params
 
-  const [folderTree, searchKeywords, currentFolderPath] = await Promise.all([
+  const [folderTree, currentFolderPath] = await Promise.all([
     getFolderTree(),
-    getAllSearchKeywords(),
     getFolderPath(termId)
   ])
-  return { folderTree, searchKeywords, currentFolderPath }
+  return { folderTree, currentFolderPath }
 }
 
 export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
-  const { folderTree, searchKeywords, currentFolderPath } = loaderData
+  const { folderTree, currentFolderPath } = loaderData
 
   return (
     <div className="editor-page">
