@@ -10,9 +10,12 @@ interface Props {
 export default function AliasInput({ initials }: Props) {
   const setUiFromInput = useSetAtom(uiAtom)
   const setInitial = useSetAtom(initialAtom)
+
+  useEffect(() => {
+    setUiFromInput(initials.map((a) => a.title))
+  }, [])
   useEffect(() => {
     setInitial(new Map(initials.map((a) => [a.title, a.id])))
-    setUiFromInput(initials.map((a) => a.title))
   }, [initials])
 
   return (
