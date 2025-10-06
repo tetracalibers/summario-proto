@@ -16,20 +16,20 @@ const createDiffTitlesAtom = <T extends string>(
   })
 }
 
-// タイトル配列を ID 配列へ変換するヘルパー
-const mapTitlesToIdsAtom = <T extends string, Id>(
+// タイトル配列をAliasオブジェクト配列へ変換するヘルパー
+const mapTitlesToAliasesAtom = <T extends string, Id extends number>(
   titlesAtom: Atom<Iterable<T>>,
   optionsAtom: Atom<Map<T, Id>>
 ) => {
-  return atom<Id[]>((get) => {
+  return atom<Alias[]>((get) => {
     const titles = get(titlesAtom)
     const options = get(optionsAtom)
-    const ids: Id[] = []
+    const aliases: Alias[] = []
     for (const name of titles) {
       const id = options.get(name)
-      if (id !== undefined) ids.push(id)
+      if (id !== undefined) aliases.push({ id, title: name })
     }
-    return ids
+    return aliases
   })
 }
 
@@ -44,24 +44,26 @@ const toAddTitlesAtom = createDiffTitlesAtom(
   (get) => get(uiAtom),
   (get) => get(initialAtom).keys()
 )
+const toAddAtom = atom<{ title: AliasTitle }[]>((get) => {
+  return get(toAddTitlesAtom).map((title) => ({ title }))
+})
 
 // 削除：initial にはあるが UI には無い
 const toRemoveTitlesAtom = createDiffTitlesAtom(
   (get) => get(initialAtom).keys(),
   (get) => get(uiSetAtom)
 )
-// その title に紐づく id すべて
-const toRemoveIdsAtom = mapTitlesToIdsAtom(toRemoveTitlesAtom, initialAtom)
+const toRemoveAtom = mapTitlesToAliasesAtom(toRemoveTitlesAtom, initialAtom)
 
 // Save活性（差分があるか）
 export const dirtyAliasAtom = atom((get) => {
-  return get(toAddTitlesAtom).length > 0 || get(toRemoveIdsAtom).length > 0
+  return get(toAddAtom).length > 0 || get(toRemoveAtom).length > 0
 })
 
 // 保存ペイロード（差分）
 export const aliasSavePayloadAtom = atom((get) => ({
-  add: Array.from(get(toAddTitlesAtom)),
-  remove: Array.from(get(toRemoveIdsAtom))
+  add: get(toAddAtom),
+  remove: get(toRemoveAtom)
 }))
 
 export const resetAliasDiffAtom = atom(null, (get, set, created: Alias[], removed: Alias[]) => {

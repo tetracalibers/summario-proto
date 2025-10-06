@@ -18,55 +18,107 @@ export const getRecentTerm = async () => {
   return terms
 }
 
+interface Item {
+  id: number
+  title: string
+}
+
+type TaskKey = "content" | "alias.add" | "alias.remove" | "related.add" | "related.remove"
+type Task =
+  | {
+      key: "content"
+      condition: boolean
+      action: () => Promise<Item[]>
+      targets: number
+    }
+  | {
+      key: "alias.add"
+      condition: boolean
+      action: () => Promise<Item[]>
+      targets: Omit<Item, "id">[]
+    }
+  | {
+      key: "alias.remove"
+      condition: boolean
+      action: () => Promise<Item[]>
+      targets: Item[]
+    }
+  | {
+      key: "related.add"
+      condition: boolean
+      action: () => Promise<Item[]>
+      targets: Item[]
+    }
+  | {
+      key: "related.remove"
+      condition: boolean
+      action: () => Promise<Item[]>
+      targets: Item[]
+    }
+
+type DistributivePick<T, K extends keyof T> = T extends any ? Pick<T, K> : never
+type Rejected = DistributivePick<Task, "key" | "targets"> & { reason: unknown }
 interface SaveSuccess {
   ok: true
-  alias: { created: { id: number; title: string }[]; deleted: { id: number; title: string }[] }
-  related: { created: { id: number; title: string }[]; deleted: { id: number; title: string }[] }
+  alias: { created: Item[]; deleted: Item[] }
+  related: { created: Item[]; deleted: Item[] }
 }
 interface SaveFailure {
   ok: false
-  rejected: { key: string; targets: (number | string)[] }[]
+  rejected: Rejected[]
 }
 
 export const saveTermContentAndMeta = async (
   termId: number,
   payload: {
     content?: any
-    alias: { add: string[]; remove: number[] }
-    related: { add: number[]; remove: number[] }
+    alias: { add: Omit<Item, "id">[]; remove: Item[] }
+    related: { add: Item[]; remove: Item[] }
   }
 ): Promise<SaveSuccess | SaveFailure> => {
   const { content, alias, related } = payload
 
-  const tasks = [
+  const tasks: Task[] = [
     {
       key: "content",
       condition: content !== undefined,
       action: () => updateTermContent(termId, content),
-      targets: [termId]
+      targets: termId
     },
     {
       key: "alias.add",
       condition: alias.add && alias.add.length > 0,
-      action: () => insertAliases(termId, alias.add),
+      action: () =>
+        insertAliases(
+          termId,
+          alias.add.map((a) => a.title)
+        ),
       targets: alias.add
     },
     {
       key: "alias.remove",
       condition: alias.remove && alias.remove.length > 0,
-      action: () => deleteAliases(alias.remove),
+      action: () => deleteAliases(alias.remove.map((a) => a.id)),
       targets: alias.remove
     },
     {
       key: "related.add",
       condition: related.add && related.add.length > 0,
-      action: () => insertTermEdges(termId, related.add),
+      action: () =>
+        insertTermEdges(
+          termId,
+          related.add.map((r) => r.id)
+        ),
       targets: related.add
     },
     {
       key: "related.remove",
       condition: related.remove && related.remove.length > 0,
-      action: () => deleteTermEdges(termId, related.remove),
+      action: () =>
+        deleteTermEdges(
+          termId,
+          related.remove.map((r) => r.id)
+        ),
       targets: related.remove
     }
   ]
@@ -75,12 +127,12 @@ export const saveTermContentAndMeta = async (
     tasks.map((t) => (t.condition ? t.action() : Promise.resolve([])))
   )
 
-  const rejected = results
-    .filter((r) => r.status === "rejected")
-    .map((r, i) => {
-      const t = tasks[i]
-      return { key: t.key, targets: t.targets, reason: r.reason }
-    })
+  const rejected: Rejected[] = []
+  results.forEach((result, idx) => {
+    if (result.status !== "rejected") return
+    const task = tasks[idx]
+    rejected.push({ key: task.key, targets: task.targets, reason: result.reason } as Rejected)
+  })
 
   if (rejected.length > 0) {
     console.error("Failed to update term:", rejected)

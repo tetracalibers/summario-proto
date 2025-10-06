@@ -13,10 +13,13 @@ export default function RelatedInput({ initials, suggestions }: Props) {
   const setUiFromInput = useSetAtom(uiAtom)
   const setInitial = useSetAtom(initialAtom)
   const setOptions = useSetAtom(optionsAtom)
+
+  useEffect(() => {
+    setUiFromInput(initials.map((a) => a.title))
+  }, [])
   useEffect(() => {
     setInitial(new Map(initials.map((a) => [a.title, a.id])))
     setOptions(new Map(suggestions.map((a) => [a.title, a.id])))
-    setUiFromInput(initials.map((a) => a.title))
   }, [initials, suggestions])
 
   return (
