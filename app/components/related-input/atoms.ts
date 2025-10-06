@@ -16,23 +16,6 @@ const createDiffTitlesAtom = <T extends string>(
   })
 }
 
-// タイトル配列を ID 配列へ変換するヘルパー
-const mapTitlesToIdsAtom = <T extends string, Id>(
-  titlesAtom: Atom<Iterable<T>>,
-  optionsAtom: Atom<Map<T, Id>>
-) => {
-  return atom<Id[]>((get) => {
-    const titles = get(titlesAtom)
-    const options = get(optionsAtom)
-    const ids: Id[] = []
-    for (const name of titles) {
-      const id = options.get(name)
-      if (id !== undefined) ids.push(id)
-    }
-    return ids
-  })
-}
-
 // タイトル配列をTermオブジェクト配列へ変換するヘルパー
 const mapTitlesToTermsAtom = <T extends string, Id extends number>(
   titlesAtom: Atom<Iterable<T>>,
@@ -65,26 +48,24 @@ const toAddTitlesAtom = createDiffTitlesAtom<TermTitle>(
   (get) => get(uiSetAtom),
   (get) => get(initialAtom).keys()
 )
-// その title に紐づく id すべて
-const toAddIdsAtom = mapTitlesToIdsAtom<TermTitle, TermId>(toAddTitlesAtom, optionsAtom)
+const toAddAtom = mapTitlesToTermsAtom<TermTitle, TermId>(toAddTitlesAtom, optionsAtom)
 
 // 削除：initial にはあるが UI には無い
 const toRemoveTitlesAtom = createDiffTitlesAtom<TermTitle>(
   (get) => get(initialAtom).keys(),
   (get) => get(uiSetAtom)
 )
-// その title に紐づく id すべて
-const toRemoveIdsAtom = mapTitlesToIdsAtom<TermTitle, TermId>(toRemoveTitlesAtom, optionsAtom)
+const toRemoveAtom = mapTitlesToTermsAtom<TermTitle, TermId>(toRemoveTitlesAtom, optionsAtom)
 
 // Save活性（差分があるか）
 export const dirtyRelatedAtom = atom((get) => {
-  return get(toAddIdsAtom).length > 0 || get(toRemoveIdsAtom).length > 0
+  return get(toAddAtom).length > 0 || get(toRemoveAtom).length > 0
 })
 
 // 保存ペイロード（差分）
 export const relatedSavePayloadAtom = atom((get) => ({
-  add: Array.from(get(toAddIdsAtom)), // TermId[]
-  remove: Array.from(get(toRemoveIdsAtom)) // TermId[]
+  add: get(toAddAtom),
+  remove: get(toRemoveAtom)
 }))
 
 export const resetRelatedDiffAtom = atom(null, (get, set, created: Term[], removed: Term[]) => {
