@@ -2,9 +2,11 @@ import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration }
 import { ColorSchemeScript, MantineProvider } from "@mantine/core"
 import type { Route } from "./+types/root"
 import { theme } from "./mantine-theme"
+import { Notifications } from "@mantine/notifications"
 
 import "@mantine/core/styles.css"
 import "@mantine/tiptap/styles.css" // ‼️ import tiptap styles after core package styles
+import "@mantine/notifications/styles.css"
 import "@gfazioli/mantine-split-pane/styles.css"
 import "./app.css"
 
@@ -32,7 +34,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme}>
+          <Notifications />
+          {children}
+        </MantineProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
