@@ -64,8 +64,7 @@ const SaveButton = (props: Props) => {
     notifications.show({
       title: "Success",
       message: "保存が成功しました",
-      color: "cyan",
-      position: "top-right"
+      color: "cyan"
     })
   }, [fetcher.data, editor])
 
