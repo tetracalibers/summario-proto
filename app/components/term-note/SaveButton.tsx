@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core"
-import { useCurrentEditor, useEditorState } from "@tiptap/react"
+import { useCurrentEditor } from "@tiptap/react"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useEffect, type ButtonHTMLAttributes } from "react"
 import { useFetcher, useParams } from "react-router"
@@ -13,6 +13,7 @@ import { useAtomCallback } from "jotai/utils"
 import type { action } from "~/routes/api/save"
 import { notifications } from "@mantine/notifications"
 import reversedNotificationStyles from "./reversed-notification.module.css"
+import { dirtyEditorAtom } from "../editor/atoms"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -21,18 +22,10 @@ const SaveButton = (props: Props) => {
   const fetcher = useFetcher<typeof action>()
 
   const { editor } = useCurrentEditor()
-  const editorState = useEditorState({
-    editor,
-    selector: ({ editor }) => {
-      if (!editor) return null
-      return {
-        isDirty: editor.can().undo()
-      }
-    }
-  })
 
   const isDirtyAlias = useAtomValue(dirtyAliasAtom)
   const isDirtyRelated = useAtomValue(dirtyRelatedAtom)
+  const isDirtyEditor = useAtomValue(dirtyEditorAtom)
 
   const resetAliasDiff = useSetAtom(resetAliasDiffAtom)
   const resetRelatedDiff = useSetAtom(resetRelatedDiffAtom)
@@ -41,32 +34,32 @@ const SaveButton = (props: Props) => {
     useCallback(
       (get) => {
         if (!editor) return null
-        if (!editorState) return null
 
         const aliasDiff = get(aliasSavePayloadAtom)
         const relatedDiff = get(relatedSavePayloadAtom)
 
-        if (!editorState.isDirty) {
+        if (!isDirtyEditor) {
           return { alias: aliasDiff, related: relatedDiff }
         }
 
         const content = editor.getJSON()
         return { content, alias: aliasDiff, related: relatedDiff }
       },
-      [editor, editorState]
+      [editor, isDirtyEditor]
     )
   )
 
-  // ボタン押下後、保存が成功したら各種dirtyフラグをリセット
+  // ボタン押下後、保存が成功したら
   useEffect(() => {
     if (!editor) return
     if (!fetcher.data) return
     if (!fetcher.data.ok) return
 
+    // 各種dirtyフラグをリセット
     resetAliasDiff(fetcher.data.alias.created, fetcher.data.alias.deleted)
     resetRelatedDiff(fetcher.data.related.created, fetcher.data.related.deleted)
-
-    editor.commands.clearHistory()
+    // 保存後は未編集へ
+    editor.commands.markClean()
 
     notifications.show({
       title: "Success",
@@ -98,7 +91,7 @@ const SaveButton = (props: Props) => {
       variant="gradient"
       gradient={{ from: "grape", to: "indigo", deg: 90 }}
       radius="sm"
-      disabled={[editorState?.isDirty, isDirtyAlias, isDirtyRelated].every((isDirty) => !isDirty)}
+      disabled={[isDirtyEditor, isDirtyAlias, isDirtyRelated].every((isDirty) => !isDirty)}
       onClick={() => {
         const payload = createSavePayload()
         if (!payload) return

@@ -1,6 +1,6 @@
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
 import { ListKit } from "@tiptap/extension-list"
-import type { Extensions } from "@tiptap/react"
+import type { Extensions, JSONContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { Link } from "@mantine/tiptap"
 import { CursorControl } from "~/extensions/cursor-control/extension"
@@ -11,6 +11,7 @@ import { all, createLowlight } from "lowlight"
 import { Placeholder } from "@tiptap/extension-placeholder"
 import { Extension } from "@tiptap/core"
 import { EditorState } from "@tiptap/pm/state"
+import { DirtyState } from "~/extensions/dirty-state/extension"
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -52,10 +53,14 @@ const CustomDocument = Document.extend({
 
 const lowlight = createLowlight(all)
 
-export const tiptapExtensions: Extensions = [
+export const tiptapExtensions = (
+  initialJSON?: JSONContent,
+  onDirtyChange?: (dirty: boolean) => void
+): Extensions => [
   CustomDocument,
   CustomDocumentControl,
   CursorControl,
+  DirtyState.configure({ initialJSON, onDirtyChange }),
   StarterKit.configure({
     document: false, // CustomDocumentを使うので無効化
     link: false, // Link拡張を使うので無効化

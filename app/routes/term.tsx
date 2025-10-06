@@ -27,7 +27,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <EditorWith initialContent={term.content}>
+      <EditorWith initialJSON={term.content}>
         <div className="controls-area">
           <Button variant="gradient" gradient={{ from: "pink", to: "red", deg: 90 }} radius="sm">
             Delete
