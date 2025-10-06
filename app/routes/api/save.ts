@@ -15,17 +15,29 @@ export async function action({ request, params }: Route.ActionArgs) {
     const errors = result.rejected.map((r) => {
       switch (r.key) {
         case "content":
-          return { message: "コンテンツの保存に失敗しました" }
+          return { title: "コンテンツの更新エラー", message: "コンテンツの保存に失敗しました" }
         case "alias.add":
-          return { message: "Aliasの追加に失敗しました: " + joinTitles(r.targets) }
+          return {
+            title: "Aliasの更新エラー",
+            message: "追加に失敗しました: " + joinTitles(r.targets)
+          }
         case "alias.remove":
-          return { message: "Aliasの削除に失敗しました: " + joinTitles(r.targets) }
+          return {
+            title: "Aliasの更新エラー",
+            message: "削除に失敗しました: " + joinTitles(r.targets)
+          }
         case "related.add":
-          return { message: "Related Termsの追加に失敗しました: " + joinTitles(r.targets) }
+          return {
+            title: "Related Termsの更新エラー",
+            message: "追加に失敗しました: " + joinTitles(r.targets)
+          }
         case "related.remove":
-          return { message: "Related Termsの削除に失敗しました: " + joinTitles(r.targets) }
+          return {
+            title: "Related Termsの更新エラー",
+            message: "削除に失敗しました: " + joinTitles(r.targets)
+          }
         default:
-          return { message: "不明なエラーが発生しました" }
+          return { title: "Error", message: "不明なエラーが発生しました" }
       }
     })
 
