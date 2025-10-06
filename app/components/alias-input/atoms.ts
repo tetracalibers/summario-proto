@@ -33,27 +33,27 @@ const mapTitlesToAliasesAtom = <T extends string, Id extends number>(
   })
 }
 
-export const initialAtom = atom<Map<AliasTitle, AliasId>>(new Map<AliasTitle, AliasId>()) // サーバーからの元状態
+export const serverDataAtom = atom<Map<AliasTitle, AliasId>>(new Map<AliasTitle, AliasId>()) // サーバーからの元状態
 
 // UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映）
 export const uiAtom = atom<AliasTitle[]>([])
 const uiSetAtom = atom((get) => new Set(get(uiAtom)))
 
-// 追加：UIにあるが initial には無い
+// 追加：UIにあるが serverData には無い
 const toAddTitlesAtom = createDiffTitlesAtom(
   (get) => get(uiAtom),
-  (get) => get(initialAtom).keys()
+  (get) => get(serverDataAtom).keys()
 )
 const toAddAtom = atom<{ title: AliasTitle }[]>((get) => {
   return get(toAddTitlesAtom).map((title) => ({ title }))
 })
 
-// 削除：initial にはあるが UI には無い
+// 削除：serverData にはあるが UI には無い
 const toRemoveTitlesAtom = createDiffTitlesAtom(
-  (get) => get(initialAtom).keys(),
+  (get) => get(serverDataAtom).keys(),
   (get) => get(uiSetAtom)
 )
-const toRemoveAtom = mapTitlesToAliasesAtom(toRemoveTitlesAtom, initialAtom)
+const toRemoveAtom = mapTitlesToAliasesAtom(toRemoveTitlesAtom, serverDataAtom)
 
 // Save活性（差分があるか）
 export const dirtyAliasAtom = atom((get) => {
@@ -67,11 +67,11 @@ export const aliasSavePayloadAtom = atom((get) => ({
 }))
 
 export const resetAliasDiffAtom = atom(null, (get, set, created: Alias[], removed: Alias[]) => {
-  // initial に created を追加、removed を削除
-  const init = new Map(get(initialAtom))
-  created.forEach((item) => init.set(item.title, item.id))
-  removed.forEach((item) => init.delete(item.title))
+  // serverData に created を追加、removed を削除
+  const data = new Map(get(serverDataAtom))
+  created.forEach((item) => data.set(item.title, item.id))
+  removed.forEach((item) => data.delete(item.title))
 
-  set(initialAtom, init)
-  set(uiAtom, Array.from(init.keys())) // UIも同期
+  set(serverDataAtom, data)
+  set(uiAtom, Array.from(data.keys())) // UIも同期
 })
