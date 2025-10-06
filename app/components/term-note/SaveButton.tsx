@@ -55,17 +55,20 @@ const SaveButton = (props: Props) => {
     if (!fetcher.data) return
     if (!fetcher.data.ok) return
 
-    // 各種dirtyフラグをリセット
     resetAliasDiff(fetcher.data.alias.created, fetcher.data.alias.deleted)
     resetRelatedDiff(fetcher.data.related.created, fetcher.data.related.deleted)
-    // 保存後は未編集へ
-    editor.commands.markClean()
 
-    notifications.show({
-      title: "Success",
-      message: "保存が成功しました",
-      color: "cyan"
-    })
+    // 保存開始時から未変更なら未編集化
+    const cleaned = editor.commands.markCleanIfUnmodified()
+
+    const notificationOption = cleaned
+      ? { title: "Success", message: "保存に成功しました 🎉", color: "cyan" }
+      : {
+          title: "Warning",
+          message: "保存中に編集されました。もう一度保存してください。",
+          color: "yellow"
+        }
+    notifications.show(notificationOption)
   }, [fetcher.data, editor])
 
   // エラー発生時
@@ -92,8 +95,14 @@ const SaveButton = (props: Props) => {
       radius="sm"
       disabled={[isDirtyEditor, isDirtyAlias, isDirtyRelated].every((isDirty) => !isDirty)}
       onClick={() => {
+        if (!editor) return
+
         const payload = createSavePayload()
         if (!payload) return
+
+        // 保存開始時のdocをスナップショット
+        editor.commands.takeSnapshot()
+
         fetcher.submit(payload as any, {
           method: "post",
           action: `/api/save/${termId}`,

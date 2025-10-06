@@ -1,4 +1,3 @@
-// DirtyState.ts
 import { Extension } from "@tiptap/core"
 import { Plugin } from "prosemirror-state"
 import type { Node as PMNode } from "prosemirror-model"
@@ -8,6 +7,12 @@ declare module "@tiptap/core" {
     dirtyState: {
       /** 今のドキュメントを基準（未編集）にする */
       markClean: () => ReturnType
+      /** 現在docを内部にスナップショット（1つだけ保持） */
+      takeSnapshot: () => ReturnType
+      /** スナップショットと現在docが一致していれば未編集化 */
+      markCleanIfUnmodified: () => ReturnType
+      /** 保存中断などでスナップショット破棄（任意） */
+      discardSnapshot: () => ReturnType
     }
   }
 }
@@ -33,8 +38,10 @@ export const DirtyState = Extension.create<DirtyOptions>({
     return {
       /** 現在 dirty か */
       dirty: false as boolean,
-      /** 基準となる初期Doc */
-      baseline: null as PMNode | null
+      /** 未編集判定の基準 */
+      baseline: null as PMNode | null,
+      /** 保存開始時のスナップショット */
+      snapshot: null as PMNode | null
     }
   },
 
@@ -76,7 +83,37 @@ export const DirtyState = Extension.create<DirtyOptions>({
           this.storage.dirty = false
           if (was !== this.storage.dirty) this.options.onDirtyChange?.(false)
           return true
-        }
+        },
+
+      takeSnapshot:
+        () =>
+        ({ editor }) => {
+          // PMNodeはイミュータブル。参照保持でOK
+          this.storage.snapshot = editor.state.doc
+          return true
+        },
+
+      markCleanIfUnmodified:
+        () =>
+        ({ editor }) => {
+          if (!this.storage.snapshot) {
+            console.warn("[DirtyState] no snapshot to compare")
+            return false
+          }
+
+          const unmodified = editor.state.doc.eq(this.storage.snapshot)
+          this.storage.snapshot = null // 使い終わったら破棄
+
+          // 不一致→保存中に編集が入ったので未編集にしない
+          if (!unmodified) return false
+          // 一致→未編集化
+          return editor.commands.markClean()
+        },
+
+      discardSnapshot: () => () => {
+        this.storage.snapshot = null
+        return true
+      }
     }
   },
 
