@@ -11,6 +11,8 @@ import {
 } from "../related-input/atoms"
 import { useAtomCallback } from "jotai/utils"
 import type { action } from "~/routes/api/save"
+import { notifications } from "@mantine/notifications"
+import reversedNotificationStyles from "./reversed-notification.module.css"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -65,7 +67,30 @@ const SaveButton = (props: Props) => {
     resetRelatedDiff(fetcher.data.related.created, fetcher.data.related.deleted)
 
     editor.commands.clearHistory()
+
+    notifications.show({
+      title: "Success",
+      message: "保存が成功しました",
+      color: "cyan",
+      position: "top-right"
+    })
   }, [fetcher.data, editor])
+
+  // エラー発生時
+  useEffect(() => {
+    if (!fetcher.data) return
+    if (fetcher.data.ok) return
+
+    fetcher.data.errors.forEach((error) => {
+      notifications.show({
+        title: "Error",
+        message: error.message,
+        color: "pink",
+        classNames: reversedNotificationStyles,
+        autoClose: false
+      })
+    })
+  }, [fetcher.data])
 
   return (
     <Button
