@@ -83,7 +83,7 @@ const SaveButton = (props: Props) => {
 
     fetcher.data.errors.forEach((error) => {
       notifications.show({
-        title: "Error",
+        title: error.title,
         message: error.message,
         color: "pink",
         classNames: reversedNotificationStyles,
