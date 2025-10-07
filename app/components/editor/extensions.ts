@@ -10,7 +10,6 @@ import Document from "@tiptap/extension-document"
 import { all, createLowlight } from "lowlight"
 import { Placeholder } from "@tiptap/extension-placeholder"
 import { Extension } from "@tiptap/core"
-import { EditorState } from "@tiptap/pm/state"
 import { DirtyState } from "~/extensions/dirty-state/extension"
 import { DropSectionBlock } from "~/extensions/drop-section-block/extension"
 
@@ -18,7 +17,6 @@ declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     customDocumentControl: {
       clearTitleContent: () => ReturnType
-      clearHistory: () => void
     }
   }
 }
@@ -34,16 +32,7 @@ const CustomDocumentControl = Extension.create({
           const titleLength = this.editor.state.doc.content.firstChild?.content.size || 0
           const range = { from: 1, to: titleLength + 1 }
           return chain().insertContentAt(range, "").run()
-        },
-      // ref: https://github.com/ueberdosis/tiptap/issues/491
-      clearHistory: () => () => {
-        const newEditorState = EditorState.create({
-          doc: this.editor.state.doc,
-          plugins: this.editor.state.plugins,
-          schema: this.editor.state.schema
-        })
-        this.editor.view.updateState(newEditorState)
-      }
+        }
     }
   }
 })
