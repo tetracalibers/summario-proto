@@ -37,7 +37,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <DevTools />
+        {import.meta.env.DEV && <DevTools />}
         <MantineProvider theme={theme}>
           <Notifications />
           {children}
