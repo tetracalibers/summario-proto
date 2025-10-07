@@ -15,6 +15,10 @@
   .node-sectionBlock {
     margin-block: 1rem;
   }
+  /* 最後のセクションブロックとその下のdropcursorの間に余白を持たせる */
+  .node-sectionBlock:last-child {
+    padding-block-end: 0.5rem;
+  }
 
   .is-empty:not(.node-sectionBlock)::before {
     color: #adb5bd;
