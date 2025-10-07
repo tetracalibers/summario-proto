@@ -3,11 +3,11 @@ import { useCurrentEditor } from "@tiptap/react"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useEffect, type ButtonHTMLAttributes } from "react"
 import { useFetcher, useParams } from "react-router"
-import { aliasSavePayloadAtom, dirtyAliasAtom, resetAliasDiffAtom } from "../alias-input/atoms"
+import { aliasSavePayloadAtom, dirtyAliasAtom, setServerAliasAtom } from "../alias-input/atoms"
 import {
   dirtyRelatedAtom,
   relatedSavePayloadAtom,
-  resetRelatedDiffAtom
+  setServerRelatedAtom
 } from "../related-input/atoms"
 import { useAtomCallback } from "jotai/utils"
 import type { action } from "~/routes/api/save"
@@ -27,8 +27,8 @@ const SaveButton = (props: Props) => {
   const isDirtyRelated = useAtomValue(dirtyRelatedAtom)
   const isDirtyEditor = useAtomValue(dirtyEditorAtom)
 
-  const resetAliasDiff = useSetAtom(resetAliasDiffAtom)
-  const resetRelatedDiff = useSetAtom(resetRelatedDiffAtom)
+  const setServerAlias = useSetAtom(setServerAliasAtom)
+  const setServerRelated = useSetAtom(setServerRelatedAtom)
 
   const createSavePayload = useAtomCallback(
     useCallback(
@@ -55,8 +55,8 @@ const SaveButton = (props: Props) => {
     if (!fetcher.data) return
     if (!fetcher.data.ok) return
 
-    resetAliasDiff(fetcher.data.alias.created, fetcher.data.alias.deleted)
-    resetRelatedDiff(fetcher.data.related.created, fetcher.data.related.deleted)
+    setServerAlias(fetcher.data.alias.created, fetcher.data.alias.deleted)
+    setServerRelated(fetcher.data.related.created, fetcher.data.related.deleted)
 
     // 保存開始時から未変更なら未編集化
     const cleaned = editor.commands.markCleanIfUnmodified()

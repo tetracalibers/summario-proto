@@ -66,7 +66,7 @@ export const aliasSavePayloadAtom = atom((get) => ({
   remove: get(toRemoveAtom)
 }))
 
-export const resetAliasDiffAtom = atom(null, (get, set, created: Alias[], removed: Alias[]) => {
+export const setServerAliasAtom = atom(null, (get, set, created: Alias[], removed: Alias[]) => {
   // serverData に created を追加、removed を削除
   const data = new Map(get(serverDataAtom))
   created.forEach((item) => data.set(item.title, item.id))

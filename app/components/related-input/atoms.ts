@@ -68,7 +68,7 @@ export const relatedSavePayloadAtom = atom((get) => ({
   remove: get(toRemoveAtom)
 }))
 
-export const resetRelatedDiffAtom = atom(null, (get, set, created: Term[], removed: Term[]) => {
+export const setServerRelatedAtom = atom(null, (get, set, created: Term[], removed: Term[]) => {
   // serverData に created を追加、removed を削除
   const data = new Map(get(serverDataAtom))
   created.forEach((item) => data.set(item.title, item.id))
