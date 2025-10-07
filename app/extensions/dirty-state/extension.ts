@@ -98,7 +98,8 @@ export const DirtyState = Extension.create<DirtyOptions>({
         ({ editor }) => {
           if (!this.storage.snapshot) {
             console.warn("[DirtyState] no snapshot to compare")
-            return false
+            // スナップショットがない場合はmarkCleanの挙動にフォールバック
+            return editor.commands.markClean()
           }
 
           const unmodified = editor.state.doc.eq(this.storage.snapshot)
