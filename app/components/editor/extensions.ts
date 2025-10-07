@@ -77,6 +77,8 @@ export const tiptapExtensions = (
     },
     italic: false,
     underline: false,
+    // 最後に必ず空の段落が追加されるのを防ぐ
+    trailingNode: false,
     // drop可能位置の線
     dropcursor: {
       color: "var(--mantine-color-magenta-3)",

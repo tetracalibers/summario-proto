@@ -12,6 +12,10 @@ export const DropSectionBlock = Extension.create({
       new Plugin({
         props: {
           handleDOMEvents: {
+            dragover: (_view, event) => {
+              // エディタ全体をドロップ可能にする
+              event.preventDefault()
+            },
             drop: (view, event) => {
               const data = event.dataTransfer?.getData("application/x-block")
               if (!data) return false // TipTapのデフォルトの挙動に任せる
