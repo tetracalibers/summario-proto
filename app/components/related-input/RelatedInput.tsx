@@ -1,7 +1,7 @@
 import { TagsInput } from "@mantine/core"
-import { useSetAtom } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
 import { useEffect } from "react"
-import { serverDataAtom, optionsAtom, type Term } from "./atoms"
+import { serverDataAtom, optionsAtom, type Term, disabledAtom } from "./atoms"
 import { uiAtom } from "./atoms"
 
 interface Props {
@@ -10,6 +10,8 @@ interface Props {
 }
 
 export default function RelatedInput({ initials, suggestions }: Props) {
+  const disabled = useAtomValue(disabledAtom)
+
   const setUiFromInput = useSetAtom(uiAtom)
   const setServerData = useSetAtom(serverDataAtom)
   const setOptions = useSetAtom(optionsAtom)
@@ -30,6 +32,7 @@ export default function RelatedInput({ initials, suggestions }: Props) {
       data={suggestions.map((term) => term.title)}
       onChange={(values) => setUiFromInput(values)}
       comboboxProps={{ shadow: "sm" }}
+      disabled={disabled}
     />
   )
 }

@@ -1,4 +1,5 @@
 import { atom, type Atom, type Getter } from "jotai"
+import { savingStateAtom } from "../term-note/atoms"
 
 type TermTitle = string
 type TermId = number
@@ -76,4 +77,9 @@ export const setServerRelatedAtom = atom(null, (get, set, created: Term[], remov
 
   set(serverDataAtom, data)
   set(uiAtom, Array.from(data.keys())) // UIも同期
+})
+
+export const disabledAtom = atom((get) => {
+  const saving = get(savingStateAtom)
+  return saving === "submitting"
 })

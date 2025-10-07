@@ -1,4 +1,5 @@
 import { atom, type Atom, type Getter } from "jotai"
+import { savingStateAtom } from "../term-note/atoms"
 
 type AliasTitle = string
 type AliasId = number
@@ -74,4 +75,9 @@ export const setServerAliasAtom = atom(null, (get, set, created: Alias[], remove
 
   set(serverDataAtom, data)
   set(uiAtom, Array.from(data.keys())) // UIも同期
+})
+
+export const disabledAtom = atom((get) => {
+  const saving = get(savingStateAtom)
+  return saving === "submitting"
 })
