@@ -1,0 +1,18 @@
+.loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.loading_icon {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -10,12 +10,15 @@ import { notifications } from "@mantine/notifications"
 import reversedNotificationStyles from "./reversed-notification.module.css"
 import { canSaveAtom, saveMetaPayloadAtom, savingStateAtom } from "./atoms"
 import { dirtyEditorAtom } from "../editor/atoms"
+import { IconLoader } from "@tabler/icons-react"
+import loadingStyle from "./loading.module.css"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const SaveButton = (props: Props) => {
   const { termId } = useParams()
   const fetcher = useFetcher<typeof action>()
+  const isSubmitting = fetcher.state === "submitting"
 
   const { editor } = useCurrentEditor()
 
@@ -76,7 +79,7 @@ const SaveButton = (props: Props) => {
       variant="gradient"
       gradient={{ from: "grape", to: "indigo", deg: 90 }}
       radius="sm"
-      disabled={!canSave}
+      disabled={!canSave || isSubmitting}
       onClick={() => {
         if (!editor) return
 
@@ -96,7 +99,14 @@ const SaveButton = (props: Props) => {
       }}
       {...props}
     >
-      Save
+      {isSubmitting ? (
+        <span className={loadingStyle.loading}>
+          <IconLoader className={loadingStyle.loading_icon} size="16px" />
+          Saving...
+        </span>
+      ) : (
+        "Save"
+      )}
     </Button>
   )
 }
