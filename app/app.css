@@ -47,6 +47,7 @@
   }
 }
 
+/** エディタ（drop可能範囲）を高さいっぱいに広げる */
 .mantine-RichTextEditor-root {
   display: grid;
   grid-template-rows: auto 1fr;
@@ -54,8 +55,4 @@
 .mantine-RichTextEditor-root > .mantine-Typography-root {
   display: grid;
   min-height: 100%;
-}
-.mantine-RichTextEditor-content {
-  min-height: 100%;
-  background: none;
 }
