@@ -11,7 +11,7 @@ export default defineConfig({
       apply: "serve", // 開発時のみ
       babelConfig: {
         presets: ["@babel/preset-typescript"],
-        plugins: ["jotai/babel/plugin-debug-label"]
+        plugins: ["jotai/babel/plugin-react-refresh", "jotai/babel/plugin-debug-label"]
       }
     }),
     reactRouter(),
