@@ -16,5 +16,8 @@ export default defineConfig({
     }),
     reactRouter(),
     tsconfigPaths()
-  ]
+  ],
+  ssr: {
+    noExternal: ["jotai-devtools"]
+  }
 })
