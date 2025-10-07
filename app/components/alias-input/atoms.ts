@@ -45,6 +45,8 @@ const toAddTitlesAtom = createDiffTitlesAtom(
   (get) => get(uiAtom),
   (get) => get(serverDataAtom).keys()
 )
+toAddTitlesAtom.debugLabel = "toAddTitlesAtom"
+
 const toAddAtom = atom<{ title: AliasTitle }[]>((get) => {
   return get(toAddTitlesAtom).map((title) => ({ title }))
 })
@@ -54,7 +56,10 @@ const toRemoveTitlesAtom = createDiffTitlesAtom(
   (get) => get(serverDataAtom).keys(),
   (get) => get(uiSetAtom)
 )
+toRemoveTitlesAtom.debugLabel = "toRemoveTitlesAtom"
+
 const toRemoveAtom = mapTitlesToAliasesAtom(toRemoveTitlesAtom, serverDataAtom)
+toRemoveAtom.debugLabel = "toRemoveAtom"
 
 // Save活性（差分があるか）
 export const dirtyAliasAtom = atom((get) => {

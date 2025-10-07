@@ -43,20 +43,27 @@ const uiSetAtom = atom((get) => new Set(get(uiAtom)))
 
 // 入力欄の値をTermオブジェクトに変換
 export const relatedTermsAtom = mapTitlesToTermsAtom<TermTitle, TermId>(uiAtom, optionsAtom)
+relatedTermsAtom.debugLabel = "relatedTermsAtom"
 
 // 追加：UIにあるが initial には無い
 const toAddTitlesAtom = createDiffTitlesAtom<TermTitle>(
   (get) => get(uiSetAtom),
   (get) => get(serverDataAtom).keys()
 )
+toAddTitlesAtom.debugLabel = "toAddTitlesAtom"
+
 const toAddAtom = mapTitlesToTermsAtom<TermTitle, TermId>(toAddTitlesAtom, optionsAtom)
+toAddAtom.debugLabel = "toAddAtom"
 
 // 削除：serverData にはあるが UI には無い
 const toRemoveTitlesAtom = createDiffTitlesAtom<TermTitle>(
   (get) => get(serverDataAtom).keys(),
   (get) => get(uiSetAtom)
 )
+toRemoveTitlesAtom.debugLabel = "toRemoveTitlesAtom"
+
 const toRemoveAtom = mapTitlesToTermsAtom<TermTitle, TermId>(toRemoveTitlesAtom, optionsAtom)
+toRemoveAtom.debugLabel = "toRemoveAtom"
 
 // Save活性（差分があるか）
 export const dirtyRelatedAtom = atom((get) => {

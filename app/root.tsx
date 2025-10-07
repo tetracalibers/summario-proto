@@ -4,6 +4,9 @@ import type { Route } from "./+types/root"
 import { theme } from "./mantine-theme"
 import { Notifications } from "@mantine/notifications"
 
+import { DevTools } from "jotai-devtools"
+import "jotai-devtools/styles.css"
+
 import "@mantine/core/styles.css"
 import "@mantine/tiptap/styles.css" // ‼️ import tiptap styles after core package styles
 import "@mantine/notifications/styles.css"
@@ -34,6 +37,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        {import.meta.env.DEV && <DevTools />}
         <MantineProvider theme={theme}>
           <Notifications />
           {children}
