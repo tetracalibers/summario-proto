@@ -2,6 +2,11 @@ import { saveTermContentAndMeta } from "./../../service/term"
 import type { Route } from "./+types/save"
 import { data } from "react-router"
 
+// [for debug]
+// const delay = (ms: number) => {
+//   return new Promise((resolve) => setTimeout(resolve, ms))
+// }
+
 const joinTitles = (items: { title: string }[]) => {
   return items.map((i) => i.title).join(", ")
 }
@@ -9,6 +14,10 @@ const joinTitles = (items: { title: string }[]) => {
 export async function action({ request, params }: Route.ActionArgs) {
   const termId = Number(params.termId)
   const requestData = await request.json()
+
+  // [for debug]
+  // await delay(5000)
+
   const result = await saveTermContentAndMeta(termId, requestData)
 
   if (!result.ok) {

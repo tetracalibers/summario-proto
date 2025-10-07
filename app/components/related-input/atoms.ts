@@ -1,4 +1,5 @@
 import { atom, type Atom, type Getter } from "jotai"
+import { savingStateAtom } from "../term-note/atoms"
 
 type TermTitle = string
 type TermId = number
@@ -33,7 +34,7 @@ const mapTitlesToTermsAtom = <T extends string, Id extends number>(
   })
 }
 
-export const initialAtom = atom<Map<TermTitle, TermId>>(new Map<TermTitle, TermId>()) // サーバーからの元状態
+export const serverDataAtom = atom<Map<TermTitle, TermId>>(new Map<TermTitle, TermId>()) // サーバーからの元状態
 export const optionsAtom = atom<Map<TermTitle, TermId>>(new Map<TermTitle, TermId>()) // サーバーからの候補一覧
 
 // UIが現在表示しているタグ（入力欄の onChange(values) をそのまま反映）
@@ -46,13 +47,13 @@ export const relatedTermsAtom = mapTitlesToTermsAtom<TermTitle, TermId>(uiAtom, 
 // 追加：UIにあるが initial には無い
 const toAddTitlesAtom = createDiffTitlesAtom<TermTitle>(
   (get) => get(uiSetAtom),
-  (get) => get(initialAtom).keys()
+  (get) => get(serverDataAtom).keys()
 )
 const toAddAtom = mapTitlesToTermsAtom<TermTitle, TermId>(toAddTitlesAtom, optionsAtom)
 
-// 削除：initial にはあるが UI には無い
+// 削除：serverData にはあるが UI には無い
 const toRemoveTitlesAtom = createDiffTitlesAtom<TermTitle>(
-  (get) => get(initialAtom).keys(),
+  (get) => get(serverDataAtom).keys(),
   (get) => get(uiSetAtom)
 )
 const toRemoveAtom = mapTitlesToTermsAtom<TermTitle, TermId>(toRemoveTitlesAtom, optionsAtom)
@@ -68,12 +69,17 @@ export const relatedSavePayloadAtom = atom((get) => ({
   remove: get(toRemoveAtom)
 }))
 
-export const resetRelatedDiffAtom = atom(null, (get, set, created: Term[], removed: Term[]) => {
-  // initial に created を追加、removed を削除
-  const init = new Map(get(initialAtom))
-  created.forEach((item) => init.set(item.title, item.id))
-  removed.forEach((item) => init.delete(item.title))
+export const setServerRelatedAtom = atom(null, (get, set, created: Term[], removed: Term[]) => {
+  // serverData に created を追加、removed を削除
+  const data = new Map(get(serverDataAtom))
+  created.forEach((item) => data.set(item.title, item.id))
+  removed.forEach((item) => data.delete(item.title))
 
-  set(initialAtom, init)
-  set(uiAtom, Array.from(init.keys())) // UIも同期
+  set(serverDataAtom, data)
+  set(uiAtom, Array.from(data.keys())) // UIも同期
+})
+
+export const disabledAtom = atom((get) => {
+  const saving = get(savingStateAtom)
+  return saving === "submitting"
 })

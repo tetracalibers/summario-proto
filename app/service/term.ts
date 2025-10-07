@@ -1,3 +1,4 @@
+import type { JSONContent } from "@tiptap/react"
 import { selectRecentTerm, selectTermById } from "~/db/query"
 import {
   deleteAliases,
@@ -23,7 +24,6 @@ interface Item {
   title: string
 }
 
-type TaskKey = "content" | "alias.add" | "alias.remove" | "related.add" | "related.remove"
 type Task =
   | {
       key: "content"
@@ -71,7 +71,7 @@ interface SaveFailure {
 export const saveTermContentAndMeta = async (
   termId: number,
   payload: {
-    content?: any
+    content: JSONContent | null
     alias: { add: Omit<Item, "id">[]; remove: Item[] }
     related: { add: Item[]; remove: Item[] }
   }
@@ -81,8 +81,8 @@ export const saveTermContentAndMeta = async (
   const tasks: Task[] = [
     {
       key: "content",
-      condition: content !== undefined,
-      action: () => updateTermContent(termId, content),
+      condition: content !== null,
+      action: () => updateTermContent(termId, content!),
       targets: termId
     },
     {

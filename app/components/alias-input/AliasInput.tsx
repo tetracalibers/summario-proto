@@ -1,6 +1,6 @@
 import { TagsInput } from "@mantine/core"
-import { initialAtom, uiAtom, type Alias } from "./atoms"
-import { useSetAtom } from "jotai"
+import { disabledAtom, serverDataAtom, uiAtom, type Alias } from "./atoms"
+import { useAtomValue, useSetAtom } from "jotai"
 import { useEffect } from "react"
 
 interface Props {
@@ -8,14 +8,16 @@ interface Props {
 }
 
 export default function AliasInput({ initials }: Props) {
+  const disabled = useAtomValue(disabledAtom)
+
   const setUiFromInput = useSetAtom(uiAtom)
-  const setInitial = useSetAtom(initialAtom)
+  const setServerData = useSetAtom(serverDataAtom)
 
   useEffect(() => {
     setUiFromInput(initials.map((a) => a.title))
   }, [])
   useEffect(() => {
-    setInitial(new Map(initials.map((a) => [a.title, a.id])))
+    setServerData(new Map(initials.map((a) => [a.title, a.id])))
   }, [initials])
 
   return (
@@ -24,6 +26,7 @@ export default function AliasInput({ initials }: Props) {
       placeholder="Enter"
       defaultValue={initials.map((a) => a.title)}
       onChange={(values) => setUiFromInput(values)}
+      disabled={disabled}
     />
   )
 }

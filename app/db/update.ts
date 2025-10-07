@@ -1,8 +1,9 @@
 import { db } from "~/db/connection"
 import { termAliases, termEdges, terms } from "./schema"
 import { eq, inArray, or, and } from "drizzle-orm"
+import type { JSONContent } from "@tiptap/react"
 
-export const updateTermContent = async (termId: number, content: string) => {
+export const updateTermContent = async (termId: number, content: JSONContent) => {
   return db
     .update(terms)
     .set({ content })

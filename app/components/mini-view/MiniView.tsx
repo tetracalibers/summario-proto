@@ -12,7 +12,7 @@ export default function MiniView({ contentJson }: Props) {
   const output = useMemo(() => {
     return renderToHTMLString({
       content: contentJson,
-      extensions: tiptapExtensions
+      extensions: tiptapExtensions(contentJson)
     })
   }, [contentJson])
 

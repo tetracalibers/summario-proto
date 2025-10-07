@@ -1,12 +1,15 @@
-import { useEditor, type Content } from "@tiptap/react"
+import { useEditor, type JSONContent } from "@tiptap/react"
 import { createSectionBlockJson } from "~/extensions/section-block/helper"
 import { tiptapExtensions } from "./extensions"
 
-export const useTiptapEditor = (initialContent?: Content) => {
+export const useTiptapEditor = (
+  initialJSON?: JSONContent,
+  onDirtyChange?: (dirty: boolean) => void
+) => {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     immediatelyRender: false, // Disable immediate rendering to prevent SSR issues
-    extensions: tiptapExtensions,
+    extensions: tiptapExtensions(initialJSON, onDirtyChange),
     editorProps: {
       handleDrop: (view, event, _slice, _moved) => {
         if (!editor) return false
@@ -66,7 +69,7 @@ export const useTiptapEditor = (initialContent?: Content) => {
         return true
       }
     },
-    content: initialContent
+    content: initialJSON
   })
 
   return editor
