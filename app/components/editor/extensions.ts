@@ -75,7 +75,12 @@ export const tiptapExtensions = (
       levels: [2, 3, 4]
     },
     italic: false,
-    underline: false
+    underline: false,
+    // drop可能位置の線
+    dropcursor: {
+      color: "var(--mantine-color-magenta-3)",
+      width: 2
+    }
   }),
   ListKit,
   CodeBlockLowlight.configure({
