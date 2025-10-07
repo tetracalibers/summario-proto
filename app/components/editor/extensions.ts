@@ -12,6 +12,7 @@ import { Placeholder } from "@tiptap/extension-placeholder"
 import { Extension } from "@tiptap/core"
 import { EditorState } from "@tiptap/pm/state"
 import { DirtyState } from "~/extensions/dirty-state/extension"
+import { DropSectionBlock } from "~/extensions/drop-section-block/extension"
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -89,6 +90,7 @@ export const tiptapExtensions = (
   Link.configure({ openOnClick: false }),
   SectionBlock,
   TitleBlock,
+  DropSectionBlock,
   Placeholder.configure({
     showOnlyCurrent: false,
     includeChildren: true,
