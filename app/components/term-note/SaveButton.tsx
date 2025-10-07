@@ -1,18 +1,14 @@
 import { Button } from "@mantine/core"
 import { useCurrentEditor } from "@tiptap/react"
 import { useAtomValue, useSetAtom } from "jotai"
-import { useCallback, useEffect, type ButtonHTMLAttributes } from "react"
+import { useEffect, type ButtonHTMLAttributes } from "react"
 import { useFetcher, useParams } from "react-router"
-import { aliasSavePayloadAtom, dirtyAliasAtom, setServerAliasAtom } from "../alias-input/atoms"
-import {
-  dirtyRelatedAtom,
-  relatedSavePayloadAtom,
-  setServerRelatedAtom
-} from "../related-input/atoms"
-import { useAtomCallback } from "jotai/utils"
+import { setServerAliasAtom } from "../alias-input/atoms"
+import { setServerRelatedAtom } from "../related-input/atoms"
 import type { action } from "~/routes/api/save"
 import { notifications } from "@mantine/notifications"
 import reversedNotificationStyles from "./reversed-notification.module.css"
+import { canSaveAtom, saveMetaPayloadAtom, savingStateAtom } from "./atoms"
 import { dirtyEditorAtom } from "../editor/atoms"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
@@ -23,31 +19,18 @@ const SaveButton = (props: Props) => {
 
   const { editor } = useCurrentEditor()
 
-  const isDirtyAlias = useAtomValue(dirtyAliasAtom)
-  const isDirtyRelated = useAtomValue(dirtyRelatedAtom)
-  const isDirtyEditor = useAtomValue(dirtyEditorAtom)
+  const canSave = useAtomValue(canSaveAtom)
+  const setSavingState = useSetAtom(savingStateAtom)
 
   const setServerAlias = useSetAtom(setServerAliasAtom)
   const setServerRelated = useSetAtom(setServerRelatedAtom)
 
-  const createSavePayload = useAtomCallback(
-    useCallback(
-      (get) => {
-        if (!editor) return null
+  const saveMetaPayload = useAtomValue(saveMetaPayloadAtom)
+  const isDirtyEditor = useAtomValue(dirtyEditorAtom)
 
-        const aliasDiff = get(aliasSavePayloadAtom)
-        const relatedDiff = get(relatedSavePayloadAtom)
-
-        if (!isDirtyEditor) {
-          return { alias: aliasDiff, related: relatedDiff }
-        }
-
-        const content = editor.getJSON()
-        return { content, alias: aliasDiff, related: relatedDiff }
-      },
-      [editor, isDirtyEditor]
-    )
-  )
+  useEffect(() => {
+    setSavingState(fetcher.state)
+  }, [fetcher.state])
 
   // ボタン押下後、保存が成功したら
   useEffect(() => {
@@ -93,15 +76,17 @@ const SaveButton = (props: Props) => {
       variant="gradient"
       gradient={{ from: "grape", to: "indigo", deg: 90 }}
       radius="sm"
-      disabled={[isDirtyEditor, isDirtyAlias, isDirtyRelated].every((isDirty) => !isDirty)}
+      disabled={!canSave}
       onClick={() => {
         if (!editor) return
 
-        const payload = createSavePayload()
-        if (!payload) return
-
         // 保存開始時のdocをスナップショット
         editor.commands.takeSnapshot()
+
+        const payload = {
+          ...saveMetaPayload,
+          content: isDirtyEditor ? editor.getJSON() : null
+        }
 
         fetcher.submit(payload as any, {
           method: "post",
