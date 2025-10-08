@@ -66,7 +66,7 @@ export const tiptapExtensions = (
     },
     italic: false,
     underline: false,
-    // 最後に必ず空の段落が追加されるのを防ぐ
+    // 末尾にdropした際に空の段落も合わせて追加されるのを防ぐ
     trailingNode: false,
     // drop可能位置の線
     dropcursor: {
