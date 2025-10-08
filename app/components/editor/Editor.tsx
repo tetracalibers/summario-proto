@@ -22,7 +22,7 @@ const TipTapEditor = ({ editor }: Props) => {
           <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
         </svg>
       </DragHandle>
-      <RichTextEditor.Content bdrs={0} />
+      <RichTextEditor.Content mih="100%" bdrs={0} />
     </RichTextEditor>
   )
 }

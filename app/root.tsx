@@ -11,7 +11,7 @@ import "@mantine/core/styles.css"
 import "@mantine/tiptap/styles.css" // ‼️ import tiptap styles after core package styles
 import "@mantine/notifications/styles.css"
 import "@gfazioli/mantine-split-pane/styles.css"
-import "./app.css"
+import "./tiptap.css"
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
