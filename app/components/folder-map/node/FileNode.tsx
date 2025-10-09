@@ -7,6 +7,9 @@ import {
   type HandleType
 } from "@xyflow/react"
 import styles from "./Node.module.css"
+import { useState } from "react"
+import { TextInput } from "@mantine/core"
+import { IconNote } from "@tabler/icons-react"
 
 const MAX_CONNECTIONS = 1
 
@@ -28,16 +31,28 @@ const FileNodeHandle = ({ type }: FileNodeHandleProps) => {
 
 interface FileNodeData {
   label: string
+  isContentEmpty: boolean
   [key: string]: unknown
 }
 
 interface FileNodeProps extends NodeProps<Node<FileNodeData>> {}
 
 export function FileNode({ data }: FileNodeProps) {
+  const [name, setName] = useState(data.label)
+
   return (
     <div className={styles.node}>
       <FileNodeHandle type="target" />
-      <div>{data.label}</div>
+      <TextInput
+        value={name}
+        onChange={(event) => setName(event.currentTarget.value)}
+        placeholder="File Name"
+        aria-label="file name"
+        leftSection={<IconNote size={24} color="var(--mantine-color-cyan-4)" />}
+        leftSectionPointerEvents="none"
+        disabled={!data.isContentEmpty}
+        className={styles.input_maybe_disabled}
+      />
     </div>
   )
 }

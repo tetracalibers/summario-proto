@@ -12,3 +12,11 @@
   background-color: #f6f6f6;
   border: 1px solid var(--mantine-color-pale-indigo-5);
 }
+
+.input_maybe_disabled input:disabled {
+  background-color: var(--mantine-color-gray-0);
+  border-color: var(--mantine-color-gray-0);
+  color: black;
+  pointer-events: none; /* クリック・ドラッグは親へ通す */
+  user-select: none; /* テキスト選択も防いでドラッグを阻害しない */
+}
