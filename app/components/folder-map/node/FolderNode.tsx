@@ -7,7 +7,7 @@ import {
   type HandleType
 } from "@xyflow/react"
 import { IconFolder } from "@tabler/icons-react"
-import styles from "./node.module.css"
+import styles from "./Node.module.css"
 import { TextInput } from "@mantine/core"
 import { useState } from "react"
 

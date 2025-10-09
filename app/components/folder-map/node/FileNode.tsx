@@ -6,7 +6,7 @@ import {
   useNodeConnections,
   type HandleType
 } from "@xyflow/react"
-import styles from "./node.module.css"
+import styles from "./Node.module.css"
 
 const MAX_CONNECTIONS = 1
 
