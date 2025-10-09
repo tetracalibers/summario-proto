@@ -30,9 +30,7 @@ export default function FolderMap({ layoutedNodes, layoutedEdges }: Props) {
 
   const onConnect = useCallback(
     (params: Connection) =>
-      setEdges((eds) =>
-        addEdge({ ...params, type: ConnectionLineType.SmoothStep, animated: true }, eds)
-      ),
+      setEdges((eds) => addEdge({ ...params, type: ConnectionLineType.SimpleBezier }, eds)),
     [setEdges]
   )
 
@@ -65,7 +63,7 @@ export default function FolderMap({ layoutedNodes, layoutedEdges }: Props) {
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       onReconnect={onReconnect}
-      connectionLineType={ConnectionLineType.SmoothStep}
+      connectionLineType={ConnectionLineType.SimpleBezier}
       fitView
       attributionPosition="bottom-left"
     />
