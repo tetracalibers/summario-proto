@@ -7,12 +7,16 @@ import {
   type Connection,
   type Node,
   type Edge,
-  reconnectEdge
+  reconnectEdge,
+  Panel
 } from "@xyflow/react"
 import { useCallback } from "react"
 import { getLayoutedElements } from "./layout"
 import { FileNode } from "./FileNode"
 import { FolderNode } from "./FolderNode"
+import SaveButton from "./SaveButton"
+import AlignButton from "./AlignButton"
+import panelStyles from "./panel.module.css"
 
 const customNodes = {
   file: FileNode,
@@ -40,19 +44,12 @@ export default function FolderMap({ layoutedNodes, layoutedEdges }: Props) {
     []
   )
 
-  const onLayout = useCallback(
-    (direction: string) => {
-      const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-        nodes,
-        edges,
-        direction
-      )
+  const layout = useCallback(() => {
+    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(nodes, edges)
 
-      setNodes([...layoutedNodes])
-      setEdges([...layoutedEdges])
-    },
-    [nodes, edges]
-  )
+    setNodes([...layoutedNodes])
+    setEdges([...layoutedEdges])
+  }, [nodes, edges])
 
   return (
     <ReactFlow
@@ -66,6 +63,13 @@ export default function FolderMap({ layoutedNodes, layoutedEdges }: Props) {
       connectionLineType={ConnectionLineType.SimpleBezier}
       fitView
       attributionPosition="bottom-left"
-    />
+    >
+      <Panel position="top-right">
+        <div className={panelStyles.panel_inner}>
+          <AlignButton onClick={() => layout()} />
+          <SaveButton />
+        </div>
+      </Panel>
+    </ReactFlow>
   )
 }
