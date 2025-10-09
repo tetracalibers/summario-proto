@@ -20,7 +20,7 @@ const FileNodeHandle = ({ type }: FileNodeHandleProps) => {
     <Handle
       type={type}
       position={type === "target" ? Position.Left : Position.Right}
-      isConnectable={connections.length <= MAX_CONNECTIONS}
+      isConnectable={connections.length < MAX_CONNECTIONS}
       className={styles.handle}
     />
   )
