@@ -22,6 +22,7 @@ const FolderNodeHandle = ({ type }: FolderNodeHandleProps) => {
       type={type}
       position={type === "target" ? Position.Left : Position.Right}
       isConnectable={type === "target" ? connections.length < MAX_TARGET_CONNECTIONS : true}
+      className={styles.handle}
     />
   )
 }
