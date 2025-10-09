@@ -48,6 +48,7 @@ export function FolderNode({ data }: FolderNodeProps) {
         placeholder="Folder Name"
         aria-label="folder name"
         leftSection={<IconFolder className={styles.node_icon} />}
+        leftSectionPointerEvents="none"
       />
       <FolderNodeHandle type="source" />
     </div>
