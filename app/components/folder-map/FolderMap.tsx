@@ -12,10 +12,10 @@ import {
 } from "@xyflow/react"
 import { useCallback } from "react"
 import { getLayoutedElements } from "./layout"
-import { FileNode } from "./FileNode"
-import { FolderNode } from "./FolderNode"
-import SaveButton from "./SaveButton"
-import AlignButton from "./AlignButton"
+import { FileNode } from "./node/FileNode"
+import { FolderNode } from "./node/FolderNode"
+import SaveButton from "./button/SaveButton"
+import AlignButton from "./button/AlignButton"
 import panelStyles from "./panel.module.css"
 
 const customNodes = {
