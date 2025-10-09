@@ -8,6 +8,8 @@ import {
 } from "@xyflow/react"
 import { IconFolder } from "@tabler/icons-react"
 import styles from "./node.module.css"
+import { Input } from "@mantine/core"
+import { useState } from "react"
 
 const MAX_TARGET_CONNECTIONS = 1
 
@@ -35,13 +37,17 @@ interface FolderNodeData {
 interface FolderNodeProps extends NodeProps<Node<FolderNodeData>> {}
 
 export function FolderNode({ data }: FolderNodeProps) {
+  const [name, setName] = useState(data.label)
+
   return (
     <div className={styles.node}>
       <FolderNodeHandle type="target" />
-      <div className={styles.node_with_icon}>
-        <IconFolder className={styles.node_icon} />
-        <div>{data.label}</div>
-      </div>
+      <Input
+        value={name}
+        onChange={(event) => setName(event.currentTarget.value)}
+        placeholder="Folder Name"
+        leftSection={<IconFolder className={styles.node_icon} />}
+      />
       <FolderNodeHandle type="source" />
     </div>
   )

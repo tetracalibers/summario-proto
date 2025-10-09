@@ -3,14 +3,7 @@
   padding: 10px;
   border-radius: 3px;
   border: 1px solid #1a192b;
-  font-size: 12px;
   text-align: center;
-}
-
-.node_with_icon {
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .node_icon {
