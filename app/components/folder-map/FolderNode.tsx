@@ -8,7 +8,7 @@ import {
 } from "@xyflow/react"
 import { IconFolder } from "@tabler/icons-react"
 import styles from "./node.module.css"
-import { Input } from "@mantine/core"
+import { TextInput } from "@mantine/core"
 import { useState } from "react"
 
 const MAX_TARGET_CONNECTIONS = 1
@@ -42,10 +42,11 @@ export function FolderNode({ data }: FolderNodeProps) {
   return (
     <div className={styles.node}>
       <FolderNodeHandle type="target" />
-      <Input
+      <TextInput
         value={name}
         onChange={(event) => setName(event.currentTarget.value)}
         placeholder="Folder Name"
+        aria-label="folder name"
         leftSection={<IconFolder className={styles.node_icon} />}
       />
       <FolderNodeHandle type="source" />
