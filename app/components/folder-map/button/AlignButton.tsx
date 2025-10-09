@@ -7,7 +7,14 @@ interface Props {
 
 export default function AlignButton({ onClick }: Props) {
   return (
-    <ActionIcon onClick={onClick} size="lg" aria-label="layout" variant="outline" color="grape">
+    <ActionIcon
+      onClick={onClick}
+      size="lg"
+      aria-label="layout"
+      variant="outline"
+      color="grape"
+      bg="white"
+    >
       <IconAlignLeft2 />
     </ActionIcon>
   )
