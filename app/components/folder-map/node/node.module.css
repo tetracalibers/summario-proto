@@ -16,7 +16,10 @@
 .input_maybe_disabled input:disabled {
   background-color: var(--mantine-color-gray-0);
   border-color: var(--mantine-color-gray-0);
-  color: black;
+  color: #000;
+  -webkit-text-fill-color: #000; /* Safari/iOS向けに強制的に文字色を設定 */
+  opacity: 1; /* 一部ブラウザがデフォルトで薄く描画するのを防ぐ */
+
   pointer-events: none; /* クリック・ドラッグは親へ通す */
   user-select: none; /* テキスト選択も防いでドラッグを阻害しない */
 }
