@@ -2,7 +2,8 @@
   min-width: 150px;
   padding: 10px;
   border-radius: 3px;
-  border: 1px solid #1a192b;
+  border: 1px solid var(--mantine-color-gray-4);
+  background-color: var(--mantine-color-gray-0);
   text-align: center;
 }
 
