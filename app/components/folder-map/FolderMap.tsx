@@ -6,7 +6,8 @@ import {
   useNodesState,
   type Connection,
   type Node,
-  type Edge
+  type Edge,
+  reconnectEdge
 } from "@xyflow/react"
 import { useCallback } from "react"
 import { getLayoutedElements } from "./layout"
@@ -35,6 +36,12 @@ export default function FolderMap({ layoutedNodes, layoutedEdges }: Props) {
     [setEdges]
   )
 
+  const onReconnect = useCallback(
+    (oldEdge: Edge, newConnection: Connection) =>
+      setEdges((els) => reconnectEdge(oldEdge, newConnection, els)),
+    []
+  )
+
   const onLayout = useCallback(
     (direction: string) => {
       const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
@@ -57,6 +64,7 @@ export default function FolderMap({ layoutedNodes, layoutedEdges }: Props) {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
+      onReconnect={onReconnect}
       connectionLineType={ConnectionLineType.SmoothStep}
       fitView
       attributionPosition="bottom-left"
