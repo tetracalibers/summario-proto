@@ -47,7 +47,7 @@ export function FolderNode({ data }: FolderNodeProps) {
         onChange={(event) => setName(event.currentTarget.value)}
         placeholder="Folder Name"
         aria-label="folder name"
-        leftSection={<IconFolder className={styles.node_icon} />}
+        leftSection={<IconFolder size={24} color="var(--mantine-color-bright-orange-6)" />}
         leftSectionPointerEvents="none"
       />
       <FolderNodeHandle type="source" />

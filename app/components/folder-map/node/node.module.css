@@ -6,12 +6,6 @@
   text-align: center;
 }
 
-.node_icon {
-  width: 24px;
-  height: 24px;
-  color: #ffa903;
-}
-
 .handle {
   min-width: 10px;
   min-height: 10px;

@@ -14,6 +14,18 @@ export const theme = createTheme({
       "#424e88",
       "#36437a"
     ],
+    "bright-orange": [
+      "#fff8e1",
+      "#ffefcb",
+      "#ffdd9a",
+      "#ffca64",
+      "#ffba38",
+      "#ffb01b",
+      "#ffa903",
+      "#e39500",
+      "#cb8400",
+      "#b07100"
+    ],
     magenta: [
       "#ffe9f6",
       "#ffd1e6",
