@@ -17,6 +17,8 @@ import { FolderNode } from "./node/FolderNode"
 import SaveButton from "./button/SaveButton"
 import AlignButton from "./button/AlignButton"
 import panelStyles from "./panel.module.css"
+import NewFileNode from "./draggable/NewFileNode"
+import NewFolderNode from "./draggable/NewFolderNode"
 
 const customNodes = {
   file: FileNode,
@@ -68,6 +70,8 @@ export default function FolderMap({ layoutedNodes, layoutedEdges }: Props) {
         <div className={panelStyles.panel_inner}>
           <AlignButton onClick={() => layout()} />
           <SaveButton />
+          <NewFileNode />
+          <NewFolderNode />
         </div>
       </Panel>
     </ReactFlow>

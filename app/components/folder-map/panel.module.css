@@ -2,5 +2,13 @@
   display: grid;
   grid-template-columns: auto minmax(200px, 1fr);
   column-gap: 0.5rem;
+  row-gap: 0.75rem;
   place-items: center;
+}
+
+/** 3番目以降の子要素 */
+.panel_inner > :nth-child(n + 3) {
+  grid-column: 1 / -1;
+  display: grid;
+  width: 100%;
 }
