@@ -10,6 +10,13 @@ import {
 } from "@xyflow/react"
 import { useCallback } from "react"
 import { getLayoutedElements } from "./layout"
+import { FileNode } from "./FileNode"
+import { FolderNode } from "./FolderNode"
+
+const customNodes = {
+  file: FileNode,
+  folder: FolderNode
+}
 
 interface Props {
   layoutedNodes: Node[]
@@ -46,6 +53,7 @@ export default function FolderMap({ layoutedNodes, layoutedEdges }: Props) {
     <ReactFlow
       nodes={nodes}
       edges={edges}
+      nodeTypes={customNodes}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}

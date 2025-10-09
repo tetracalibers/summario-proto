@@ -10,14 +10,14 @@ export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }
     id: `folder-${folder.id}`,
     data: { label: folder.name },
     position: TMP_POSITION,
-    type: folder.parentId ? "default" : "input",
+    type: "folder",
     deletable: false
   }))
   const termNodes = allTerms.map((term) => ({
     id: `term-${term.id}`,
     data: { label: term.title },
     position: TMP_POSITION,
-    type: "output",
+    type: "file",
     deletable: false
   }))
 
