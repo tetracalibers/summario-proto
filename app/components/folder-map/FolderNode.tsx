@@ -6,7 +6,7 @@ import {
   useNodeConnections,
   type HandleType
 } from "@xyflow/react"
-import { IconFolderFilled, IconFolder } from "@tabler/icons-react"
+import { IconFolder } from "@tabler/icons-react"
 import styles from "./node.module.css"
 
 const MAX_TARGET_CONNECTIONS = 1
