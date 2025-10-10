@@ -46,7 +46,7 @@ export function FileNode({ data, deletable, selected }: FileNodeProps) {
     <>
       <FileNodeHandle type="target" />
       <NodeToolbar>
-        <Group justify="center" gap="sm">
+        <Group justify="center" gap="sm" className={styles.toolbar_inner}>
           <ActionIcon variant="light" color="cyan" aria-label="open note">
             <IconExternalLink size={18} />
           </ActionIcon>

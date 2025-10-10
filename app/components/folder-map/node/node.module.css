@@ -27,3 +27,10 @@
   pointer-events: none; /* クリック・ドラッグは親へ通す */
   user-select: none; /* テキスト選択も防いでドラッグを阻害しない */
 }
+
+.toolbar_inner {
+  padding: 0.5rem;
+  border: 1px solid var(--mantine-color-gray-3);
+  background-color: white;
+  border-radius: 4px;
+}

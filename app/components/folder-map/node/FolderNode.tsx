@@ -9,7 +9,7 @@ import {
 } from "@xyflow/react"
 import { IconFolder, IconTrash } from "@tabler/icons-react"
 import styles from "./Node.module.css"
-import { ActionIcon, TextInput } from "@mantine/core"
+import { ActionIcon, Group, TextInput } from "@mantine/core"
 import { useState } from "react"
 import clsx from "clsx"
 
@@ -44,11 +44,13 @@ export function FolderNode({ data, deletable, selected }: FolderNodeProps) {
   return (
     <>
       <FolderNodeHandle type="target" />
-      {deletable && (
+      {true && (
         <NodeToolbar>
-          <ActionIcon variant="light" color="pink" aria-label="delete node">
-            <IconTrash size={18} />
-          </ActionIcon>
+          <Group justify="center" gap="sm" className={styles.toolbar_inner}>
+            <ActionIcon variant="light" color="pink" aria-label="delete node">
+              <IconTrash size={18} />
+            </ActionIcon>
+          </Group>
         </NodeToolbar>
       )}
       <div className={clsx(styles.node, selected && styles.selected)}>
