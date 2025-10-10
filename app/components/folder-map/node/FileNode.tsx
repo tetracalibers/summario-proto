@@ -12,6 +12,8 @@ import { useState } from "react"
 import { ActionIcon, Group, TextInput } from "@mantine/core"
 import { IconExternalLink, IconNote, IconTrash } from "@tabler/icons-react"
 import { clsx } from "clsx"
+import { NavLink } from "react-router"
+import { parseFileNodeId } from "../node-edge-id"
 
 const MAX_CONNECTIONS = 1
 
@@ -39,7 +41,7 @@ interface FileNodeData {
 
 interface FileNodeProps extends NodeProps<Node<FileNodeData>> {}
 
-export function FileNode({ data, deletable, selected }: FileNodeProps) {
+export function FileNode({ data, deletable, selected, id }: FileNodeProps) {
   const [name, setName] = useState(data.label)
 
   return (
@@ -47,7 +49,13 @@ export function FileNode({ data, deletable, selected }: FileNodeProps) {
       <FileNodeHandle type="target" />
       <NodeToolbar>
         <Group justify="center" gap="xs" className={styles.toolbar_inner}>
-          <ActionIcon variant="light" color="cyan" aria-label="open note">
+          <ActionIcon
+            variant="light"
+            color="cyan"
+            aria-label="open note"
+            component={NavLink}
+            to={`/terms/${parseFileNodeId(id)}`}
+          >
             <IconExternalLink size={18} />
           </ActionIcon>
           {deletable && (
