@@ -18,7 +18,7 @@ interface FolderNodeHandleProps {
 }
 
 const FolderNodeHandle = ({ type }: FolderNodeHandleProps) => {
-  const connections = useNodeConnections()
+  const connections = useNodeConnections({ handleType: type })
   return (
     <Handle
       type={type}

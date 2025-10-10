@@ -18,7 +18,7 @@ interface FileNodeHandleProps {
 }
 
 const FileNodeHandle = ({ type }: FileNodeHandleProps) => {
-  const connections = useNodeConnections()
+  const connections = useNodeConnections({ handleType: type })
   return (
     <Handle
       type={type}
