@@ -30,7 +30,7 @@
 
 .toolbar_inner {
   padding: 0.5rem;
-  border: 1px solid var(--mantine-color-gray-3);
+  border: 1px solid rgba(3, 102, 214, 0.3);
   background-color: white;
   border-radius: 4px;
 }

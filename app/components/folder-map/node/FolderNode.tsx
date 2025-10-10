@@ -44,9 +44,9 @@ export function FolderNode({ data, deletable, selected }: FolderNodeProps) {
   return (
     <>
       <FolderNodeHandle type="target" />
-      {true && (
+      {deletable && (
         <NodeToolbar>
-          <Group justify="center" gap="sm" className={styles.toolbar_inner}>
+          <Group justify="center" gap="xs" className={styles.toolbar_inner}>
             <ActionIcon variant="light" color="pink" aria-label="delete node">
               <IconTrash size={18} />
             </ActionIcon>
