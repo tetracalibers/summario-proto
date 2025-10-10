@@ -11,6 +11,7 @@ import { IconFolder, IconTrash } from "@tabler/icons-react"
 import styles from "./Node.module.css"
 import { ActionIcon, TextInput } from "@mantine/core"
 import { useState } from "react"
+import clsx from "clsx"
 
 const MAX_TARGET_CONNECTIONS = 1
 
@@ -37,7 +38,7 @@ interface FolderNodeData {
 
 interface FolderNodeProps extends NodeProps<Node<FolderNodeData>> {}
 
-export function FolderNode({ data, deletable }: FolderNodeProps) {
+export function FolderNode({ data, deletable, selected }: FolderNodeProps) {
   const [name, setName] = useState(data.label)
 
   return (
@@ -50,7 +51,7 @@ export function FolderNode({ data, deletable }: FolderNodeProps) {
           </ActionIcon>
         </NodeToolbar>
       )}
-      <div className={styles.node}>
+      <div className={clsx(styles.node, selected && styles.selected)}>
         <TextInput
           value={name}
           onChange={(event) => setName(event.currentTarget.value)}

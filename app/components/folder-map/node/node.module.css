@@ -6,6 +6,10 @@
   background-color: var(--mantine-color-gray-0);
 }
 
+.selected {
+  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 2px;
+}
+
 .handle {
   min-width: 10px;
   min-height: 10px;

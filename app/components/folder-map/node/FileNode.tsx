@@ -11,6 +11,7 @@ import styles from "./Node.module.css"
 import { useState } from "react"
 import { ActionIcon, Group, TextInput } from "@mantine/core"
 import { IconExternalLink, IconNote, IconTrash } from "@tabler/icons-react"
+import { clsx } from "clsx"
 
 const MAX_CONNECTIONS = 1
 
@@ -38,7 +39,7 @@ interface FileNodeData {
 
 interface FileNodeProps extends NodeProps<Node<FileNodeData>> {}
 
-export function FileNode({ data, deletable }: FileNodeProps) {
+export function FileNode({ data, deletable, selected }: FileNodeProps) {
   const [name, setName] = useState(data.label)
 
   return (
@@ -56,7 +57,7 @@ export function FileNode({ data, deletable }: FileNodeProps) {
           )}
         </Group>
       </NodeToolbar>
-      <div className={styles.node}>
+      <div className={clsx(styles.node, selected && styles.selected)}>
         <TextInput
           value={name}
           onChange={(event) => setName(event.currentTarget.value)}
