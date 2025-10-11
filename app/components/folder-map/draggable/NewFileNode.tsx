@@ -5,6 +5,7 @@ import { useReactFlow, type XYPosition } from "@xyflow/react"
 import { createTmpFileNodeId } from "../node-edge-id"
 import DraggableNode from "./DraggableNode"
 import { useCallback, useState } from "react"
+import { isInMapArea } from "./drop-area"
 
 export default function NewFileNode() {
   const [name, setName] = useState("")
@@ -12,18 +13,7 @@ export default function NewFileNode() {
 
   const handleNodeDrop = useCallback(
     (nodeType: string, screenPosition: XYPosition) => {
-      const flow = document.querySelector(".react-flow")
-      if (!flow) return
-
-      const flowRect = flow.getBoundingClientRect()
-      if (!flowRect) return
-
-      const isInFlow =
-        screenPosition.x >= flowRect.left &&
-        screenPosition.x <= flowRect.right &&
-        screenPosition.y >= flowRect.top &&
-        screenPosition.y <= flowRect.bottom
-      if (!isInFlow) return
+      if (!isInMapArea(screenPosition)) return
 
       // Create a new node and add it to the flow
       const position = screenToFlowPosition(screenPosition)

@@ -26,3 +26,7 @@ const generateRandomId = (): string => {
 export const createTmpFileNodeId = (): string => {
   return createFileNodeId(generateRandomId())
 }
+
+export const createTmpFolderNodeId = (): string => {
+  return createFolderNodeId(generateRandomId())
+}
