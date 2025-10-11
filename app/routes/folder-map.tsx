@@ -3,6 +3,7 @@ import { getLayoutedElements } from "~/components/folder-map/layout"
 import FolderMap from "~/components/folder-map/FolderMap"
 import { getFolderGraph } from "~/service/folder-map"
 import type { Route } from "./+types/folder-map"
+import { ReactFlowProvider } from "@xyflow/react"
 
 export async function loader() {
   const { nodes, edges } = await getFolderGraph()
@@ -15,7 +16,9 @@ export default function FolderMapPage({ loaderData }: Route.ComponentProps) {
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      <FolderMap layoutedNodes={layoutedNodes} layoutedEdges={layoutedEdges} />
+      <ReactFlowProvider>
+        <FolderMap layoutedNodes={layoutedNodes} layoutedEdges={layoutedEdges} />
+      </ReactFlowProvider>
     </div>
   )
 }
