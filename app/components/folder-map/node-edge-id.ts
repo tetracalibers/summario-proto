@@ -18,3 +18,11 @@ export const createFileNodeId = (termId: string): string => {
 export const createFolderNodeId = (folderId: string): string => {
   return FOLDER_NODE_ID_PREFIX + folderId
 }
+
+const generateRandomId = (): string => {
+  return Math.random().toString(36).substring(2, 9)
+}
+
+export const createTmpFileNodeId = (): string => {
+  return createFileNodeId(generateRandomId())
+}
