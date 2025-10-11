@@ -15,6 +15,7 @@ import { clsx } from "clsx"
 import { NavLink } from "react-router"
 import { parseFileNodeId } from "../node-edge-id"
 import DeleteNodeButton from "./DeleteNodeButton"
+import type { FileNodeData } from "../custom-node"
 
 const MAX_CONNECTIONS = 1
 
@@ -32,12 +33,6 @@ const FileNodeHandle = ({ type }: FileNodeHandleProps) => {
       className={styles.handle}
     />
   )
-}
-
-interface FileNodeData {
-  label: string
-  isContentEmpty: boolean
-  [key: string]: unknown
 }
 
 interface FileNodeProps extends NodeProps<Node<FileNodeData>> {}

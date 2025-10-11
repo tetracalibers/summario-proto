@@ -1,5 +1,6 @@
 import type { JSONContent } from "@tiptap/react"
 import { type Edge, type Node } from "@xyflow/react"
+import { FILE_NODE_TYPE, FOLDER_NODE_TYPE } from "~/components/folder-map/custom-node"
 import {
   createEdgeId,
   createFileNodeId,
@@ -43,7 +44,7 @@ export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }
         tmp: false
       },
       position: TMP_POSITION,
-      type: "folder",
+      type: FOLDER_NODE_TYPE,
       deletable: !hasChildren
     }
   })
@@ -57,7 +58,7 @@ export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }
         tmp: false
       },
       position: TMP_POSITION,
-      type: "file",
+      type: FILE_NODE_TYPE,
       deletable: isContentEmpty
     }
   })

@@ -2,24 +2,25 @@ import { TextInput } from "@mantine/core"
 import { IconGripHorizontal, IconFolder } from "@tabler/icons-react"
 import { useCallback, useState } from "react"
 import styles from "./NewNode.module.css"
-import { useReactFlow, type XYPosition } from "@xyflow/react"
+import { useReactFlow, type XYPosition, type Node } from "@xyflow/react"
 import { isInMapArea } from "./drop-area"
 import { createTmpFolderNodeId } from "../node-edge-id"
 import DraggableNode from "./DraggableNode"
+import { FOLDER_NODE_TYPE, type FolderNodeData } from "../custom-node"
 
 export default function NewFolderNode() {
   const [name, setName] = useState("")
   const { setNodes, screenToFlowPosition } = useReactFlow()
 
   const handleNodeDrop = useCallback(
-    (nodeType: string, screenPosition: XYPosition) => {
+    (screenPosition: XYPosition) => {
       if (!isInMapArea(screenPosition)) return
 
       // Create a new node and add it to the flow
       const position = screenToFlowPosition(screenPosition)
-      const newNode = {
+      const newNode: Node<FolderNodeData> = {
         id: createTmpFolderNodeId(),
-        type: nodeType,
+        type: FOLDER_NODE_TYPE,
         position,
         data: {
           label: name.trim(),
@@ -35,7 +36,7 @@ export default function NewFolderNode() {
   )
 
   return (
-    <DraggableNode className={styles.node} nodeType="folder" onDrop={handleNodeDrop}>
+    <DraggableNode className={styles.node} onDrop={handleNodeDrop}>
       <TextInput
         value={name}
         onChange={(event) => setName(event.currentTarget.value)}

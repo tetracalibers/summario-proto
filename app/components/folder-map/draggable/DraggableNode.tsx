@@ -4,16 +4,10 @@ import { useDraggable } from "@neodrag/react"
 
 interface Props {
   className?: string
-  nodeType: string
-  onDrop: (nodeType: string, position: XYPosition) => void
+  onDrop: (position: XYPosition) => void
 }
 
-export default function DraggableNode({
-  className,
-  children,
-  nodeType,
-  onDrop
-}: PropsWithChildren<Props>) {
+export default function DraggableNode({ className, children, onDrop }: PropsWithChildren<Props>) {
   const draggingRef = useRef(false)
   const draggableRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState<XYPosition>({ x: 0, y: 0 })
@@ -44,7 +38,7 @@ export default function DraggableNode({
 
     // onDrop はここで呼ぶ
     // Why?: React のイベントなら毎レンダーで最新 props を参照できる
-    onDrop(nodeType, { x, y })
+    onDrop({ x, y })
 
     draggingRef.current = false
   }

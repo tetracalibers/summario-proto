@@ -19,10 +19,11 @@ import AlignButton from "./button/AlignButton"
 import panelStyles from "./Panel.module.css"
 import NewFileNode from "./draggable/NewFileNode"
 import NewFolderNode from "./draggable/NewFolderNode"
+import { FILE_NODE_TYPE, FOLDER_NODE_TYPE } from "./custom-node"
 
 const customNodes = {
-  file: FileNode,
-  folder: FolderNode
+  [FILE_NODE_TYPE]: FileNode,
+  [FOLDER_NODE_TYPE]: FolderNode
 }
 
 interface Props {

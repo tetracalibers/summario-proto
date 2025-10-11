@@ -1,25 +1,26 @@
 import { TextInput } from "@mantine/core"
 import { IconGripHorizontal, IconNote } from "@tabler/icons-react"
 import styles from "./NewNode.module.css"
-import { useReactFlow, type XYPosition } from "@xyflow/react"
+import { useReactFlow, type XYPosition, type Node } from "@xyflow/react"
 import { createTmpFileNodeId } from "../node-edge-id"
 import DraggableNode from "./DraggableNode"
 import { useCallback, useState } from "react"
 import { isInMapArea } from "./drop-area"
+import { FILE_NODE_TYPE, type FileNodeData } from "../custom-node"
 
 export default function NewFileNode() {
   const [name, setName] = useState("")
   const { setNodes, screenToFlowPosition } = useReactFlow()
 
   const handleNodeDrop = useCallback(
-    (nodeType: string, screenPosition: XYPosition) => {
+    (screenPosition: XYPosition) => {
       if (!isInMapArea(screenPosition)) return
 
       // Create a new node and add it to the flow
       const position = screenToFlowPosition(screenPosition)
-      const newNode = {
+      const newNode: Node<FileNodeData> = {
         id: createTmpFileNodeId(),
-        type: nodeType,
+        type: FILE_NODE_TYPE,
         position,
         data: {
           label: name.trim(),
@@ -36,7 +37,7 @@ export default function NewFileNode() {
   )
 
   return (
-    <DraggableNode className={styles.node} nodeType="file" onDrop={handleNodeDrop}>
+    <DraggableNode className={styles.node} onDrop={handleNodeDrop}>
       <TextInput
         value={name}
         onChange={(event) => setName(event.currentTarget.value)}
