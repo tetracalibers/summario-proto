@@ -17,13 +17,12 @@ export default function NewFolderNode() {
 
       // Create a new node and add it to the flow
       const position = screenToFlowPosition(screenPosition)
-      const trimmedName = name.trim()
       const newNode = {
         id: createTmpFolderNodeId(),
         type: nodeType,
         position,
         data: {
-          label: trimmedName.length > 0 ? trimmedName : "No Title",
+          label: name.trim(),
           tmp: true
         },
         deletable: true

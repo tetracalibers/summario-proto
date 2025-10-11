@@ -17,13 +17,12 @@ export default function NewFileNode() {
 
       // Create a new node and add it to the flow
       const position = screenToFlowPosition(screenPosition)
-      const trimmedName = name.trim()
       const newNode = {
         id: createTmpFileNodeId(),
         type: nodeType,
         position,
         data: {
-          label: trimmedName.length > 0 ? trimmedName : "No Title",
+          label: name.trim(),
           isContentEmpty: true,
           tmp: true
         },
