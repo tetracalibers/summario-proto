@@ -22,26 +22,44 @@ const judgeContentEmpty = (json: JSONContent) => {
 }
 
 export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }> => {
-  const [allFolders, allTerms] = await Promise.all([selectAllFolders(), selectAllTerms()])
+  const [folders, terms] = await Promise.all([selectAllFolders(), selectAllTerms()])
 
-  const folderNodes = allFolders.map((folder) => ({
-    id: `folder-${folder.id}`,
-    data: { label: folder.name },
-    position: TMP_POSITION,
-    type: "folder",
-    deletable: false
-  }))
-  const termNodes = allTerms.map((term) => ({
-    id: `term-${term.id}`,
-    data: { label: term.title, isContentEmpty: judgeContentEmpty(term.content as JSONContent) },
-    position: TMP_POSITION,
-    type: "file",
-    deletable: false
-  }))
+  const hasChildrenFolderIds = new Set([
+    ...folders.filter((folder) => folder.parentId !== null).map((folder) => folder.parentId!),
+    ...terms.filter((term) => term.folderId !== null).map((term) => term.folderId!)
+  ])
+
+  const folderNodes = folders.map((folder) => {
+    const hasChildren = hasChildrenFolderIds.has(folder.id)
+    return {
+      id: `folder-${folder.id}`,
+      data: {
+        label: folder.name,
+        tmp: false
+      },
+      position: TMP_POSITION,
+      type: "folder",
+      deletable: !hasChildren
+    }
+  })
+  const termNodes = terms.map((term) => {
+    const isContentEmpty = judgeContentEmpty(term.content as JSONContent)
+    return {
+      id: `term-${term.id}`,
+      data: {
+        label: term.title,
+        isContentEmpty,
+        tmp: false
+      },
+      position: TMP_POSITION,
+      type: "file",
+      deletable: isContentEmpty
+    }
+  })
 
   // フォルダとフォルダ、フォルダと用語の関係をエッジとして追加
-  const edges = []
-  for (const folder of allFolders) {
+  const edges: Edge[] = []
+  for (const folder of folders) {
     if (folder.parentId) {
       edges.push({
         id: `folder-${folder.parentId}--folder-${folder.id}`,
@@ -50,7 +68,7 @@ export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }
       })
     }
   }
-  for (const term of allTerms) {
+  for (const term of terms) {
     if (term.folderId) {
       edges.push({
         id: `folder-${term.folderId}--term-${term.id}`,
