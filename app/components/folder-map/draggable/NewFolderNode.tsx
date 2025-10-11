@@ -25,7 +25,8 @@ export default function NewFolderNode() {
         data: {
           label: trimmedName.length > 0 ? trimmedName : "No Title",
           tmp: true
-        }
+        },
+        deletable: true
       }
       setNodes((nds) => [...nds, newNode])
       // Reset the input field

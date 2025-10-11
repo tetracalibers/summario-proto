@@ -26,7 +26,8 @@ export default function NewFileNode() {
           label: trimmedName.length > 0 ? trimmedName : "No Title",
           isContentEmpty: true,
           tmp: true
-        }
+        },
+        deletable: true
       }
       setNodes((nds) => [...nds, newNode])
       // Reset the input field
