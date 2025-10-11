@@ -1,0 +1,36 @@
+.node {
+  min-width: 150px;
+  padding: 10px;
+  border-radius: 3px;
+  border: 1px solid var(--mantine-color-gray-4);
+  background-color: var(--mantine-color-gray-0);
+}
+
+.selected {
+  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 2px;
+}
+
+.handle {
+  min-width: 10px;
+  min-height: 10px;
+  background-color: #f6f6f6;
+  border: 1px solid var(--mantine-color-pale-indigo-5);
+}
+
+.input_maybe_disabled input:disabled {
+  background-color: var(--mantine-color-gray-0);
+  border-color: var(--mantine-color-gray-0);
+  color: #000;
+  -webkit-text-fill-color: #000; /* Safari/iOS向けに強制的に文字色を設定 */
+  opacity: 1; /* 一部ブラウザがデフォルトで薄く描画するのを防ぐ */
+
+  pointer-events: none; /* クリック・ドラッグは親へ通す */
+  user-select: none; /* テキスト選択も防いでドラッグを阻害しない */
+}
+
+.toolbar_inner {
+  padding: 0.5rem;
+  border: 1px solid rgba(3, 102, 214, 0.3);
+  background-color: white;
+  border-radius: 4px;
+}
