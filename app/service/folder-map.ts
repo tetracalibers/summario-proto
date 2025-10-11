@@ -1,5 +1,10 @@
 import type { JSONContent } from "@tiptap/react"
 import { type Edge, type Node } from "@xyflow/react"
+import {
+  createEdgeId,
+  createFileNodeId,
+  createFolderNodeId
+} from "~/components/folder-map/node-edge-id"
 import { selectAllFolders, selectAllTerms } from "~/db/query"
 
 const TMP_POSITION = { x: 0, y: 0 }
@@ -32,7 +37,7 @@ export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }
   const folderNodes = folders.map((folder) => {
     const hasChildren = hasChildrenFolderIds.has(folder.id)
     return {
-      id: `folder-${folder.id}`,
+      id: createFolderNodeId(folder.id),
       data: {
         label: folder.name,
         tmp: false
@@ -45,7 +50,7 @@ export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }
   const termNodes = terms.map((term) => {
     const isContentEmpty = judgeContentEmpty(term.content as JSONContent)
     return {
-      id: `term-${term.id}`,
+      id: createFileNodeId(term.id),
       data: {
         label: term.title,
         isContentEmpty,
@@ -61,19 +66,23 @@ export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }
   const edges: Edge[] = []
   for (const folder of folders) {
     if (folder.parentId) {
+      const sourceId = createFolderNodeId(folder.parentId)
+      const targetId = createFolderNodeId(folder.id)
       edges.push({
-        id: `folder-${folder.parentId}--folder-${folder.id}`,
-        source: `folder-${folder.parentId}`,
-        target: `folder-${folder.id}`
+        id: createEdgeId(sourceId, targetId),
+        source: sourceId,
+        target: targetId
       })
     }
   }
   for (const term of terms) {
     if (term.folderId) {
+      const sourceId = createFolderNodeId(term.folderId)
+      const targetId = createFileNodeId(term.id)
       edges.push({
-        id: `folder-${term.folderId}--term-${term.id}`,
-        source: `folder-${term.folderId}`,
-        target: `term-${term.id}`
+        id: createEdgeId(sourceId, targetId),
+        source: sourceId,
+        target: targetId
       })
     }
   }

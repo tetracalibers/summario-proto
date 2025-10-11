@@ -11,12 +11,16 @@ export const parseFolderNodeId = (id: string): string | null => {
   return id.slice(FOLDER_NODE_ID_PREFIX.length)
 }
 
-export const createFileNodeId = (termId: string): string => {
+export const createFileNodeId = (termId: string | number): string => {
   return FILE_NODE_ID_PREFIX + termId
 }
 
-export const createFolderNodeId = (folderId: string): string => {
+export const createFolderNodeId = (folderId: string | number): string => {
   return FOLDER_NODE_ID_PREFIX + folderId
+}
+
+export const createEdgeId = (sourceId: string, targetId: string): string => {
+  return `${sourceId}--${targetId}`
 }
 
 const generateRandomId = (): string => {
