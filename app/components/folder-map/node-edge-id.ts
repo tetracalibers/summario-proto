@@ -23,8 +23,10 @@ export const createEdgeId = (sourceId: string, targetId: string): string => {
   return `${sourceId}--${targetId}`
 }
 
+// ref: https://qiita.com/coa00/items/679b0b5c7c468698d53f
 const generateRandomId = (): string => {
-  return Math.random().toString(36).substring(2, 9)
+  const strong = 1000
+  return new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16)
 }
 
 export const createTmpFileNodeId = (): string => {
