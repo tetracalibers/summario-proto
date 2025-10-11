@@ -10,10 +10,11 @@ import {
 import styles from "./Node.module.css"
 import { useState } from "react"
 import { ActionIcon, Group, TextInput } from "@mantine/core"
-import { IconExternalLink, IconNote, IconTrash } from "@tabler/icons-react"
+import { IconExternalLink, IconNote } from "@tabler/icons-react"
 import { clsx } from "clsx"
 import { NavLink } from "react-router"
 import { parseFileNodeId } from "../node-edge-id"
+import DeleteNodeButton from "./DeleteNodeButton"
 
 const MAX_CONNECTIONS = 1
 
@@ -58,11 +59,7 @@ export function FileNode({ data, deletable, selected, id }: FileNodeProps) {
           >
             <IconExternalLink size={18} />
           </ActionIcon>
-          {deletable && (
-            <ActionIcon variant="light" color="pink" aria-label="delete node">
-              <IconTrash size={18} />
-            </ActionIcon>
-          )}
+          {deletable && <DeleteNodeButton id={id} />}
         </Group>
       </NodeToolbar>
       <div className={clsx(styles.node, selected && styles.selected)}>

@@ -7,11 +7,12 @@ import {
   type HandleType,
   NodeToolbar
 } from "@xyflow/react"
-import { IconFolder, IconTrash } from "@tabler/icons-react"
+import { IconFolder } from "@tabler/icons-react"
 import styles from "./Node.module.css"
-import { ActionIcon, Group, TextInput } from "@mantine/core"
+import { Group, TextInput } from "@mantine/core"
 import { useState } from "react"
 import clsx from "clsx"
+import DeleteNodeButton from "./DeleteNodeButton"
 
 const MAX_TARGET_CONNECTIONS = 1
 
@@ -38,7 +39,7 @@ interface FolderNodeData {
 
 interface FolderNodeProps extends NodeProps<Node<FolderNodeData>> {}
 
-export function FolderNode({ data, deletable, selected }: FolderNodeProps) {
+export function FolderNode({ data, deletable, selected, id }: FolderNodeProps) {
   const [name, setName] = useState(data.label)
 
   return (
@@ -47,9 +48,7 @@ export function FolderNode({ data, deletable, selected }: FolderNodeProps) {
       {deletable && (
         <NodeToolbar>
           <Group justify="center" gap="xs" className={styles.toolbar_inner}>
-            <ActionIcon variant="light" color="pink" aria-label="delete node">
-              <IconTrash size={18} />
-            </ActionIcon>
+            <DeleteNodeButton id={id} />
           </Group>
         </NodeToolbar>
       )}
