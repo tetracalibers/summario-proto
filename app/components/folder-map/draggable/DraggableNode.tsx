@@ -14,11 +14,16 @@ export default function DraggableNode({
   nodeType,
   onDrop
 }: PropsWithChildren<Props>) {
+  const draggingRef = useRef(false)
   const draggableRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState<XYPosition>({ x: 0, y: 0 })
 
   const { dragState } = useDraggable(draggableRef as RefObject<HTMLDivElement>, {
     position: position,
+    threshold: { distance: 50 },
+    onDragStart() {
+      draggingRef.current = true
+    },
     onDrag: ({ offsetX, offsetY }) => {
       // Calculate position relative to the viewport
       setPosition({ x: offsetX, y: offsetY })
@@ -31,12 +36,17 @@ export default function DraggableNode({
   })
 
   const handlePointerUp: React.PointerEventHandler<HTMLDivElement> = (e) => {
+    if (!draggingRef.current) return
+
     // dragState に最終座標が入っていれば優先的に使う
     const x = dragState?.event?.clientX ?? e.clientX
     const y = dragState?.event?.clientY ?? e.clientY
+
     // onDrop はここで呼ぶ
     // Why?: React のイベントなら毎レンダーで最新 props を参照できる
     onDrop(nodeType, { x, y })
+
+    draggingRef.current = false
   }
 
   const handlePointerDown: React.PointerEventHandler<HTMLDivElement> = (e) => {
