@@ -1,6 +1,7 @@
 import { NavLink } from "react-router"
 import ItemContent from "./ItemContent"
 import { IconNote } from "@tabler/icons-react"
+import styles from "./Link.module.css"
 
 interface Props {
   targetTerm: {
@@ -14,7 +15,7 @@ export default function FileLink({ targetTerm }: Props) {
   return (
     <NavLink
       to={`/terms/${targetTerm.id}${targetTerm.parentId ? `?dir=${targetTerm.parentId}` : ""}`}
-      style={{ textDecoration: "none", color: "inherit" }}
+      className={styles.link}
     >
       <ItemContent
         label={targetTerm.name}

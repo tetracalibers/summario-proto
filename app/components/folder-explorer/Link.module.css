@@ -1,0 +1,9 @@
+.link {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+}
+
+.link[aria-current="page"] {
+  background-color: var(--mantine-color-magenta-0);
+}
