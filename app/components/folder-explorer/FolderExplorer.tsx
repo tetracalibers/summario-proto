@@ -7,21 +7,22 @@ import { useState } from "react"
 import type { loader } from "~/routes/api/folder"
 
 interface Props {
-  currentFolderId?: number | null
+  initialFolder: Awaited<ReturnType<typeof loader>>
 }
 
-export default function FolderExplorer({ currentFolderId }: Props) {
-  const [folderId, setFolderId] = useState(currentFolderId ?? "root")
+export default function FolderExplorer({ initialFolder }: Props) {
+  const [folderId, setFolderId] = useState(initialFolder?.current?.id ?? "root")
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
     queryKey: ["folders", "detail", { folderId }],
     queryFn: () => fetch(`/api/folder/${folderId}`).then((res) => res.json()),
     refetchOnWindowFocus: false,
-    staleTime: Infinity
+    staleTime: Infinity,
+    placeholderData: initialFolder
   })
 
   return (
-    <div className={styles.root}>
+    <div>
       <div>{data?.current?.name ?? "(root)"}</div>
       {data?.current && !data.current.isRoot && (
         <UnstyledButton
