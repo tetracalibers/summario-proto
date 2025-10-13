@@ -69,6 +69,18 @@ export const selectAllFolders = async () => {
   return db.select().from(folders).orderBy(asc(folders.parentId), asc(folders.id))
 }
 
+export const selectFolderById = async (folderId: number) => {
+  return db
+    .select({
+      id: folders.id,
+      name: folders.name,
+      parentId: folders.parentId,
+      isRoot: sql<boolean>`(${isNull(folders.id)})`.as("is_root")
+    })
+    .from(folders)
+    .where(eq(folders.id, folderId))
+}
+
 export const queryFolderContents = async (folderId: number | null) => {
   // CTE: base（必ず base_path と base_id を1行で返す）
   // base_path: 末尾スラッシュ付き（例: "/", "/parent/child/"）

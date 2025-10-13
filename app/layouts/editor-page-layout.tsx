@@ -2,7 +2,7 @@ import "./editor-page.css"
 
 import { Outlet } from "react-router"
 import type { Route } from "./+types/editor-page-layout"
-import { getFolderContents } from "~/service/folder"
+import { getFolder, getFolderContents } from "~/service/folder"
 import { Paper } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
 import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
@@ -14,15 +14,16 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 
   const url = new URL(request.url)
   const dirQuery = url.searchParams.get("dir")
-  const dir = dirQuery ? Number(dirQuery) : null
+  const currentDirId = dirQuery ? Number(dirQuery) : null
 
-  const folderContents = await getFolderContents(dir)
+  const folderContents = await getFolderContents(currentDirId)
+  const currentFolder = await getFolder(currentDirId)
 
-  return { folderContents, termId }
+  return { folderContents, termId, currentFolder }
 }
 
 export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
-  const { folderContents, termId } = loaderData
+  const { folderContents, termId, currentFolder } = loaderData
 
   return (
     <div className="editor-page">
@@ -34,7 +35,11 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
           <Split.Pane>
             <Paper shadow="xs" withBorder p="0" h="100%">
               <ScrollArea h="100%" p="1rem">
-                <FolderExplorer currentTermId={termId} items={folderContents} />
+                <FolderExplorer
+                  currentTermId={termId}
+                  currentFolder={currentFolder}
+                  items={folderContents}
+                />
               </ScrollArea>
             </Paper>
           </Split.Pane>

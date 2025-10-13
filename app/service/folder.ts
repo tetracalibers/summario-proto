@@ -4,6 +4,7 @@ import {
   queryTermPath,
   selectAllFolders,
   selectAllTerms,
+  selectFolderById,
   selectTermById
 } from "~/db/query"
 import type { Folder, Term } from "~/db/schema"
@@ -98,4 +99,10 @@ export const sortTermsByNearestFolder = (terms: Term[], folderId: number | null)
 
 export const getFolderContents = async (folderId: number | null) => {
   return queryFolderContents(folderId)
+}
+
+export const getFolder = async (folderId: number | null) => {
+  if (folderId === null) return null
+  const [folder] = await selectFolderById(folderId)
+  return folder
 }

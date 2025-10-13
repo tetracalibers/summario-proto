@@ -1,7 +1,7 @@
 import { NavLink } from "react-router"
 import ItemContent from "./ItemContent"
 import { IconNote } from "@tabler/icons-react"
-import styles from "./Link.module.css"
+import styles from "./FileLink.module.css"
 
 interface Props {
   targetTerm: {
