@@ -14,8 +14,10 @@ export default function FolderExplorer({ currentFolderId }: Props) {
   const [folderId, setFolderId] = useState(currentFolderId ?? "root")
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
-    queryKey: ["folders", "detail", folderId],
-    queryFn: () => fetch(`/api/folder/${folderId}`).then((res) => res.json())
+    queryKey: ["folders", "detail", { folderId }],
+    queryFn: () => fetch(`/api/folder/${folderId}`).then((res) => res.json()),
+    refetchOnWindowFocus: false,
+    staleTime: Infinity
   })
 
   return (
