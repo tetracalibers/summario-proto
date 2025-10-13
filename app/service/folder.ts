@@ -96,6 +96,6 @@ export const sortTermsByNearestFolder = (terms: Term[], folderId: number | null)
   })
 }
 
-export const getFolderContents = async (folderId: string | null) => {
-  return queryFolderContents(Number(folderId))
+export const getFolderContents = async (folderId: number | null) => {
+  return queryFolderContents(folderId)
 }

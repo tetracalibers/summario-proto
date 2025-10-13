@@ -14,7 +14,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 
   const url = new URL(request.url)
   const dirQuery = url.searchParams.get("dir")
-  const dir = dirQuery ? dirQuery : null
+  const dir = dirQuery ? Number(dirQuery) : null
 
   const folderContents = await getFolderContents(dir)
 
