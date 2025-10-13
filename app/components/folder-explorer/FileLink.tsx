@@ -13,10 +13,7 @@ interface Props {
 
 export default function FileLink({ targetTerm }: Props) {
   return (
-    <NavLink
-      to={`/terms/${targetTerm.id}${targetTerm.parentId ? `?dir=${targetTerm.parentId}` : ""}`}
-      className={styles.link}
-    >
+    <NavLink to={`/terms/${targetTerm.id}`} className={styles.link}>
       <ItemContent
         label={targetTerm.name}
         Icon={() => <IconNote size={18} color="var(--mantine-color-cyan-4)" />}
