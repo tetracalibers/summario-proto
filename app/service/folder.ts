@@ -1,5 +1,11 @@
 import type { TreeNodeData } from "@mantine/core"
-import { queryTermPath, selectAllFolders, selectAllTerms, selectTermById } from "~/db/query"
+import {
+  queryFolderContents,
+  queryTermPath,
+  selectAllFolders,
+  selectAllTerms,
+  selectTermById
+} from "~/db/query"
 import type { Folder, Term } from "~/db/schema"
 
 const rawDataToUIData = (folder: Folder): TreeNodeData => ({
@@ -88,4 +94,8 @@ export const sortTermsByNearestFolder = (terms: Term[], folderId: number | null)
     const bDistance = b.folderId === folderId ? 0 : 1
     return aDistance - bDistance
   })
+}
+
+export const getFolderContents = async (folderId: string | null) => {
+  return queryFolderContents(Number(folderId))
 }
