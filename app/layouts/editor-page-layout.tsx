@@ -2,28 +2,24 @@ import "./editor-page.css"
 
 import { Outlet } from "react-router"
 import type { Route } from "./+types/editor-page-layout"
-import { getFolder, getFolderContents } from "~/service/folder"
 import { Paper } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
 import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import ScrollArea from "~/components/scroll-area/ScrollArea"
 import FolderExplorer from "~/components/folder-explorer/FolderExplorer"
+import { getTermById } from "~/service/term"
 
-export async function loader({ params, request }: Route.LoaderArgs) {
+export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params
 
-  const url = new URL(request.url)
-  const dirQuery = url.searchParams.get("dir")
-  const currentDirId = dirQuery ? Number(dirQuery) : null
+  const term = await getTermById(Number(termId))
+  const currentFolderId = term?.folderId ?? null
 
-  const folderContents = await getFolderContents(currentDirId)
-  const currentFolder = await getFolder(currentDirId)
-
-  return { folderContents, termId, currentFolder }
+  return { currentFolderId }
 }
 
 export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
-  const { folderContents, termId, currentFolder } = loaderData
+  const { currentFolderId } = loaderData
 
   return (
     <div className="editor-page">
@@ -32,14 +28,10 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
       </div> */}
       <div className="leftside-area">
         <Split orientation="horizontal" h="100%" spacing="md">
-          <Split.Pane>
+          <Split.Pane minHeight="40%">
             <Paper shadow="xs" withBorder p="0" h="100%">
               <ScrollArea h="100%" p="1rem">
-                <FolderExplorer
-                  currentTermId={termId}
-                  currentFolder={currentFolder}
-                  items={folderContents}
-                />
+                <FolderExplorer currentFolderId={currentFolderId} />
               </ScrollArea>
             </Paper>
           </Split.Pane>

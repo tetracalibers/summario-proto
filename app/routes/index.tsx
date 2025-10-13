@@ -6,6 +6,6 @@ export async function loader() {
   if (!term) throw new Response("No recent term found", { status: 404 })
 
   const termId = term.id.toString()
-  const dirQuery = term.folderId ? `?dir=${term.folderId}` : ""
-  return redirect(`/terms/${termId}${dirQuery}`)
+
+  return redirect(`/terms/${termId}`)
 }

@@ -1,42 +1,45 @@
-import { NavLink } from "react-router"
 import FileLink from "./FileLink"
 import FolderLink from "./FolderLink"
 import styles from "./FolderExplorer.module.css"
+import { UnstyledButton } from "@mantine/core"
+import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
+import type { loader } from "~/routes/api/folder"
 
 interface Props {
-  currentTermId: string
-  currentFolder: {
-    name: string
-    parentId: number | null
-    isRoot: boolean
-  } | null
-  items: {
-    id: number | string
-    name: string
-    fullPath: string
-    parentId: number | null
-    type: "folder" | "file"
-  }[]
+  currentFolderId?: number | null
 }
 
-export default function FolderExplorer({ currentTermId, currentFolder, items }: Props) {
+export default function FolderExplorer({ currentFolderId }: Props) {
+  const [folderId, setFolderId] = useState(currentFolderId ?? "root")
+
+  const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
+    queryKey: ["folders", "detail", folderId],
+    queryFn: () => fetch(`/api/folder/${folderId}`).then((res) => res.json())
+  })
+
   return (
     <div className={styles.root}>
-      <div>{currentFolder?.name ?? "(root)"}</div>
-      {currentFolder && !currentFolder.isRoot && (
-        <NavLink
-          to={`/terms/${currentTermId}${currentFolder.parentId ? `?dir=${currentFolder.parentId}` : ""}`}
-          style={{ textDecoration: "none", color: "inherit" }}
-          viewTransition
+      <div>{data?.current?.name ?? "(root)"}</div>
+      {data?.current && !data.current.isRoot && (
+        <UnstyledButton
+          onClick={() => {
+            setFolderId(data.current?.parentId ?? "root")
+          }}
         >
           <pre>cd ..</pre>
-        </NavLink>
+        </UnstyledButton>
       )}
       <ul className={styles.list}>
-        {items.map((item) => (
+        {data?.entries.map((item) => (
           <li key={`${item.type}-${item.id}`}>
             {item.type === "folder" ? (
-              <FolderLink currentTermId={currentTermId} folderId={item.id} folderName={item.name} />
+              <FolderLink
+                onClick={() => {
+                  setFolderId(item.id)
+                }}
+                folderName={item.name}
+              />
             ) : (
               <FileLink targetTerm={item} />
             )}

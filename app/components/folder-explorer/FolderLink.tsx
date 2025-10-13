@@ -1,24 +1,19 @@
-import { NavLink } from "react-router"
 import ItemContent from "./ItemContent"
 import { IconFolder } from "@tabler/icons-react"
+import { UnstyledButton } from "@mantine/core"
 
 interface Props {
-  currentTermId: string
-  folderId: string | number
   folderName: string
+  onClick: () => void
 }
 
-export default function FolderLink({ currentTermId, folderId, folderName }: Props) {
+export default function FolderLink({ folderName, onClick }: Props) {
   return (
-    <NavLink
-      to={`/terms/${currentTermId}?dir=${folderId}`}
-      style={{ textDecoration: "none", color: "inherit" }}
-      viewTransition
-    >
+    <UnstyledButton onClick={onClick}>
       <ItemContent
         label={folderName}
         Icon={() => <IconFolder size={18} color="var(--mantine-color-bright-orange-6)" />}
       />
-    </NavLink>
+    </UnstyledButton>
   )
 }
