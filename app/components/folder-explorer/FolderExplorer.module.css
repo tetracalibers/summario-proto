@@ -25,6 +25,7 @@
   align-items: center;
   font-family: monospace;
   color: var(--mantine-color-gray-8);
+  padding-inline-start: 4px;
 }
 
 .new_button {
@@ -37,7 +38,8 @@
   gap: 5px;
   font-size: 0.8rem;
   color: var(--mantine-color-gray-7);
-  padding-inline: 0.5rem;
+  padding-inline-start: calc(0.5rem + 2px); /** EntryLinkと縦に揃える */
+  padding-inline-end: 0.5rem;
 }
 
 .list {
