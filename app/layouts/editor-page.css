@@ -21,6 +21,8 @@
     grid-area: controls;
 
     display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
     width: 100%;
     gap: 0.5rem;
   }

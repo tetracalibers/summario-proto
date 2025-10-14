@@ -10,6 +10,7 @@ import RelatedTermView from "~/components/related-term-view/RelatedTermView"
 import RelatedInput from "~/components/related-input/RelatedInput"
 import FolderPath from "~/components/folder-path/FolderPath"
 import { getFolderPath } from "~/service/folder"
+import EditorActionMenu from "~/components/editor-action-menu/EditorActionMenu"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const termId = Number(params.termId)
@@ -35,6 +36,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
       <EditorWith initialJSON={term.content}>
         <div className="controls-area">
           <FolderPath folders={paths} />
+          <EditorActionMenu />
         </div>
         <div className="save-area">
           <SaveButton />
