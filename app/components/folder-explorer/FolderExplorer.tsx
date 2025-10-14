@@ -12,7 +12,7 @@ import {
   IconPencilPlus,
   IconExternalLink
 } from "@tabler/icons-react"
-import { NavLink } from "react-router"
+import { Link, NavLink } from "react-router"
 import ScrollArea from "../scroll-area/ScrollArea"
 
 interface Props {
@@ -80,10 +80,16 @@ export default function FolderExplorer({ initialFolder, pathFolderIds, currentTe
           ))}
         </ul>
       </ScrollArea>
-      <NavLink to="/folder-map" className={styles.folder_map_link} reloadDocument>
-        Edit structure...
-        <IconExternalLink size={14} color="var(--mantine-color-gray-6)" />
-      </NavLink>
+      <Link
+        to="/folder-map"
+        className={styles.folder_map_link}
+        reloadDocument
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Edit structure
+        <IconExternalLink size={14} color="var(--mantine-color-gray-7)" />
+      </Link>
     </div>
   )
 }
