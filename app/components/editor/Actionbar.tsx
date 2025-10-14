@@ -99,7 +99,7 @@ interface Props {
 
 const EditorActionbar = ({ editor }: Props) => {
   return (
-    <RichTextEditor.Toolbar sticky>
+    <RichTextEditor.Toolbar sticky pt={0}>
       <RichTextEditor.ControlsGroup>
         <RichTextEditor.Undo />
         <RichTextEditor.Redo />
