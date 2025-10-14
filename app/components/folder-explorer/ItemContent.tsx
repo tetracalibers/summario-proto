@@ -12,7 +12,7 @@ export default function ItemContent({ label, Icon }: Props) {
       <Icon />
       <span
         style={{
-          fontSize: "0.9rem",
+          fontSize: "0.8rem",
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
           overflow: "hidden"

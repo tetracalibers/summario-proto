@@ -33,7 +33,7 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
         <Split orientation="horizontal" h="100%" spacing="md">
           <Split.Pane>
             <Paper shadow="xs" withBorder p="0" h="100%">
-              <ScrollArea h="100%" p="1rem">
+              <ScrollArea h="100%">
                 <FolderExplorer initialFolder={initialFolder} />
               </ScrollArea>
             </Paper>

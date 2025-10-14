@@ -9,7 +9,7 @@ interface Props {
 
 export default function FolderLink({ folderName, onClick }: Props) {
   return (
-    <UnstyledButton onClick={onClick}>
+    <UnstyledButton onClick={onClick} style={{ padding: 2, borderRadius: 4 }}>
       <ItemContent
         label={folderName}
         Icon={() => <IconFolder size={18} color="var(--mantine-color-bright-orange-6)" />}

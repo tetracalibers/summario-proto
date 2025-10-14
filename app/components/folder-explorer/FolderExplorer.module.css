@@ -1,5 +1,56 @@
+.root {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+.header {
+  display: grid;
+  gap: 0.25rem;
+  padding-block-end: 0.25rem;
+  position: sticky;
+  top: 0;
+  background-color: var(--mantine-color-pale-indigo-0);
+}
+
+.action {
+  display: flex;
+  justify-content: space-between;
+}
+
+.back_button {
+  display: flex;
+  align-items: center;
+  font-family: monospace;
+  color: var(--mantine-color-gray-8);
+}
+
+.dirname {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: var(--mantine-color-gray-7);
+  padding-inline: 0.5rem;
+}
+
 .list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0.5rem;
+}
+
+.folder_map_link {
+  color: var(--mantine-color-gray-6);
+  text-decoration: none;
+  font-size: 0.8rem;
+  padding-inline-end: 0.25rem;
+  padding-block: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: end;
+  position: sticky;
+  gap: 3px;
+  bottom: 0;
+  background-color: white;
 }
