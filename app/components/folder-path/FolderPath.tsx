@@ -6,8 +6,6 @@ interface Props {
 }
 
 export default function FolderPath({ folders }: Props) {
-  if (folders.length === 0) return null
-
   return (
     <ul className={styles.list}>
       {folders.map((folder) => (
