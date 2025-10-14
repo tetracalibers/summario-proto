@@ -60,7 +60,7 @@ export default function RelatedTermView({ centerNode }: Props) {
               height: "100%",
               margin: 0,
               textAlign: "center",
-              color: "var(--mantine-color-gray-5)"
+              color: "var(--mantine-color-gray-6)"
             }}
           >
             Clicking a node on the graph...

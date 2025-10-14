@@ -6,7 +6,7 @@
 }
 
 .entry_link svg {
-  --icon-color: oklch(from var(--mantine-color-pale-indigo-0) calc(l - 0.15) c h);
+  --icon-color: var(--mantine-color-gray-6);
   stroke: var(--icon-color);
 }
 
@@ -16,6 +16,7 @@
 }
 
 .folder_link svg {
+  stroke: none;
   fill: var(--icon-color);
 }
 
