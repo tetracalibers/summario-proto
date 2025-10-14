@@ -1,6 +1,6 @@
 import "./editor-page.css"
 
-import { Outlet } from "react-router"
+import { Outlet, useLocation } from "react-router"
 import type { Route } from "./+types/editor-page-layout"
 import { Paper } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
@@ -28,6 +28,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
   const { initialFolder, pathFolderIds } = loaderData
+  const location = useLocation()
 
   return (
     <div className="editor-page">
@@ -49,7 +50,7 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
           </Split.Pane>
         </Split>
       </div>
-      <Outlet />
+      <Outlet key={location.pathname} />
     </div>
   )
 }

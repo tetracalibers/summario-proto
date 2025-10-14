@@ -19,7 +19,6 @@ export default function FileLink({ targetTerm }: Props) {
       className={({ isActive }) =>
         clsx(styles.entry_link, styles.file_link, isActive && styles.highlight_active)
       }
-      reloadDocument
     >
       <ItemContent label={targetTerm.name} Icon={() => <IconNote size={18} />} />
     </NavLink>
