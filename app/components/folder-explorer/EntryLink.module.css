@@ -1,9 +1,15 @@
-.link {
+.entry_link {
+  padding: 2px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.file_link {
   display: flex;
   text-decoration: none;
   color: inherit;
 }
 
-.link[aria-current="page"] {
+.highlight_active {
   background-color: var(--mantine-color-magenta-0);
 }

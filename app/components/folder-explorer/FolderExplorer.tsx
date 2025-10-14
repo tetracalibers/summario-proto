@@ -16,9 +16,10 @@ import { NavLink } from "react-router"
 
 interface Props {
   initialFolder: Awaited<ReturnType<typeof loader>>
+  pathFolderIds: Set<number>
 }
 
-export default function FolderExplorer({ initialFolder }: Props) {
+export default function FolderExplorer({ initialFolder, pathFolderIds }: Props) {
   const [folderId, setFolderId] = useState(initialFolder?.current?.id ?? "root")
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
@@ -67,6 +68,7 @@ export default function FolderExplorer({ initialFolder }: Props) {
                   setFolderId(item.id)
                 }}
                 folderName={item.name}
+                isActiveStyle={pathFolderIds.has(item.id)}
               />
             ) : (
               <FileLink targetTerm={item} />

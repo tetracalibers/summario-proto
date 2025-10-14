@@ -1,7 +1,8 @@
 import { NavLink } from "react-router"
 import ItemContent from "./ItemContent"
 import { IconNote } from "@tabler/icons-react"
-import styles from "./FileLink.module.css"
+import styles from "./EntryLink.module.css"
+import { clsx } from "clsx"
 
 interface Props {
   targetTerm: {
@@ -15,8 +16,9 @@ export default function FileLink({ targetTerm }: Props) {
   return (
     <NavLink
       to={`/terms/${targetTerm.id}`}
-      className={styles.link}
-      style={{ padding: 2, borderRadius: 4 }}
+      className={({ isActive }) =>
+        clsx(styles.entry_link, styles.file_link, isActive && styles.highlight_active)
+      }
       reloadDocument
     >
       <ItemContent

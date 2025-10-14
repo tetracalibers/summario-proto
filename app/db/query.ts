@@ -81,6 +81,32 @@ export const selectFolderById = async (folderId: number) => {
     .where(eq(folders.id, folderId))
 }
 
+export const queryFolderPath = async (folderId: number) => {
+  const query = sql`
+    WITH RECURSIVE chain AS (
+      -- アンカー：ファイルの親フォルダ（葉側）
+      SELECT fo.id, fo.parent_id, fo.name, 1 AS depth
+      FROM ${folders} fo
+      WHERE fo.id = ${folderId}
+
+      UNION ALL
+      
+      -- 親へさかのぼる
+      SELECT p.id, p.parent_id, p.name, c.depth + 1
+      FROM ${folders} p
+      JOIN chain c ON c.parent_id = p.id
+    )
+
+    SELECT id AS folder_id, name
+    FROM chain
+    ORDER BY depth DESC; -- ルート(最大depth) → … → 葉(最小depth)
+  `
+
+  const result = await db.execute<{ folder_id: number; name: string }>(query)
+
+  return result
+}
+
 export const queryFolderContents = async (folderId: number | null) => {
   // CTE: base（必ず base_path と base_id を1行で返す）
   // base_path: 末尾スラッシュ付き（例: "/", "/parent/child/"）

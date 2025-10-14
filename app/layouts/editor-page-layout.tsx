@@ -8,7 +8,7 @@ import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import ScrollArea from "~/components/scroll-area/ScrollArea"
 import FolderExplorer from "~/components/folder-explorer/FolderExplorer"
 import { getTermById } from "~/service/term"
-import { getFolderContents, getFolder } from "~/service/folder"
+import { getFolderContents, getFolder, getFolderPath } from "~/service/folder"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params
@@ -18,11 +18,16 @@ export async function loader({ params }: Route.LoaderArgs) {
   const entries = await getFolderContents(folderId)
   const current = await getFolder(folderId)
 
-  return { initialFolder: { current, entries } }
+  const paths = await getFolderPath(folderId)
+
+  return {
+    initialFolder: { current, entries },
+    pathFolderIds: new Set(paths?.map((p) => p.folder_id) ?? [])
+  }
 }
 
 export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
-  const { initialFolder } = loaderData
+  const { initialFolder, pathFolderIds } = loaderData
 
   return (
     <div className="editor-page">
@@ -34,7 +39,7 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
           <Split.Pane>
             <Paper shadow="xs" withBorder p="0" h="100%">
               <ScrollArea h="100%">
-                <FolderExplorer initialFolder={initialFolder} />
+                <FolderExplorer initialFolder={initialFolder} pathFolderIds={pathFolderIds} />
               </ScrollArea>
             </Paper>
           </Split.Pane>
