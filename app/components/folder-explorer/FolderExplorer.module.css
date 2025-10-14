@@ -10,7 +10,9 @@
   padding-block-end: 0.25rem;
   position: sticky;
   top: 0;
-  background-color: var(--mantine-color-pale-indigo-0);
+  background-color: var(--mantine-color-gray-0);
+  border-block-end: 1px solid var(--mantine-color-gray-2);
+  border-radius: 4px 4px 0 0;
 }
 
 .action {
@@ -60,5 +62,30 @@
   position: sticky;
   gap: 3px;
   bottom: 0;
-  background-color: white;
+  background-color: var(--mantine-color-gray-0);
+  border-block-start: 1px solid var(--mantine-color-gray-2);
+  border-radius: 0 0 4px 4px;
+}
+
+/** ref: https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ */
+.scroll_shadows {
+  --shadow-color: rgb(from var(--mantine-color-gray-5) r g b / 25%);
+
+  background:
+    /* Shadow Cover TOP */
+    linear-gradient(white 30%, rgba(255, 255, 255, 0)) center top,
+    /* Shadow Cover BOTTOM */ linear-gradient(rgba(255, 255, 255, 0), white 70%) center bottom,
+    /* Shadow TOP */ radial-gradient(farthest-side at 50% 0, var(--shadow-color), rgba(0, 0, 0, 0))
+      center top,
+    /* Shadow BOTTOM */
+      radial-gradient(farthest-side at 50% 100%, var(--shadow-color), rgba(0, 0, 0, 0)) center
+      bottom;
+
+  background-repeat: no-repeat;
+  background-size:
+    100% 40px,
+    100% 40px,
+    100% 14px,
+    100% 14px;
+  background-attachment: local, local, scroll, scroll;
 }

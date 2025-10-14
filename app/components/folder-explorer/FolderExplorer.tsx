@@ -13,6 +13,7 @@ import {
   IconExternalLink
 } from "@tabler/icons-react"
 import { NavLink } from "react-router"
+import ScrollArea from "../scroll-area/ScrollArea"
 
 interface Props {
   initialFolder: Awaited<ReturnType<typeof loader>>
@@ -59,23 +60,25 @@ export default function FolderExplorer({ initialFolder, pathFolderIds }: Props) 
           {data?.current?.name ?? "(root)"}
         </div>
       </div>
-      <ul className={styles.list}>
-        {data?.entries.map((item) => (
-          <li key={`${item.type}-${item.id}`}>
-            {item.type === "folder" ? (
-              <FolderLink
-                onClick={() => {
-                  setFolderId(item.id)
-                }}
-                folderName={item.name}
-                isActiveStyle={pathFolderIds.has(item.id)}
-              />
-            ) : (
-              <FileLink targetTerm={item} />
-            )}
-          </li>
-        ))}
-      </ul>
+      <ScrollArea h="100%" className={styles.scroll_shadows}>
+        <ul className={styles.list}>
+          {data?.entries.map((item) => (
+            <li key={`${item.type}-${item.id}`}>
+              {item.type === "folder" ? (
+                <FolderLink
+                  onClick={() => {
+                    setFolderId(item.id)
+                  }}
+                  folderName={item.name}
+                  isActiveStyle={pathFolderIds.has(item.id)}
+                />
+              ) : (
+                <FileLink targetTerm={item} />
+              )}
+            </li>
+          ))}
+        </ul>
+      </ScrollArea>
       <NavLink to="/folder-map" className={styles.folder_map_link} reloadDocument>
         Edit structure...
         <IconExternalLink size={14} color="var(--mantine-color-gray-6)" />

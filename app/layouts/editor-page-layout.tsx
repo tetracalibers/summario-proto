@@ -37,10 +37,8 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
       <div className="leftside-area">
         <Split orientation="horizontal" h="100%" spacing="md">
           <Split.Pane>
-            <Paper shadow="xs" withBorder p="0" h="100%">
-              <ScrollArea h="100%">
-                <FolderExplorer initialFolder={initialFolder} pathFolderIds={pathFolderIds} />
-              </ScrollArea>
+            <Paper shadow="0" withBorder p="0" h="100%">
+              <FolderExplorer initialFolder={initialFolder} pathFolderIds={pathFolderIds} />
             </Paper>
           </Split.Pane>
           <Split.Resizer />
