@@ -43,7 +43,7 @@ export default function FolderExplorer({ initialFolder, pathFolderIds, currentTe
                 setFolderId(data.current?.parentId ?? "root")
               }}
             >
-              <IconChevronLeft size={16} color="var(--mantine-color-gray-8)" />
+              <IconChevronLeft size={16} color="var(--mantine-color-gray-7)" />
               ..
             </UnstyledButton>
           )}
