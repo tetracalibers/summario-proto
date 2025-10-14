@@ -1,8 +1,14 @@
 .entry_link {
   display: flex;
-  padding: 2px 4px;
+  padding: 1px 2px;
   border-radius: 4px;
   width: 100%;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+}
+
+.entry_link:not(.highlight_active):hover {
+  border: 2px solid var(--mantine-color-pale-indigo-1);
 }
 
 .entry_link svg {
