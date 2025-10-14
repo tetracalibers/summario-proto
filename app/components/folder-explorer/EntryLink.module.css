@@ -6,7 +6,7 @@
 }
 
 .entry_link svg {
-  --icon-color: oklch(from var(--mantine-color-pink-3) calc(l - 0.2) c h);
+  --icon-color: oklch(from var(--mantine-color-pale-indigo-0) calc(l - 0.15) c h);
   stroke: var(--icon-color);
 }
 
@@ -20,7 +20,7 @@
 }
 
 .highlight_active {
-  --bg: var(--mantine-color-pink-2);
+  --bg: var(--mantine-color-pale-indigo-0);
   background-color: var(--bg);
   color: oklch(from var(--bg) calc(l - 0.6) c h);
 }
