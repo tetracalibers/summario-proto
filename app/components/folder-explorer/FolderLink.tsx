@@ -1,4 +1,3 @@
-import ItemContent from "./ItemContent"
 import { IconFolderFilled } from "@tabler/icons-react"
 import { UnstyledButton } from "@mantine/core"
 import { clsx } from "clsx"
@@ -20,7 +19,8 @@ export default function FolderLink({ folderName, isActiveStyle, onClick }: Props
         isActiveStyle && styles.highlight_active
       )}
     >
-      <ItemContent label={folderName} Icon={() => <IconFolderFilled size={18} />} />
+      <IconFolderFilled size={18} />
+      <span className={styles.label}>{folderName}</span>
     </UnstyledButton>
   )
 }

@@ -1,5 +1,7 @@
 .entry_link {
   display: flex;
+  gap: 5px;
+  flex-wrap: nowrap;
   padding: 1px 2px;
   border-radius: 4px;
   width: 100%;
@@ -30,4 +32,11 @@
   --bg: var(--mantine-color-pale-indigo-0);
   background-color: var(--bg);
   color: oklch(from var(--bg) calc(l - 0.6) c h);
+}
+
+.label {
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

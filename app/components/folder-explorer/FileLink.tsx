@@ -1,5 +1,4 @@
 import { NavLink } from "react-router"
-import ItemContent from "./ItemContent"
 import { IconNote } from "@tabler/icons-react"
 import styles from "./EntryLink.module.css"
 import { clsx } from "clsx"
@@ -21,7 +20,8 @@ export default function FileLink({ targetTerm, isActive }: Props) {
       to={`/terms/${targetTerm.id}`}
       className={clsx(styles.entry_link, styles.file_link, isActive && styles.highlight_active)}
     >
-      <ItemContent label={targetTerm.name} Icon={() => <IconNote size={18} />} />
+      <IconNote size={18} />
+      <span className={styles.label}>{targetTerm.name}</span>
     </Tag>
   )
 }
