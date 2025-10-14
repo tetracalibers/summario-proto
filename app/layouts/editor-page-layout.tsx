@@ -11,9 +11,9 @@ import { getTermById } from "~/service/term"
 import { getFolderContents, getFolder, getFolderPath } from "~/service/folder"
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { termId } = params
+  const termId = Number(params.termId)
 
-  const term = await getTermById(Number(termId))
+  const term = await getTermById(termId)
   const folderId = term?.folderId ? Number(term.folderId) : null
   const entries = await getFolderContents(folderId)
   const current = await getFolder(folderId)
@@ -21,13 +21,14 @@ export async function loader({ params }: Route.LoaderArgs) {
   const paths = await getFolderPath(folderId)
 
   return {
+    termId,
     initialFolder: { current, entries },
     pathFolderIds: new Set(paths?.map((p) => p.id) ?? [])
   }
 }
 
 export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
-  const { initialFolder, pathFolderIds } = loaderData
+  const { termId, initialFolder, pathFolderIds } = loaderData
   const location = useLocation()
 
   return (
@@ -39,7 +40,11 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
         <Split orientation="horizontal" h="100%" spacing="md">
           <Split.Pane>
             <Paper shadow="0" withBorder p="0" h="100%">
-              <FolderExplorer initialFolder={initialFolder} pathFolderIds={pathFolderIds} />
+              <FolderExplorer
+                currentTermId={termId}
+                initialFolder={initialFolder}
+                pathFolderIds={pathFolderIds}
+              />
             </Paper>
           </Split.Pane>
           <Split.Resizer />

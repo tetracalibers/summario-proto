@@ -10,17 +10,18 @@ interface Props {
     name: string
     parentId: string | number | null
   }
+  isActive: boolean
 }
 
-export default function FileLink({ targetTerm }: Props) {
+export default function FileLink({ targetTerm, isActive }: Props) {
+  const Tag = isActive ? "div" : NavLink
+
   return (
-    <NavLink
+    <Tag
       to={`/terms/${targetTerm.id}`}
-      className={({ isActive }) =>
-        clsx(styles.entry_link, styles.file_link, isActive && styles.highlight_active)
-      }
+      className={clsx(styles.entry_link, styles.file_link, isActive && styles.highlight_active)}
     >
       <ItemContent label={targetTerm.name} Icon={() => <IconNote size={18} />} />
-    </NavLink>
+    </Tag>
   )
 }

@@ -16,11 +16,12 @@ import { NavLink } from "react-router"
 import ScrollArea from "../scroll-area/ScrollArea"
 
 interface Props {
+  currentTermId: number
   initialFolder: Awaited<ReturnType<typeof loader>>
   pathFolderIds: Set<number>
 }
 
-export default function FolderExplorer({ initialFolder, pathFolderIds }: Props) {
+export default function FolderExplorer({ initialFolder, pathFolderIds, currentTermId }: Props) {
   const [folderId, setFolderId] = useState(initialFolder?.current?.id ?? "root")
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
@@ -73,7 +74,7 @@ export default function FolderExplorer({ initialFolder, pathFolderIds }: Props) 
                   isActiveStyle={pathFolderIds.has(item.id)}
                 />
               ) : (
-                <FileLink targetTerm={item} />
+                <FileLink targetTerm={item} isActive={currentTermId === item.id} />
               )}
             </li>
           ))}
