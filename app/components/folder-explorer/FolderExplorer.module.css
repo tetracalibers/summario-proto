@@ -14,15 +14,21 @@
 }
 
 .action {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-areas: "back . new";
+  grid-template-columns: auto 1fr auto;
 }
 
 .back_button {
+  grid-area: back;
   display: flex;
   align-items: center;
   font-family: monospace;
   color: var(--mantine-color-gray-8);
+}
+
+.new_button {
+  grid-area: new;
 }
 
 .dirname {

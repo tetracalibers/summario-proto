@@ -44,7 +44,7 @@ export default function FolderExplorer({ initialFolder }: Props) {
               ..
             </UnstyledButton>
           )}
-          <div>
+          <div className={styles.new_button}>
             <ActionIcon variant="transparent">
               <IconFolderPlus size={16} color="var(--mantine-color-gray-7)" />
             </ActionIcon>
