@@ -1,15 +1,26 @@
 .entry_link {
-  padding: 2px;
+  display: flex;
+  padding: 2px 4px;
   border-radius: 4px;
   width: 100%;
 }
 
+.entry_link svg {
+  --icon-color: oklch(from var(--mantine-color-pink-3) calc(l - 0.2) c h);
+  stroke: var(--icon-color);
+}
+
 .file_link {
-  display: flex;
   text-decoration: none;
   color: inherit;
 }
 
+.folder_link svg {
+  fill: var(--icon-color);
+}
+
 .highlight_active {
-  background-color: var(--mantine-color-magenta-0);
+  --bg: var(--mantine-color-pink-2);
+  background-color: var(--bg);
+  color: oklch(from var(--bg) calc(l - 0.6) c h);
 }

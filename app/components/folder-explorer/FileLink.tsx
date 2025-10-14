@@ -21,10 +21,7 @@ export default function FileLink({ targetTerm }: Props) {
       }
       reloadDocument
     >
-      <ItemContent
-        label={targetTerm.name}
-        Icon={() => <IconNote size={18} color="var(--mantine-color-cyan-4)" />}
-      />
+      <ItemContent label={targetTerm.name} Icon={() => <IconNote size={18} />} />
     </NavLink>
   )
 }
