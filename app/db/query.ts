@@ -97,12 +97,12 @@ export const queryFolderPath = async (folderId: number) => {
       JOIN chain c ON c.parent_id = p.id
     )
 
-    SELECT id AS folder_id, name
+    SELECT id, name
     FROM chain
     ORDER BY depth DESC; -- ルート(最大depth) → … → 葉(最小depth)
   `
 
-  const result = await db.execute<{ folder_id: number; name: string }>(query)
+  const result = await db.execute<{ id: number; name: string }>(query)
 
   return result
 }

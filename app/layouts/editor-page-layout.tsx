@@ -22,7 +22,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
   return {
     initialFolder: { current, entries },
-    pathFolderIds: new Set(paths?.map((p) => p.folder_id) ?? [])
+    pathFolderIds: new Set(paths?.map((p) => p.id) ?? [])
   }
 }
 
