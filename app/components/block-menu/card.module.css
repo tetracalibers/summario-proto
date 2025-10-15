@@ -20,6 +20,7 @@
   font-size: 0.85rem;
   margin: 0;
   color: var(--mantine-color-magenta-5);
+  font-weight: 500;
 }
 
 .card_content {

@@ -1,6 +1,7 @@
 import { eq, desc, asc, or, and, inArray, sql, ne, isNull } from "drizzle-orm"
 import { db } from "~/db/connection"
 import { folders, termAliases, termEdges, terms, type Term } from "~/db/schema"
+import { debugLog } from "~/lib/debug"
 
 export const selectTermById = async (id: number) => {
   return db.select().from(terms).where(eq(terms.id, id))
@@ -106,29 +107,41 @@ export const queryFolderPath = async (folderId: number) => {
   return result
 }
 
-export const queryFolderContents = async (folderId: number | null) => {
+export const selectChildrenFolders = async (parentId: number | null) => {
   const query = sql`
-    -- :folder_id が NULL ならルート直下、そうでなければそのフォルダ直下
-    SELECT id, name, parent_id, 'folder' AS type
-    FROM ${folders}
-    WHERE parent_id IS NOT DISTINCT FROM ${folderId}
-    
-    UNION ALL
-
-    SELECT id, title AS name, folder_id AS parent_id, 'file' AS type
-    FROM ${terms}
-    WHERE folder_id IS NOT DISTINCT FROM ${folderId}
-    
-    -- folderが先、同じtypeならname昇順
-    ORDER BY type DESC, name;
+    SELECT
+      f.id, f.name, f.parent_id,
+      -- 直下にファイルもフォルダも無ければ is_empty: true
+      (
+        NOT EXISTS (SELECT 1 FROM ${terms}   fi WHERE fi.folder_id = f.id)
+        AND
+        NOT EXISTS (SELECT 1 FROM ${folders} cf WHERE cf.parent_id = f.id)
+      ) AS is_empty
+    FROM ${folders} f
+    WHERE f.parent_id IS NOT DISTINCT FROM ${parentId}
+    ORDER BY f.name;
   `
 
   const result = await db.execute<{
     id: number
     name: string
     parent_id: number | null
-    type: "file" | "folder"
+    is_empty: boolean
   }>(query)
+
+  debugLog(result)
+  return result
+}
+
+export const selectChildrenFiles = async (folderId: number | null) => {
+  const query = sql`
+    SELECT id, title AS name, folder_id AS parent_id
+    FROM ${terms}
+    WHERE folder_id IS NOT DISTINCT FROM ${folderId}
+  `
+
+  const result = await db.execute<{ id: number; name: string; parent_id: number | null }>(query)
+  debugLog(result)
 
   return result
 }

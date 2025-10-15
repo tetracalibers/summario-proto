@@ -10,10 +10,10 @@ export default function FolderPath({ folders }: Props) {
     <ul className={styles.list}>
       {folders.map((folder) => (
         <li key={folder.id} className={styles.list_item}>
-          <span className={styles.item_inner}>
+          <div className={styles.item_inner}>
             <IconFolder size={12} />
             <span className={styles.item_title}>{folder.name}</span>
-          </span>
+          </div>
         </li>
       ))}
     </ul>
