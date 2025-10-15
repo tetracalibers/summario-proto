@@ -12,7 +12,7 @@ import {
   IconPencilPlus,
   IconExternalLink
 } from "@tabler/icons-react"
-import { Link, NavLink } from "react-router"
+import { Link } from "react-router"
 import ScrollArea from "../scroll-area/ScrollArea"
 
 interface Props {
