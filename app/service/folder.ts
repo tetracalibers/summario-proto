@@ -1,5 +1,11 @@
 import type { TreeNodeData } from "@mantine/core"
-import { queryTermPath, selectAllFolders, selectAllTerms, selectTermById } from "~/db/query"
+import {
+  queryFolderContents,
+  queryFolderPath,
+  selectAllFolders,
+  selectAllTerms,
+  selectFolderById
+} from "~/db/query"
 import type { Folder, Term } from "~/db/schema"
 
 const rawDataToUIData = (folder: Folder): TreeNodeData => ({
@@ -66,13 +72,6 @@ export const getFolderTree = async (): Promise<TreeNodeData[]> => {
   return buildFolderTree(allFolders, allTerms)
 }
 
-export const getFolderPath = async (termId: string): Promise<string[] | null> => {
-  const [term] = await selectTermById(Number(termId))
-  if (!term) return null
-
-  return queryTermPath(term)
-}
-
 export const sortTermsByNearestFolder = (terms: Term[], folderId: number | null) => {
   // folderId が null の場合、親がない用語が優先されるようにする
   if (!folderId) {
@@ -88,4 +87,19 @@ export const sortTermsByNearestFolder = (terms: Term[], folderId: number | null)
     const bDistance = b.folderId === folderId ? 0 : 1
     return aDistance - bDistance
   })
+}
+
+export const getFolderContents = async (folderId: number | null) => {
+  return queryFolderContents(folderId)
+}
+
+export const getFolder = async (folderId: number | null) => {
+  if (folderId === null) return null
+  const [folder] = await selectFolderById(folderId)
+  return folder
+}
+
+export const getFolderPath = async (folderId: number | null) => {
+  if (folderId === null) return null
+  return queryFolderPath(folderId)
 }

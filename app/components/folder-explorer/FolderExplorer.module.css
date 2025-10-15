@@ -1,0 +1,91 @@
+.root {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+.header {
+  display: grid;
+  gap: 0.25rem;
+  padding-block-end: 0.25rem;
+  position: sticky;
+  top: 0;
+  background-color: var(--mantine-color-gray-0);
+  border-block-end: 1px solid var(--mantine-color-gray-2);
+  border-radius: 4px 4px 0 0;
+}
+
+.action {
+  display: grid;
+  grid-template-areas: "back . new";
+  grid-template-columns: auto 1fr auto;
+}
+
+.back_button {
+  grid-area: back;
+  display: flex;
+  align-items: center;
+  font-family: monospace;
+  color: var(--mantine-color-gray-7);
+  padding-inline-start: 4px;
+}
+
+.new_button {
+  grid-area: new;
+}
+
+.dirname {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: var(--mantine-color-gray-7);
+  padding-inline-start: 0.4rem;
+  padding-inline-end: 0.5rem;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+}
+
+.folder_map_link {
+  color: var(--mantine-color-gray-7);
+  text-decoration: none;
+  font-size: 0.8rem;
+  padding-inline-end: 0.25rem;
+  padding-block: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: end;
+  position: sticky;
+  gap: 3px;
+  bottom: 0;
+  background-color: var(--mantine-color-gray-0);
+  border-block-start: 1px solid var(--mantine-color-gray-2);
+  border-radius: 0 0 4px 4px;
+}
+
+/** ref: https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ */
+.scroll_shadows {
+  --shadow-color: rgb(from var(--mantine-color-gray-5) r g b / 40%);
+
+  background:
+    /* Shadow Cover TOP */
+    linear-gradient(white 30%, rgba(255, 255, 255, 0)) center top,
+    /* Shadow Cover BOTTOM */ linear-gradient(rgba(255, 255, 255, 0), white 70%) center bottom,
+    /* Shadow TOP */ radial-gradient(farthest-side at 50% 0, var(--shadow-color), rgba(0, 0, 0, 0))
+      center top,
+    /* Shadow BOTTOM */
+      radial-gradient(farthest-side at 50% 100%, var(--shadow-color), rgba(0, 0, 0, 0)) center
+      bottom;
+
+  background-repeat: no-repeat;
+  background-size:
+    100% 40px,
+    100% 40px,
+    100% 14px,
+    100% 14px;
+  background-attachment: local, local, scroll, scroll;
+}

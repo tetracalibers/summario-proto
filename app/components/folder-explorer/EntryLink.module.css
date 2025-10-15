@@ -1,0 +1,47 @@
+.entry_link {
+  display: flex;
+  gap: 5px;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 1px 2px;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+}
+
+.entry_link:not(.highlight_active, .highlight_focused):hover {
+  border: 2px solid var(--mantine-color-pale-indigo-1);
+}
+
+.highlight_focused {
+  border: 2px solid var(--mantine-color-pale-indigo-2);
+}
+
+.entry_link svg {
+  --icon-color: var(--mantine-color-gray-6);
+  stroke: var(--icon-color);
+}
+
+.file_link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.folder_link svg {
+  stroke: none;
+  fill: var(--icon-color);
+}
+
+.highlight_active {
+  --bg: var(--mantine-color-pale-indigo-0);
+  background-color: var(--bg);
+  color: oklch(from var(--bg) calc(l - 0.6) c h);
+}
+
+.label {
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

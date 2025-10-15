@@ -3,6 +3,8 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core"
 import type { Route } from "./+types/root"
 import { theme } from "./mantine-theme"
 import { Notifications } from "@mantine/notifications"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 import { DevTools } from "jotai-devtools"
 import "jotai-devtools/styles.css"
@@ -12,6 +14,8 @@ import "@mantine/tiptap/styles.css" // ‼️ import tiptap styles after core pa
 import "@mantine/notifications/styles.css"
 import "@gfazioli/mantine-split-pane/styles.css"
 import "./tiptap.css"
+
+const queryClient = new QueryClient()
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -50,7 +54,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <Outlet />
+    </QueryClientProvider>
+  )
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

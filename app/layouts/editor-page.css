@@ -20,9 +20,9 @@
   .controls-area {
     grid-area: controls;
 
-    --btn-min: 80px;
     display: grid;
-    grid-template-columns: minmax(var(--btn-min), 0) 1fr;
+    grid-template-columns: 1fr auto;
+    align-items: center;
     width: 100%;
     gap: 0.5rem;
   }

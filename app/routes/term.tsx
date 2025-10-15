@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mantine/core"
+import { Stack } from "@mantine/core"
 import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
@@ -8,6 +8,9 @@ import { getTermAlias } from "~/service/alias"
 import AliasInput from "~/components/alias-input/AliasInput"
 import RelatedTermView from "~/components/related-term-view/RelatedTermView"
 import RelatedInput from "~/components/related-input/RelatedInput"
+import FolderPath from "~/components/folder-path/FolderPath"
+import { getFolderPath } from "~/service/folder"
+import EditorActionMenu from "~/components/editor-action-menu/EditorActionMenu"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const termId = Number(params.termId)
@@ -19,19 +22,21 @@ export async function loader({ params }: Route.LoaderArgs) {
   ])
   const relatedSuggestions = await getRelatedTermsSuggestions(term)
 
-  return { term, nodes, alias, relatedSuggestions }
+  const folderId = term?.folderId ? Number(term.folderId) : null
+  const paths = (await getFolderPath(folderId)) ?? []
+
+  return { term, nodes, alias, relatedSuggestions, paths }
 }
 
 export default function Term({ loaderData }: Route.ComponentProps) {
-  const { term, nodes, alias, relatedSuggestions } = loaderData
+  const { term, nodes, alias, relatedSuggestions, paths } = loaderData
 
   return (
     <>
       <EditorWith initialJSON={term.content}>
         <div className="controls-area">
-          <Button variant="gradient" gradient={{ from: "pink", to: "red", deg: 90 }} radius="sm">
-            Delete
-          </Button>
+          <FolderPath folders={paths} />
+          <EditorActionMenu />
         </div>
         <div className="save-area">
           <SaveButton />

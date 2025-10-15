@@ -30,7 +30,7 @@
 .card_icon {
   display: flex;
   height: fit-content;
-  color: var(--mantine-color-gray-4);
+  color: var(--mantine-color-gray-5);
   position: absolute;
   top: 0.5rem;
   right: 0.25rem;

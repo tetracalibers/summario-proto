@@ -1,4 +1,4 @@
-import { eq, desc, asc, or, and, inArray, sql, ne } from "drizzle-orm"
+import { eq, desc, asc, or, and, inArray, sql, ne, isNull } from "drizzle-orm"
 import { db } from "~/db/connection"
 import { folders, termAliases, termEdges, terms, type Term } from "~/db/schema"
 
@@ -66,6 +66,71 @@ export const queryTermPath = async (term: Term): Promise<string[] | null> => {
 
 export const selectAllFolders = async () => {
   return db.select().from(folders).orderBy(asc(folders.parentId), asc(folders.id))
+}
+
+export const selectFolderById = async (folderId: number) => {
+  return db
+    .select({
+      id: folders.id,
+      name: folders.name,
+      parentId: folders.parentId,
+      isRoot: sql<boolean>`(${isNull(folders.id)})`.as("is_root")
+    })
+    .from(folders)
+    .where(eq(folders.id, folderId))
+}
+
+export const queryFolderPath = async (folderId: number) => {
+  const query = sql`
+    WITH RECURSIVE chain AS (
+      -- アンカー：ファイルの親フォルダ（葉側）
+      SELECT fo.id, fo.parent_id, fo.name, 1 AS depth
+      FROM ${folders} fo
+      WHERE fo.id = ${folderId}
+
+      UNION ALL
+      
+      -- 親へさかのぼる
+      SELECT p.id, p.parent_id, p.name, c.depth + 1
+      FROM ${folders} p
+      JOIN chain c ON c.parent_id = p.id
+    )
+
+    SELECT id, name
+    FROM chain
+    ORDER BY depth DESC; -- ルート(最大depth) → … → 葉(最小depth)
+  `
+
+  const result = await db.execute<{ id: number; name: string }>(query)
+
+  return result
+}
+
+export const queryFolderContents = async (folderId: number | null) => {
+  const query = sql`
+    -- :folder_id が NULL ならルート直下、そうでなければそのフォルダ直下
+    SELECT id, name, parent_id, 'folder' AS type
+    FROM ${folders}
+    WHERE parent_id IS NOT DISTINCT FROM ${folderId}
+    
+    UNION ALL
+
+    SELECT id, title AS name, folder_id AS parent_id, 'file' AS type
+    FROM ${terms}
+    WHERE folder_id IS NOT DISTINCT FROM ${folderId}
+    
+    -- folderが先、同じtypeならname昇順
+    ORDER BY type DESC, name;
+  `
+
+  const result = await db.execute<{
+    id: number
+    name: string
+    parent_id: number | null
+    type: "file" | "folder"
+  }>(query)
+
+  return result
 }
 
 export const selectOutgoingEdgesBySourceIds = async (sourceIds: number[]) => {

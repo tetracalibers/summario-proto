@@ -1,26 +1,35 @@
 import "./editor-page.css"
 
-import { Outlet } from "react-router"
+import { Outlet, useLocation } from "react-router"
 import type { Route } from "./+types/editor-page-layout"
-import { getFolderPath, getFolderTree } from "~/service/folder"
-import { Paper, type TreeNodeData } from "@mantine/core"
+import { Paper } from "@mantine/core"
 import { Split } from "@gfazioli/mantine-split-pane"
-import FolderTree from "~/components/folder-tree/FolderTree"
 import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import ScrollArea from "~/components/scroll-area/ScrollArea"
+import FolderExplorer from "~/components/folder-explorer/FolderExplorer"
+import { getTermById } from "~/service/term"
+import { getFolderContents, getFolder, getFolderPath } from "~/service/folder"
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { termId } = params
+  const termId = Number(params.termId)
 
-  const [folderTree, currentFolderPath] = await Promise.all([
-    getFolderTree(),
-    getFolderPath(termId)
-  ])
-  return { folderTree, currentFolderPath }
+  const term = await getTermById(termId)
+  const folderId = term?.folderId ? Number(term.folderId) : null
+  const entries = await getFolderContents(folderId)
+  const current = await getFolder(folderId)
+
+  const paths = await getFolderPath(folderId)
+
+  return {
+    termId,
+    initialFolder: { current, entries },
+    pathFolderIds: new Set(paths?.map((p) => p.id) ?? [])
+  }
 }
 
 export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
-  const { folderTree, currentFolderPath } = loaderData
+  const { termId, initialFolder, pathFolderIds } = loaderData
+  const location = useLocation()
 
   return (
     <div className="editor-page">
@@ -30,13 +39,12 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
       <div className="leftside-area">
         <Split orientation="horizontal" h="100%" spacing="md">
           <Split.Pane>
-            <Paper shadow="xs" withBorder p="0" h="100%">
-              <ScrollArea h="100%" p="1rem">
-                <FolderTree
-                  data={folderTree as TreeNodeData[]}
-                  currentFolderPath={currentFolderPath}
-                />
-              </ScrollArea>
+            <Paper shadow="0" withBorder p="0" h="100%">
+              <FolderExplorer
+                currentTermId={termId}
+                initialFolder={initialFolder}
+                pathFolderIds={pathFolderIds}
+              />
             </Paper>
           </Split.Pane>
           <Split.Resizer />
@@ -47,7 +55,7 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
           </Split.Pane>
         </Split>
       </div>
-      <Outlet />
+      <Outlet key={location.pathname} />
     </div>
   )
 }
