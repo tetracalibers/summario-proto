@@ -12,5 +12,5 @@ export async function loader({ params }: Route.ActionArgs) {
   const entries = await getFolderContents(id)
   const current = await getFolder(id)
 
-  return { current, entries }
+  return { current, ...entries }
 }

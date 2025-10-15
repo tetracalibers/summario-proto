@@ -22,13 +22,13 @@ export async function loader({ params }: Route.LoaderArgs) {
 
   return {
     termId,
-    initialFolder: { current, entries },
+    initials: { current, ...entries },
     pathFolderIds: new Set(paths?.map((p) => p.id) ?? [])
   }
 }
 
 export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
-  const { termId, initialFolder, pathFolderIds } = loaderData
+  const { termId, initials, pathFolderIds } = loaderData
   const location = useLocation()
 
   return (
@@ -42,7 +42,7 @@ export default function EditorPageLayout({ loaderData }: Route.ComponentProps) {
             <Paper shadow="0" withBorder p="0" h="100%">
               <FolderExplorer
                 currentTermId={termId}
-                initialFolder={initialFolder}
+                initials={initials}
                 pathFolderIds={pathFolderIds}
               />
             </Paper>

@@ -1,6 +1,7 @@
 import { eq, desc, asc, or, and, inArray, sql, ne, isNull } from "drizzle-orm"
 import { db } from "~/db/connection"
 import { folders, termAliases, termEdges, terms, type Term } from "~/db/schema"
+import { debugLog } from "~/lib/debug"
 
 export const selectTermById = async (id: number) => {
   return db.select().from(terms).where(eq(terms.id, id))
@@ -102,6 +103,34 @@ export const queryFolderPath = async (folderId: number) => {
   `
 
   const result = await db.execute<{ id: number; name: string }>(query)
+
+  return result
+}
+
+export const selectChildrenFolders = async (parentId: number | null) => {
+  const query = sql`
+    -- :folder_id が NULL ならルート直下、そうでなければそのフォルダ直下
+    SELECT id, name, parent_id
+    FROM ${folders}
+    WHERE parent_id IS NOT DISTINCT FROM ${parentId}
+    ORDER BY name;
+  `
+
+  const result = await db.execute<{ id: number; name: string; parent_id: number | null }>(query)
+  debugLog(result)
+
+  return result
+}
+
+export const selectChildrenFiles = async (folderId: number | null) => {
+  const query = sql`
+    SELECT id, title AS name, folder_id AS parent_id
+    FROM ${terms}
+    WHERE folder_id IS NOT DISTINCT FROM ${folderId}
+  `
+
+  const result = await db.execute<{ id: number; name: string; parent_id: number | null }>(query)
+  debugLog(result)
 
   return result
 }

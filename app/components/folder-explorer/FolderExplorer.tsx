@@ -17,19 +17,19 @@ import ScrollArea from "../scroll-area/ScrollArea"
 
 interface Props {
   currentTermId: number
-  initialFolder: Awaited<ReturnType<typeof loader>>
+  initials: Awaited<ReturnType<typeof loader>>
   pathFolderIds: Set<number>
 }
 
-export default function FolderExplorer({ initialFolder, pathFolderIds, currentTermId }: Props) {
-  const [folderId, setFolderId] = useState(initialFolder?.current?.id ?? "root")
+export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
+  const [folderId, setFolderId] = useState(initials?.current?.id ?? "root")
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
     queryKey: ["folders", "detail", { folderId }],
     queryFn: () => fetch(`/api/folder/${folderId}`).then((res) => res.json()),
     refetchOnWindowFocus: false,
     staleTime: Infinity,
-    placeholderData: initialFolder
+    placeholderData: initials
   })
 
   return (
@@ -63,19 +63,20 @@ export default function FolderExplorer({ initialFolder, pathFolderIds, currentTe
       </div>
       <ScrollArea h="100%" className={styles.scroll_shadows}>
         <ul className={styles.list}>
-          {data?.entries.map((item) => (
-            <li key={`${item.type}-${item.id}`}>
-              {item.type === "folder" ? (
-                <FolderLink
-                  onClick={() => {
-                    setFolderId(item.id)
-                  }}
-                  folderName={item.name}
-                  isActiveStyle={pathFolderIds.has(item.id)}
-                />
-              ) : (
-                <FileLink targetTerm={item} isActive={currentTermId === item.id} />
-              )}
+          {data?.folders.map((folder) => (
+            <li key={folder.id}>
+              <FolderLink
+                onClick={() => {
+                  setFolderId(folder.id)
+                }}
+                folderName={folder.name}
+                isActiveStyle={pathFolderIds.has(folder.id)}
+              />
+            </li>
+          ))}
+          {data?.files.map((file) => (
+            <li key={file.id}>
+              <FileLink targetTerm={file} isActive={currentTermId === file.id} />
             </li>
           ))}
         </ul>
