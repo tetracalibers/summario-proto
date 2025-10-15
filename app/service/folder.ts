@@ -1,6 +1,5 @@
 import type { TreeNodeData } from "@mantine/core"
 import {
-  queryFolderContents,
   queryFolderPath,
   selectAllFolders,
   selectAllTerms,

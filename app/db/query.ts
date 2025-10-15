@@ -146,33 +146,6 @@ export const selectChildrenFiles = async (folderId: number | null) => {
   return result
 }
 
-export const queryFolderContents = async (folderId: number | null) => {
-  const query = sql`
-    -- :folder_id が NULL ならルート直下、そうでなければそのフォルダ直下
-    SELECT id, name, parent_id, 'folder' AS type
-    FROM ${folders}
-    WHERE parent_id IS NOT DISTINCT FROM ${folderId}
-    
-    UNION ALL
-
-    SELECT id, title AS name, folder_id AS parent_id, 'file' AS type
-    FROM ${terms}
-    WHERE folder_id IS NOT DISTINCT FROM ${folderId}
-    
-    -- folderが先、同じtypeならname昇順
-    ORDER BY type DESC, name;
-  `
-
-  const result = await db.execute<{
-    id: number
-    name: string
-    parent_id: number | null
-    type: "file" | "folder"
-  }>(query)
-
-  return result
-}
-
 export const selectOutgoingEdgesBySourceIds = async (sourceIds: number[]) => {
   if (sourceIds.length === 0) return []
   return db
