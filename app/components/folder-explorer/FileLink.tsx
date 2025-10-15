@@ -7,7 +7,6 @@ interface Props {
   targetTerm: {
     id: string | number
     name: string
-    parentId: string | number | null
   }
   isActive: boolean
 }
