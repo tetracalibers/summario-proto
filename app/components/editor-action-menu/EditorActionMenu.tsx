@@ -3,7 +3,7 @@ import { IconDots, IconTrash } from "@tabler/icons-react"
 
 export default function EditorActionMenu() {
   return (
-    <Menu shadow="md" width={150} position="bottom-end">
+    <Menu shadow="md" width={150} offset={0} position="bottom-end">
       <Menu.Target aria-label="editor action menu">
         <ActionIcon radius="xl" variant="white" color="gray">
           <IconDots size={20} />
