@@ -39,5 +39,5 @@ export const theme = createTheme({
       "#a9004f"
     ]
   },
-  fontFamily: "Signika Negative, Zen Kaku Gothic New"
+  fontFamily: "Raleway, Zen Kaku Gothic New"
 })
