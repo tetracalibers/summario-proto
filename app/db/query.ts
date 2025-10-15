@@ -109,16 +109,27 @@ export const queryFolderPath = async (folderId: number) => {
 
 export const selectChildrenFolders = async (parentId: number | null) => {
   const query = sql`
-    -- :folder_id が NULL ならルート直下、そうでなければそのフォルダ直下
-    SELECT id, name, parent_id
-    FROM ${folders}
-    WHERE parent_id IS NOT DISTINCT FROM ${parentId}
-    ORDER BY name;
+    SELECT
+      f.id, f.name, f.parent_id,
+      -- 直下にファイルもフォルダも無ければ is_empty: true
+      (
+        NOT EXISTS (SELECT 1 FROM ${terms}   fi WHERE fi.folder_id = f.id)
+        AND
+        NOT EXISTS (SELECT 1 FROM ${folders} cf WHERE cf.parent_id = f.id)
+      ) AS is_empty
+    FROM ${folders} f
+    WHERE f.parent_id IS NOT DISTINCT FROM ${parentId}
+    ORDER BY f.name;
   `
 
-  const result = await db.execute<{ id: number; name: string; parent_id: number | null }>(query)
-  debugLog(result)
+  const result = await db.execute<{
+    id: number
+    name: string
+    parent_id: number | null
+    is_empty: boolean
+  }>(query)
 
+  debugLog(result)
   return result
 }
 
