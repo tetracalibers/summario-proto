@@ -48,10 +48,10 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
             </UnstyledButton>
           )}
           <div className={styles.new_button}>
-            <ActionIcon variant="transparent">
+            <ActionIcon variant="transparent" aria-label="new folder">
               <IconFolderPlus size={16} color="var(--mantine-color-gray-7)" />
             </ActionIcon>
-            <ActionIcon variant="transparent">
+            <ActionIcon variant="transparent" aria-label="new note">
               <IconPencilPlus size={16} color="var(--mantine-color-gray-7)" />
             </ActionIcon>
           </div>
