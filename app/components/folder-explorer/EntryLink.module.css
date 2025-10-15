@@ -2,6 +2,7 @@
   display: flex;
   gap: 5px;
   flex-wrap: nowrap;
+  align-items: center;
   padding: 1px 2px;
   border-radius: 4px;
   width: 100%;
@@ -9,8 +10,12 @@
   border: 2px solid transparent;
 }
 
-.entry_link:not(.highlight_active):hover {
+.entry_link:not(.highlight_active, .highlight_focused):hover {
   border: 2px solid var(--mantine-color-pale-indigo-1);
+}
+
+.highlight_focused {
+  border: 2px solid var(--mantine-color-pale-indigo-2);
 }
 
 .entry_link svg {
