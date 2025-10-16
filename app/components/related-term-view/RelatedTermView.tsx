@@ -1,7 +1,6 @@
 import { useFetcher } from "react-router"
 import MiniView from "../mini-view/MiniView"
 import NetworkGraph from "../network-graph/NetworkGraph"
-import type { loader } from "~/routes/api/miniview"
 import { useAtomValue, useSetAtom } from "jotai"
 import {
   centerNodeAtom,
@@ -12,6 +11,7 @@ import {
   type Node
 } from "./atoms"
 import { useEffect } from "react"
+import type { loader } from "~/routes/api/terms/preview"
 
 interface Props {
   centerNode: Node
@@ -38,7 +38,7 @@ export default function RelatedTermView({ centerNode }: Props) {
         edges={edges}
         centerId={centerNode.id}
         onNodeClick={(nodeId) => {
-          fetcher.load(`/api/miniview/${nodeId}`)
+          fetcher.load(`/api/terms/${nodeId}/preview`)
           setMiniviewNodeId(nodeId)
         }}
       />
