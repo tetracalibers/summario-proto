@@ -51,7 +51,7 @@ export default function RelatedTermView({ centerNode }: Props) {
         }}
       >
         {fetcher.data && existsInNodes ? (
-          <MiniView contentJson={fetcher.data} />
+          <MiniView contentHTML={fetcher.data} />
         ) : (
           <p
             style={{
