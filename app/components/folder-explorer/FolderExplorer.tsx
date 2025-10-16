@@ -14,6 +14,10 @@ import {
 } from "@tabler/icons-react"
 import { Link } from "react-router"
 import ScrollArea from "../scroll-area/ScrollArea"
+import { useAtom } from "jotai"
+import { displayedEntryInputTypeAtom } from "./atoms"
+import NewFolderInput from "./NewFolderInput"
+import NewFileInput from "./NewFileInput"
 
 interface Props {
   currentTermId: number
@@ -23,6 +27,8 @@ interface Props {
 
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
   const [folderId, setFolderId] = useState(initials?.current?.id ?? "root")
+
+  const [displayedEntryInputType, showEntryInput] = useAtom(displayedEntryInputTypeAtom)
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
     queryKey: ["folders", "detail", { folderId }],
@@ -48,10 +54,22 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
             </UnstyledButton>
           )}
           <div className={styles.new_button}>
-            <ActionIcon variant="transparent" aria-label="new folder">
+            <ActionIcon
+              variant="transparent"
+              radius="xl"
+              aria-label="new folder"
+              onClick={() => showEntryInput("folder")}
+              disabled={displayedEntryInputType === "folder"}
+            >
               <IconFolderPlus size={16} color="var(--mantine-color-gray-7)" />
             </ActionIcon>
-            <ActionIcon variant="transparent" aria-label="new note">
+            <ActionIcon
+              variant="transparent"
+              radius="xl"
+              aria-label="new note"
+              onClick={() => showEntryInput("file")}
+              disabled={displayedEntryInputType === "file"}
+            >
               <IconPencilPlus size={16} color="var(--mantine-color-gray-7)" />
             </ActionIcon>
           </div>
@@ -75,11 +93,13 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
               />
             </li>
           ))}
+          {displayedEntryInputType === "folder" && <NewFolderInput />}
           {data?.files.map((file) => (
             <li key={file.id}>
               <FileLink targetTerm={file} isActive={currentTermId === file.id} />
             </li>
           ))}
+          {displayedEntryInputType === "file" && <NewFileInput />}
         </ul>
       </ScrollArea>
       <Link
