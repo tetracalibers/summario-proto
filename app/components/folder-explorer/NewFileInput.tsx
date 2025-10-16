@@ -3,6 +3,7 @@ import { IconNote } from "@tabler/icons-react"
 import { useSetAtom } from "jotai"
 import { Form } from "react-router"
 import { resetEntryInputAtom } from "./atoms"
+import { getHotkeyHandler } from "@mantine/hooks"
 
 export default function NewFileInput() {
   const hideAndReset = useSetAtom(resetEntryInputAtom)
@@ -24,6 +25,7 @@ export default function NewFileInput() {
           }
         }}
         onBlur={hideAndReset}
+        onKeyDown={getHotkeyHandler([["Escape", hideAndReset]])}
       />
     </Form>
   )
