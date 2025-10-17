@@ -1,6 +1,9 @@
-import "~/layouts/editor-page.css"
+import "~/styles/editor-page.css"
 
 import { Paper, ScrollArea, Stack } from "@mantine/core"
+import "@mantine/tiptap/styles.css"
+import "~/styles/tiptap.css"
+
 import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"

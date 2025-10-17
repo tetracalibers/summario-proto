@@ -10,10 +10,8 @@ import { DevTools } from "jotai-devtools"
 import "jotai-devtools/styles.css"
 
 import "@mantine/core/styles.css"
-import "@mantine/tiptap/styles.css" // ‼️ import tiptap styles after core package styles
 import "@mantine/notifications/styles.css"
 import "@gfazioli/mantine-split-pane/styles.css"
-import "./tiptap.css"
 
 const queryClient = new QueryClient()
 
