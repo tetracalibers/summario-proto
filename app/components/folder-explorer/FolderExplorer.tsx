@@ -26,7 +26,7 @@ interface Props {
 }
 
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
-  const [folderId, setFolderId] = useState(initials?.current?.id ?? "root")
+  const [folderId, setFolderId] = useState<number | "root" | null>(null)
 
   const [displayedEntryInputType, showEntryInput] = useAtom(displayedEntryInputTypeAtom)
 
@@ -35,7 +35,8 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
     queryFn: () => fetch(`/api/folder/${folderId}`).then((res) => res.json()),
     refetchOnWindowFocus: false,
     staleTime: Infinity,
-    placeholderData: initials
+    placeholderData: initials,
+    enabled: folderId !== null
   })
 
   return (
