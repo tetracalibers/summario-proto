@@ -1,7 +1,6 @@
-import { useFetcher } from "react-router"
 import MiniView from "../mini-view/MiniView"
 import NetworkGraph from "../network-graph/NetworkGraph"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import {
   centerNodeAtom,
   edgesAtom,
@@ -12,14 +11,13 @@ import {
 } from "./atoms"
 import { useEffect } from "react"
 import type { loader } from "~/routes/api/terms/preview"
+import { useQuery } from "@tanstack/react-query"
 
 interface Props {
   centerNode: Node
 }
 
 export default function RelatedTermView({ centerNode }: Props) {
-  const fetcher = useFetcher<typeof loader>()
-
   const nodes = useAtomValue(nodesAtom)
   const edges = useAtomValue(edgesAtom)
 
@@ -28,8 +26,14 @@ export default function RelatedTermView({ centerNode }: Props) {
     setCenterNode(centerNode)
   }, [centerNode])
 
-  const setMiniviewNodeId = useSetAtom(miniviewNodeIdAtom)
+  const [miniviewNodeId, setMiniviewNodeId] = useAtom(miniviewNodeIdAtom)
   const existsInNodes = useAtomValue(existsMiniviewAtomInNodes)
+
+  const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
+    queryKey: ["terms", "detail", miniviewNodeId, "preview"],
+    queryFn: () => fetch(`/api/terms/${miniviewNodeId}/preview`).then((res) => res.text()),
+    enabled: existsInNodes && miniviewNodeId !== null
+  })
 
   return (
     <>
@@ -38,7 +42,6 @@ export default function RelatedTermView({ centerNode }: Props) {
         edges={edges}
         centerId={centerNode.id}
         onNodeClick={(nodeId) => {
-          fetcher.load(`/api/terms/${nodeId}/preview`)
           setMiniviewNodeId(nodeId)
         }}
       />
@@ -50,8 +53,8 @@ export default function RelatedTermView({ centerNode }: Props) {
           overflowY: "auto"
         }}
       >
-        {fetcher.data && existsInNodes ? (
-          <MiniView contentHTML={fetcher.data} />
+        {data && existsInNodes ? (
+          <MiniView contentHTML={data} />
         ) : (
           <p
             style={{
