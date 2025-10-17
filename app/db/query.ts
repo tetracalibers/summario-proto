@@ -1,29 +1,25 @@
-import { eq, desc, asc, or, and, sql, ne, isNull } from "drizzle-orm"
+import { eq, desc, asc, sql, ne, isNull } from "drizzle-orm"
 import { db } from "~/db/connection"
-import { folders, termAliases, termEdges, terms } from "~/db/schema"
+import { folders, terms } from "~/db/schema"
 import { debugLog } from "~/lib/debug"
 
+// DONE
 export const selectTermById = async (id: number) => {
   return db.select().from(terms).where(eq(terms.id, id))
 }
 
+// DONE
 export const selectRecentTerm = async (limit = 1) => {
   return db.select().from(terms).orderBy(desc(terms.updatedAt)).limit(limit)
 }
 
+// DONE
 export const selectAllTerms = async () => {
   return await db.select().from(terms)
 }
 
 export const selectTermsWithoutId = async (excludeId: number) => {
   return db.select().from(terms).where(ne(terms.id, excludeId)).orderBy(desc(terms.updatedAt))
-}
-
-export const selectAllAliasByTermId = async (termId: number) => {
-  return db
-    .select({ id: termAliases.id, title: termAliases.title })
-    .from(termAliases)
-    .where(eq(termAliases.termId, termId))
 }
 
 export const selectAllFolders = async () => {
@@ -105,18 +101,4 @@ export const selectChildrenFiles = async (folderId: number | null) => {
   debugLog(result)
 
   return result
-}
-
-// centerIdの関連ノード（双方向）をすべて取得
-export const selectAllRelatedTerms = async (centerId: number) => {
-  return db
-    .select({ id: terms.id, title: terms.title })
-    .from(terms)
-    .innerJoin(
-      termEdges,
-      or(
-        and(eq(termEdges.sourceTermId, terms.id), eq(termEdges.targetTermId, centerId)),
-        and(eq(termEdges.targetTermId, terms.id), eq(termEdges.sourceTermId, centerId))
-      )
-    )
 }

@@ -9,13 +9,14 @@ import {
 } from "~/db/update"
 import { debugLog } from "~/lib/debug"
 
+// DONE
 export const getTermById = async (id: number) => {
   const [term] = await selectTermById(id)
   debugLog(term)
   return term
 }
 
-// 直近編集された用語ノートを取得
+// DONE
 export const getRecentTerm = async () => {
   const [terms] = await selectRecentTerm(1)
   return terms
