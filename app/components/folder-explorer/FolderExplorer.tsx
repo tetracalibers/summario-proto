@@ -31,7 +31,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
   const [displayedEntryInputType, showEntryInput] = useAtom(displayedEntryInputTypeAtom)
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
-    queryKey: ["folders", "detail", { folderId }],
+    queryKey: ["folders", "detail", folderId],
     queryFn: () => fetch(`/api/folder/${folderId}`).then((res) => res.json()),
     refetchOnWindowFocus: false,
     staleTime: Infinity,
