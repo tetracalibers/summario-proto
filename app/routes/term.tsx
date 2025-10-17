@@ -1,9 +1,9 @@
 import "~/styles/editor-page.css"
 
-import { Paper, ScrollArea, Stack } from "@mantine/core"
 import "@mantine/tiptap/styles.css"
 import "~/styles/tiptap.css"
 
+import { Paper, Stack } from "@mantine/core"
 import SaveButton from "~/components/term-note/SaveButton"
 import { getTermById } from "~/service/term"
 import EditorWith from "~/components/editor/EditorWith"
@@ -21,6 +21,7 @@ import FolderExplorer from "~/components/folder-explorer/FolderExplorer"
 import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import { useLocation } from "react-router"
 import React from "react"
+import ScrollArea from "~/components/scroll-area/ScrollArea"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const termId = Number(params.termId)
