@@ -2,7 +2,6 @@ import { atom } from "jotai"
 import { aliasSavePayloadAtom, dirtyAliasAtom } from "../alias-input/atoms"
 import { dirtyRelatedAtom, relatedSavePayloadAtom } from "../related-input/atoms"
 import { dirtyEditorAtom } from "../editor/atoms"
-import type { Editor, JSONContent } from "@tiptap/react"
 
 export const savingStateAtom = atom<"idle" | "loading" | "submitting">("idle")
 
