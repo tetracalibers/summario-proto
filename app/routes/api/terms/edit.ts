@@ -1,6 +1,6 @@
-import { saveTermContentAndMeta } from "./../../service/term"
-import type { Route } from "./+types/save"
 import { data } from "react-router"
+import type { Route } from "./+types/edit"
+import { saveTermContentAndMeta } from "~/service/term"
 
 // [for debug]
 // const delay = (ms: number) => {

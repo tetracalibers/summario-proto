@@ -1,24 +1,13 @@
-import type { JSONContent } from "@tiptap/react"
-import { renderToHTMLString } from "@tiptap/static-renderer"
-import { useMemo } from "react"
-import { tiptapExtensions } from "../editor/extensions"
 import { Typography } from "@mantine/core"
 
 interface Props {
-  contentJson: JSONContent
+  contentHTML: string
 }
 
-export default function MiniView({ contentJson }: Props) {
-  const output = useMemo(() => {
-    return renderToHTMLString({
-      content: contentJson,
-      extensions: tiptapExtensions(contentJson)
-    })
-  }, [contentJson])
-
+export default function MiniView({ contentHTML }: Props) {
   return (
     <Typography style={{ fontSizeAdjust: "0.4", lineHeight: 1.2 }}>
-      <div dangerouslySetInnerHTML={{ __html: output }} />
+      <div dangerouslySetInnerHTML={{ __html: contentHTML }} />
     </Typography>
   )
 }

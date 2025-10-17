@@ -7,9 +7,11 @@ import {
   insertTermEdges,
   updateTermContent
 } from "~/db/update"
+import { debugLog } from "~/lib/debug"
 
 export const getTermById = async (id: number) => {
   const [term] = await selectTermById(id)
+  debugLog(term)
   return term
 }
 

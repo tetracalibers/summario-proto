@@ -5,13 +5,13 @@ import { useEffect, type ButtonHTMLAttributes } from "react"
 import { useFetcher, useParams } from "react-router"
 import { setServerAliasAtom } from "../alias-input/atoms"
 import { setServerRelatedAtom } from "../related-input/atoms"
-import type { action } from "~/routes/api/save"
 import { notifications } from "@mantine/notifications"
 import reversedNotificationStyles from "./reversed-notification.module.css"
 import { canSaveAtom, saveMetaPayloadAtom, savingStateAtom } from "./atoms"
 import { dirtyEditorAtom } from "../editor/atoms"
 import { IconLoader } from "@tabler/icons-react"
 import loadingStyle from "./loading.module.css"
+import type { action } from "~/routes/api/terms/edit"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -93,7 +93,7 @@ const SaveButton = (props: Props) => {
 
         fetcher.submit(payload as any, {
           method: "post",
-          action: `/api/save/${termId}`,
+          action: `/api/terms/${termId}/edit`,
           encType: "application/json"
         })
       }}
