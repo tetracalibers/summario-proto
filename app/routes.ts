@@ -2,8 +2,8 @@ import { type RouteConfig, index, layout, prefix, route } from "@react-router/de
 
 export default [
   index("routes/index.tsx"),
+  route("terms/:termId", "routes/term.tsx"),
   route("folder-map", "routes/folder-map.tsx"),
-  layout("layouts/editor-page-layout.tsx", [route("terms/:termId", "routes/term.tsx")]),
 
   ...prefix("api", [
     route("terms/:termId/preview", "routes/api/terms/preview.ts"),
