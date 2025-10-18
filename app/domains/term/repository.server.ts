@@ -1,6 +1,7 @@
 import { db } from "~/db/connection"
 import { terms } from "~/db/schema"
 import { eq, desc } from "drizzle-orm"
+import type { JSONContent } from "@tiptap/react"
 
 export const findAllTerms = async () => {
   const rows = await db
@@ -27,4 +28,12 @@ export const findRecentTerm = async ({ limit = 1 }) => {
     .limit(limit)
 
   return rows
+}
+
+export const updateTermContent = async (termId: number, content: JSONContent) => {
+  return db
+    .update(terms)
+    .set({ content })
+    .where(eq(terms.id, termId))
+    .returning({ id: terms.id, title: terms.title })
 }

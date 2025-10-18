@@ -1,6 +1,6 @@
 import { data } from "react-router"
 import type { Route } from "./+types/edit"
-import { saveTermContentAndMeta } from "~/service/term"
+import { saveTermContents } from "~/features/edit-term/feature.server"
 
 // [for debug]
 // const delay = (ms: number) => {
@@ -18,7 +18,7 @@ export async function action({ request, params }: Route.ActionArgs) {
   // [for debug]
   // await delay(5000)
 
-  const result = await saveTermContentAndMeta(termId, requestData)
+  const result = await saveTermContents(termId, requestData)
 
   if (!result.ok) {
     const errors = result.rejected.map((r) => {

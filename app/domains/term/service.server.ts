@@ -1,5 +1,6 @@
 import { debugLog } from "~/lib/debug"
 import * as TermRepository from "./repository.server"
+import type { JSONContent } from "@tiptap/react"
 
 export const getTerm = async (id: string) => {
   const [term] = await TermRepository.findTermById(id)
@@ -11,4 +12,8 @@ export const getTerm = async (id: string) => {
 export const getRecentTerm = async () => {
   const [terms] = await TermRepository.findRecentTerm({ limit: 1 })
   return terms
+}
+
+export const updateTermContent = async (termId: number, content: JSONContent) => {
+  return TermRepository.updateTermContent(termId, content)
 }

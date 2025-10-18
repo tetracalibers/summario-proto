@@ -3,17 +3,6 @@ import { db } from "~/db/connection"
 import { folders, terms } from "~/db/schema"
 import { debugLog } from "~/lib/debug"
 
-// DONE
-export const selectTermById = async (id: number) => {
-  return db.select().from(terms).where(eq(terms.id, id))
-}
-
-// DONE
-export const selectRecentTerm = async (limit = 1) => {
-  return db.select().from(terms).orderBy(desc(terms.updatedAt)).limit(limit)
-}
-
-// DONE
 export const selectAllTerms = async () => {
   return await db.select().from(terms)
 }
