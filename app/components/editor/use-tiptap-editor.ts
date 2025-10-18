@@ -1,5 +1,5 @@
 import { useEditor, type JSONContent } from "@tiptap/react"
-import { tiptapExtensions } from "./extensions"
+import { tiptapExtensions } from "../../libs/editor/extensions"
 
 export const useTiptapEditor = (
   initialJSON?: JSONContent,

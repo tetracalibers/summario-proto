@@ -1,6 +1,6 @@
 import type { Route } from "./+types/preview"
 import { renderToHTMLString } from "@tiptap/static-renderer"
-import { tiptapExtensions } from "~/components/editor/extensions"
+import { tiptapExtensions } from "~/libs/editor/extensions"
 import type { JSONContent } from "@tiptap/react"
 import { getTerm } from "~/queries/term-detail/reader.server"
 
