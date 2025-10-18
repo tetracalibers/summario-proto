@@ -1,5 +1,5 @@
-import MiniView from "../mini-view/MiniView"
-import NetworkGraph from "../network-graph/NetworkGraph"
+import MiniView from "./MiniView"
+import NetworkGraph from "./NetworkGraph"
 import type { loader } from "~/routes/api/terms/preview"
 import { useQuery } from "@tanstack/react-query"
 import { useRelatedGraphUi } from "~/usecases/term-relation-graph/ui.actions"
