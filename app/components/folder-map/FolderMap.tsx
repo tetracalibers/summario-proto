@@ -19,7 +19,7 @@ import AlignButton from "./button/AlignButton"
 import panelStyles from "./Panel.module.css"
 import NewFileNode from "./draggable/NewFileNode"
 import NewFolderNode from "./draggable/NewFolderNode"
-import { FILE_NODE_TYPE, FOLDER_NODE_TYPE } from "./custom-node"
+import { FILE_NODE_TYPE, FOLDER_NODE_TYPE } from "../../libs/xyflow-folder-map/custom-node"
 
 const customNodes = {
   [FILE_NODE_TYPE]: FileNode,

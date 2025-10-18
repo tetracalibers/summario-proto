@@ -1,11 +1,11 @@
 import type { JSONContent } from "@tiptap/react"
 import { type Edge, type Node } from "@xyflow/react"
-import { FILE_NODE_TYPE, FOLDER_NODE_TYPE } from "~/components/folder-map/custom-node"
+import { FILE_NODE_TYPE, FOLDER_NODE_TYPE } from "~/libs/xyflow-folder-map/custom-node"
 import {
   createEdgeId,
   createFileNodeId,
   createFolderNodeId
-} from "~/components/folder-map/node-edge-id"
+} from "~/libs/xyflow-folder-map/node-edge-id"
 import { selectAllFolders, selectAllTerms } from "~/db/query"
 
 const TMP_POSITION = { x: 0, y: 0 }

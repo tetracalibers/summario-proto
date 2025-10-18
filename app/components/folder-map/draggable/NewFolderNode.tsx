@@ -4,9 +4,9 @@ import { useCallback, useState } from "react"
 import styles from "./NewNode.module.css"
 import { useReactFlow, type XYPosition, type Node } from "@xyflow/react"
 import { isInMapArea } from "./drop-area"
-import { createTmpFolderNodeId } from "../node-edge-id"
+import { createTmpFolderNodeId } from "../../../libs/xyflow-folder-map/node-edge-id"
 import DraggableNode from "./DraggableNode"
-import { FOLDER_NODE_TYPE, type FolderNodeData } from "../custom-node"
+import { FOLDER_NODE_TYPE, type FolderNodeData } from "../../../libs/xyflow-folder-map/custom-node"
 
 export default function NewFolderNode() {
   const [name, setName] = useState("")
