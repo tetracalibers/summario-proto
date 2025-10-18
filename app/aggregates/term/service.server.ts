@@ -1,4 +1,4 @@
-import { debugLog } from "~/lib/debug"
+import { debugLog } from "~/libs/debug"
 import * as TermRepository from "./repository.server"
 import type { JSONContent } from "@tiptap/react"
 

@@ -1,5 +1,5 @@
-import { mapLabelsToItemsAtom } from "~/lib/state/mapping"
-import { createDiffAtom } from "~/lib/state/diff"
+import { mapLabelsToItemsAtom } from "~/libs/state/mapping"
+import { createDiffAtom } from "~/libs/state/diff"
 import { serverAlias$, uiAliasLabel$ } from "./ui.atoms"
 import { atom } from "jotai"
 import type { Alias } from "./types"

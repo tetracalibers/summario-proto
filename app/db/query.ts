@@ -1,7 +1,7 @@
 import { eq, desc, asc, sql, ne, isNull } from "drizzle-orm"
 import { db } from "~/db/connection"
 import { folders, terms } from "~/db/schema"
-import { debugLog } from "~/lib/debug"
+import { debugLog } from "~/libs/debug"
 
 export const selectAllTerms = async () => {
   return await db.select().from(terms)
