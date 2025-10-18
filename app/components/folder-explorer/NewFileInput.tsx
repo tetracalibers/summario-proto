@@ -1,13 +1,13 @@
 import { TextInput } from "@mantine/core"
 import { IconNote } from "@tabler/icons-react"
-import { useSetAtom } from "jotai"
 import { Form } from "react-router"
-import { resetEntryInputAtom } from "./atoms"
 import { getHotkeyHandler } from "@mantine/hooks"
 
-export default function NewFileInput() {
-  const hideAndReset = useSetAtom(resetEntryInputAtom)
+interface Props {
+  resetAndHideFn: () => void
+}
 
+export default function NewFileInput({ resetAndHideFn }: Props) {
   return (
     <Form>
       <TextInput
@@ -24,8 +24,8 @@ export default function NewFileInput() {
             "--input-size": "calc(18px + 4px * 2)"
           }
         }}
-        onBlur={hideAndReset}
-        onKeyDown={getHotkeyHandler([["Escape", hideAndReset]])}
+        onBlur={resetAndHideFn}
+        onKeyDown={getHotkeyHandler([["Escape", resetAndHideFn]])}
       />
     </Form>
   )

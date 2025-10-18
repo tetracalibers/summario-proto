@@ -5,9 +5,11 @@ import { Form } from "react-router"
 import { resetEntryInputAtom } from "./atoms"
 import { getHotkeyHandler } from "@mantine/hooks"
 
-export default function NewFolderInput() {
-  const hideAndReset = useSetAtom(resetEntryInputAtom)
+interface Props {
+  resetAndHideFn: () => void
+}
 
+export default function NewFolderInput({ resetAndHideFn }: Props) {
   return (
     <Form>
       <TextInput
@@ -24,8 +26,8 @@ export default function NewFolderInput() {
             "--input-size": "calc(18px + 4px * 2)"
           }
         }}
-        onBlur={hideAndReset}
-        onKeyDown={getHotkeyHandler([["Escape", hideAndReset]])}
+        onBlur={resetAndHideFn}
+        onKeyDown={getHotkeyHandler([["Escape", resetAndHideFn]])}
       />
     </Form>
   )
