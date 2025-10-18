@@ -42,3 +42,11 @@ npx drizzle-kit generate
 npx supabase start
 npx supabase db reset
 ```
+
+## 依存関係の可視化
+
+必要な依存：
+
+```bash
+brew install graphviz
+```

@@ -7,3 +7,5 @@
 /build/
 
 /drizzle/
+
+dependency-graph.svg
