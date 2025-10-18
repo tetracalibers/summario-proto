@@ -20,7 +20,7 @@ import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import { useLocation } from "react-router"
 import React from "react"
 import ScrollArea from "~/components/scroll-area/ScrollArea"
-import { getTermWithMeta } from "~/usecases/load-term/feature.server"
+import { getTermWithMeta } from "~/queries/term-detail/reader.server"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params

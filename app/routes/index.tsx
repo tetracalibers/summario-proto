@@ -1,5 +1,5 @@
 import { redirect } from "react-router"
-import { getRecentTerm } from "~/usecases/load-term/feature.server"
+import { getRecentTerm } from "~/queries/term-detail/reader.server"
 
 export async function loader() {
   const term = await getRecentTerm()
