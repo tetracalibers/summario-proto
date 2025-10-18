@@ -1,8 +1,6 @@
 import { TextInput } from "@mantine/core"
 import { IconFolderFilled } from "@tabler/icons-react"
-import { useSetAtom } from "jotai"
 import { Form } from "react-router"
-import { resetEntryInputAtom } from "./atoms"
 import { getHotkeyHandler } from "@mantine/hooks"
 
 interface Props {
