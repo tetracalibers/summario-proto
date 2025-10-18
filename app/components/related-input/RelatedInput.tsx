@@ -1,7 +1,7 @@
 import { TagsInput } from "@mantine/core"
 import { useRelatedTermUi } from "~/aggregates/related-term/ui.actions"
 import type { RelatedTerm } from "~/aggregates/related-term/types"
-import { useTermContentsSavingState } from "~/usecases/edit-term/ui.selectors"
+import { useTermContentsSavingState } from "~/usecases/term-edit/ui.selectors"
 
 interface Props {
   initials: RelatedTerm[]

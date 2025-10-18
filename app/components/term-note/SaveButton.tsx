@@ -7,7 +7,7 @@ import reversedNotificationStyles from "./reversed-notification.module.css"
 import { IconLoader } from "@tabler/icons-react"
 import loadingStyle from "./loading.module.css"
 import type { action } from "~/routes/api/terms/edit"
-import { useTermContentSaveUi } from "~/usecases/edit-term/ui.actions"
+import { useTermContentSaveUi } from "~/usecases/term-edit/ui.actions"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 

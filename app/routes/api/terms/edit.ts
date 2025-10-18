@@ -1,6 +1,6 @@
 import { data } from "react-router"
 import type { Route } from "./+types/edit"
-import { saveTermContents } from "~/usecases/edit-term/feature.server"
+import { saveTermContents } from "~/usecases/term-edit/feature.server"
 
 // [for debug]
 // const delay = (ms: number) => {
