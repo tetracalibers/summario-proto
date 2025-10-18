@@ -1,6 +1,6 @@
-import { createDiffAtom } from "~/libs/state/diff"
+import { createDiffAtom } from "~/libs/jotai/diff"
 import { optionsRelatedTerm$, serverRelatedTerm$, uiRelatedTermLabel$ } from "./ui.atoms"
-import { mapLabelsToItemsAtom } from "~/libs/state/mapping"
+import { mapLabelsToItemsAtom } from "~/libs/jotai/mapping"
 import { atom } from "jotai"
 
 // 追加：UIにあるが serverData には無い
