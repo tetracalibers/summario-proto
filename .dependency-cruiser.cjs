@@ -187,10 +187,10 @@ module.exports = {
     },
 
     /* Which modules to exclude */
-    // exclude : {
-    //   /* path: an array of regular expressions in strings to match against */
-    //   path: '',
-    // },
+    exclude: {
+      /* path: an array of regular expressions in strings to match against */
+      path: ["[.]css$", "app/libs/debug.ts"]
+    },
 
     /* Which modules to exclusively include (array of regular expressions in strings)
        dependency-cruiser will skip everything not matching this pattern
@@ -338,21 +338,35 @@ module.exports = {
            collapses everything in node_modules to one folder deep so you see
            the external modules, but their innards.
          */
-        collapsePattern: "node_modules/(?:@[^/]+/[^/]+|[^/]+)"
+        collapsePattern: [
+          "node_modules/(?:@[^/]+/[^/]+|[^/]+)",
+
+          // 1つのノードとしてまとめて表示
+          "^(app/libs/xyflow-folder-map)",
+          "^(app/libs/jotai)"
+        ],
 
         /* Options to tweak the appearance of your graph.See
            https://github.com/sverweij/dependency-cruiser/blob/main/doc/options-reference.md#reporteroptions
            for details and some examples. If you don't specify a theme
            dependency-cruiser falls back to a built-in one.
         */
-        // theme: {
-        //   graph: {
-        //     /* splines: "ortho" gives straight lines, but is slow on big graphs
-        //        splines: "true" gives bezier curves (fast, not as nice as ortho)
-        //    */
-        //     splines: "true"
-        //   },
-        // }
+        theme: {
+          graph: {
+            /* splines: "ortho" gives straight lines, but is slow on big graphs
+               splines: "true" gives bezier curves (fast, not as nice as ortho)
+           */
+            splines: "ortho",
+            rankdir: "TD"
+          },
+          edge: {
+            arrowhead: "vee",
+            arrowsize: "0.5",
+            penwidth: "1.0",
+            color: "#8ea5eb",
+            fontcolor: "#8ea5eb"
+          }
+        }
       },
       archi: {
         /* pattern of modules that can be consolidated in the high level
