@@ -2,7 +2,7 @@ import { useMemo, type PropsWithChildren } from "react"
 import { useTiptapEditor } from "./use-tiptap-editor"
 import { EditorContext, type JSONContent } from "@tiptap/react"
 import TipTapEditor from "./Editor"
-import { useTermContentEditUi } from "~/domains/term/ui.actions"
+import { useTermContentEditUi } from "~/aggregates/term/ui.actions"
 
 interface Props {
   initialJSON?: JSONContent

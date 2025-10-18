@@ -1,11 +1,11 @@
 import { atom, useAtomValue, useSetAtom } from "jotai"
 import { isCanSave$, termMetaDiff$ } from "./ui.selectors"
 import { isSaving$ } from "./ui.atoms"
-import { isDirtyContent$ } from "~/domains/term/ui.atoms"
-import type { RelatedTerm } from "~/domains/related-term/types"
-import { serverRelatedTerm$, uiRelatedTermLabel$ } from "~/domains/related-term/ui.atoms"
-import { serverAlias$, uiAliasLabel$ } from "~/domains/alias/ui.atoms"
-import type { Alias } from "~/domains/alias/types"
+import { isDirtyContent$ } from "~/aggregates/term/ui.atoms"
+import type { RelatedTerm } from "~/aggregates/related-term/types"
+import { serverRelatedTerm$, uiRelatedTermLabel$ } from "~/aggregates/related-term/ui.atoms"
+import { serverAlias$, uiAliasLabel$ } from "~/aggregates/alias/ui.atoms"
+import type { Alias } from "~/aggregates/alias/types"
 
 // サーバから読んだ“正”を反映（初期化/再同期）
 const applyServerAliasSnapshot$ = atom(null, (get, set, created: Alias[], removed: Alias[]) => {

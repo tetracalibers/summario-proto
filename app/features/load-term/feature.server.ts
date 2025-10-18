@@ -1,6 +1,6 @@
-import * as TermService from "~/domains/term/service.server"
-import * as AliasService from "~/domains/alias/service.server"
-import * as RelatedTermService from "~/domains/related-term/service.server"
+import * as TermService from "~/aggregates/term/service.server"
+import * as AliasService from "~/aggregates/alias/service.server"
+import * as RelatedTermService from "~/aggregates/related-term/service.server"
 
 export const getTerm = async (id: string) => {
   return TermService.getTerm(id)

@@ -1,5 +1,5 @@
 import { atom } from "jotai"
-import { currentRelatedTerms$ } from "~/domains/related-term/ui.selectors"
+import { currentRelatedTerms$ } from "~/aggregates/related-term/ui.selectors"
 
 export type Node = { id: number; title: string }
 export type Edge = { source: number; target: number }
