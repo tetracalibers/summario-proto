@@ -1,38 +1,23 @@
 import MiniView from "../mini-view/MiniView"
 import NetworkGraph from "../network-graph/NetworkGraph"
-import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import {
-  centerNodeAtom,
-  edgesAtom,
-  existsMiniviewAtomInNodes,
-  miniviewNodeIdAtom,
-  nodesAtom,
-  type Node
-} from "./atoms"
-import { useEffect } from "react"
 import type { loader } from "~/routes/api/terms/preview"
 import { useQuery } from "@tanstack/react-query"
+import { useRelatedGraphUi } from "~/usecases/term-relation-graph/ui.actions"
+import { useMiniviewUi } from "~/usecases/miniview/ui.actions"
+import type { TermNode } from "~/usecases/term-relation-graph/types"
 
 interface Props {
-  centerNode: Node
+  centerNode: TermNode
 }
 
 export default function RelatedTermView({ centerNode }: Props) {
-  const nodes = useAtomValue(nodesAtom)
-  const edges = useAtomValue(edgesAtom)
-
-  const setCenterNode = useSetAtom(centerNodeAtom)
-  useEffect(() => {
-    setCenterNode(centerNode)
-  }, [centerNode])
-
-  const [miniviewNodeId, setMiniviewNodeId] = useAtom(miniviewNodeIdAtom)
-  const existsInNodes = useAtomValue(existsMiniviewAtomInNodes)
+  const { nodes, edges } = useRelatedGraphUi(centerNode)
+  const { miniviewTermId, setMiniviewTermId, isVisibleMiniview } = useMiniviewUi(centerNode.id)
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
-    queryKey: ["terms", "detail", miniviewNodeId, "preview"],
-    queryFn: () => fetch(`/api/terms/${miniviewNodeId}/preview`).then((res) => res.text()),
-    enabled: existsInNodes && miniviewNodeId !== null
+    queryKey: ["terms", "detail", miniviewTermId, "preview"],
+    queryFn: () => fetch(`/api/terms/${miniviewTermId}/preview`).then((res) => res.text()),
+    enabled: isVisibleMiniview && miniviewTermId !== null
   })
 
   return (
@@ -42,7 +27,7 @@ export default function RelatedTermView({ centerNode }: Props) {
         edges={edges}
         centerId={centerNode.id}
         onNodeClick={(nodeId) => {
-          setMiniviewNodeId(nodeId)
+          setMiniviewTermId(nodeId)
         }}
       />
       <div
@@ -53,7 +38,7 @@ export default function RelatedTermView({ centerNode }: Props) {
           overflowY: "auto"
         }}
       >
-        {data && existsInNodes ? (
+        {data && isVisibleMiniview ? (
           <MiniView contentHTML={data} />
         ) : (
           <p
