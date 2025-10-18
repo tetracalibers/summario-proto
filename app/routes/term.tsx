@@ -20,12 +20,12 @@ import BlockTypeMenu from "~/components/block-menu/BlockTypeMenu"
 import { useLocation } from "react-router"
 import React from "react"
 import ScrollArea from "~/components/scroll-area/ScrollArea"
-import { getTermContents } from "~/features/edit-term/feature.server"
+import { getTermWithMeta } from "~/features/load-term/feature.server"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params
 
-  const { term, alias, related } = await getTermContents(termId)
+  const { term, alias, related } = await getTermWithMeta(termId)
 
   const folderId = term.folderId ? Number(term.folderId) : null
   const [entries, current, paths] = await Promise.all([

@@ -3,16 +3,6 @@ import * as AliasService from "~/domains/alias/service.server"
 import * as RelatedTermService from "~/domains/related-term/service.server"
 import type { SaveFailure, SavePayload, SaveRejected, SaveSuccess, SavingTask } from "./types"
 
-export const getTermContents = async (id: string) => {
-  const [term, alias, related] = await Promise.all([
-    TermService.getTerm(id),
-    AliasService.getAliases(id),
-    RelatedTermService.getRelatedTerms(id)
-  ])
-
-  return { term, alias, related }
-}
-
 export const saveTermContents = async (
   termId: number,
   payload: SavePayload
