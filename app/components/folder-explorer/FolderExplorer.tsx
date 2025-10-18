@@ -4,7 +4,6 @@ import styles from "./FolderExplorer.module.css"
 import { ActionIcon, UnstyledButton } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
-import type { loader } from "~/routes/api/folder"
 import {
   IconChevronLeft,
   IconFolderOpen,
@@ -17,6 +16,7 @@ import ScrollArea from "../scroll-area/ScrollArea"
 import NewFolderInput from "./NewFolderInput"
 import NewFileInput from "./NewFileInput"
 import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/ui.actions"
+import type { loader } from "~/routes/api/folders/children"
 
 interface Props {
   currentTermId: number
@@ -31,8 +31,8 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
     useFolderExplorerInputUi()
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
-    queryKey: ["folders", "detail", folderId],
-    queryFn: () => fetch(`/api/folder/${folderId}`).then((res) => res.json()),
+    queryKey: ["folders", "detail", folderId, "children"],
+    queryFn: () => fetch(`/api/folders/${folderId}/children`).then((res) => res.json()),
     refetchOnWindowFocus: false,
     staleTime: Infinity,
     placeholderData: initials,

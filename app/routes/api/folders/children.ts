@@ -1,5 +1,5 @@
 import { getFolder, getFolderContents } from "~/service/folder"
-import type { Route } from "./+types/folder"
+import type { Route } from "./+types/children"
 
 export async function loader({ params }: Route.ActionArgs) {
   const { folderId } = params
@@ -9,8 +9,8 @@ export async function loader({ params }: Route.ActionArgs) {
     throw new Response("Invalid folder ID", { status: 400 })
   }
 
-  const entries = await getFolderContents(id)
   const current = await getFolder(id)
+  const children = await getFolderContents(id)
 
-  return { current, ...entries }
+  return { current, ...children }
 }
