@@ -1,4 +1,4 @@
-import { deriveItemsAtomFromLabels, deriveDiffAtom } from "~/libs/jotai-utils/transforms"
+import { deriveItemsAtomFromLabels, deriveDiffAtom } from "~/libs/jotai-utils/derive-atom"
 import { serverAlias$, uiAliasLabel$ } from "./ui.atoms"
 import { atom } from "jotai"
 import type { Alias } from "./types"
