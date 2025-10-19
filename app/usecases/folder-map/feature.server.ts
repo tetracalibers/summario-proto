@@ -1,3 +1,5 @@
+import * as TermService from "~/aggregates/term/service.server"
+import * as FolderService from "~/aggregates/folder/service.server"
 import type { JSONContent } from "@tiptap/react"
 import { type Edge, type Node } from "@xyflow/react"
 import { FILE_NODE_TYPE, FOLDER_NODE_TYPE } from "~/libs/xyflow-folder-map/custom-node"
@@ -6,7 +8,6 @@ import {
   createFileNodeId,
   createFolderNodeId
 } from "~/libs/xyflow-folder-map/node-edge-id"
-import { selectAllFolders, selectAllTerms } from "~/db/query"
 
 const TMP_POSITION = { x: 0, y: 0 }
 
@@ -28,7 +29,10 @@ const judgeContentEmpty = (json: JSONContent) => {
 }
 
 export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }> => {
-  const [folders, terms] = await Promise.all([selectAllFolders(), selectAllTerms()])
+  const [folders, terms] = await Promise.all([
+    FolderService.getAllFolders(),
+    TermService.getAllTerms()
+  ])
 
   const hasChildrenFolderIds = new Set([
     ...folders.filter((folder) => folder.parentId !== null).map((folder) => folder.parentId!),

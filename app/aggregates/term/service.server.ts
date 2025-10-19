@@ -2,6 +2,10 @@ import { debugLog } from "~/libs/debug"
 import * as TermRepository from "./repository.server"
 import type { JSONContent } from "@tiptap/react"
 
+export const getAllTerms = async () => {
+  return await TermRepository.findAllTerms()
+}
+
 export const getTerm = async (id: string) => {
   const [term] = await TermRepository.findTermById(id)
   debugLog(term)
