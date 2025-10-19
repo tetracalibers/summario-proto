@@ -1,5 +1,6 @@
-import { getFolder, getFolderContents } from "~/service/folder"
+import { getFolder } from "~/queries/folder-detail/reader.server"
 import type { Route } from "./+types/children"
+import { getFolderChildren } from "~/queries/folder-children/reader.server"
 
 export async function loader({ params }: Route.ActionArgs) {
   const { folderId } = params
@@ -10,7 +11,7 @@ export async function loader({ params }: Route.ActionArgs) {
   }
 
   const current = await getFolder(id)
-  const children = await getFolderContents(id)
+  const children = await getFolderChildren(id)
 
   return { current, ...children }
 }

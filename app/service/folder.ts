@@ -1,9 +1,3 @@
-import {
-  queryFolderPath,
-  selectChildrenFiles,
-  selectChildrenFolders,
-  selectFolderById
-} from "~/db/query"
 import type { Term } from "~/db/schema"
 
 export const sortTermsByNearestFolder = (terms: Term[], folderId: number | null) => {
@@ -21,21 +15,4 @@ export const sortTermsByNearestFolder = (terms: Term[], folderId: number | null)
     const bDistance = b.folderId === folderId ? 0 : 1
     return aDistance - bDistance
   })
-}
-
-export const getFolderContents = async (folderId: number | null) => {
-  const folders = await selectChildrenFolders(folderId)
-  const files = await selectChildrenFiles(folderId)
-  return { folders, files }
-}
-
-export const getFolder = async (folderId: number | null) => {
-  if (folderId === null) return null
-  const [folder] = await selectFolderById(folderId)
-  return folder
-}
-
-export const getFolderPath = async (folderId: number | null) => {
-  if (folderId === null) return null
-  return queryFolderPath(folderId)
 }

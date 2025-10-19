@@ -12,7 +12,7 @@ import AliasInput from "~/components/alias-input/AliasInput"
 import RelatedTermView from "~/components/related-term-view/RelatedTermView"
 import RelatedInput from "~/components/related-input/RelatedInput"
 import FolderPath from "~/components/folder-path/FolderPath"
-import { getFolder, getFolderContents, getFolderPath } from "~/service/folder"
+import { getFolder, getFolderPath } from "~/queries/folder-detail/reader.server"
 import EditorActionMenu from "~/components/editor-action-menu/EditorActionMenu"
 import { Split } from "@gfazioli/mantine-split-pane"
 import FolderExplorer from "~/components/folder-explorer/FolderExplorer"
@@ -21,6 +21,7 @@ import { useLocation } from "react-router"
 import React from "react"
 import ScrollArea from "~/components/scroll-area/ScrollArea"
 import { getTermWithMeta } from "~/queries/term-detail/reader.server"
+import { getFolderChildren } from "~/queries/folder-children/reader.server"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params
@@ -29,7 +30,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
   const folderId = term.folderId ? Number(term.folderId) : null
   const [entries, current, paths] = await Promise.all([
-    getFolderContents(folderId),
+    getFolderChildren(folderId),
     getFolder(folderId),
     getFolderPath(folderId)
   ])
