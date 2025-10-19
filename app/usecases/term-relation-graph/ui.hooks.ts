@@ -2,7 +2,7 @@ import type { TermNode } from "./types"
 import { centerNode$ } from "./ui.atoms"
 import { useAtomValue } from "jotai"
 import { edges$, nodes$ } from "./ui.selectors"
-import { useSyncAtom } from "~/libs/jotai-utils/use-atom"
+import { useSyncAtom } from "~/libs/jotai-utils/hooks"
 
 export const useRelatedGraphUi = (initialCenterNode: TermNode) => {
   useSyncAtom(centerNode$, initialCenterNode)

@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai"
 import { serverAlias$, uiAliasLabel$ } from "./ui.atoms"
 import type { Alias } from "./types"
-import { useSyncAtom } from "~/libs/jotai-utils/use-atom"
+import { useSyncAtom } from "~/libs/jotai-utils/hooks"
 
 export function useAliasUi(initials: Alias[]) {
   useSyncAtom(serverAlias$, new Map(initials.map((item) => [item.title, item.id])))

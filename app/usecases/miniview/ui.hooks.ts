@@ -1,7 +1,7 @@
 import { useAtom, useAtomValue } from "jotai"
 import { miniviewTermId$, pageTermId$ } from "./ui.atoms"
 import { isVisibleMiniview$ } from "./ui.selectors"
-import { useSyncAtom } from "~/libs/jotai-utils/use-atom"
+import { useSyncAtom } from "~/libs/jotai-utils/hooks"
 
 export const useMiniviewUi = (pageTermId: number) => {
   useSyncAtom(pageTermId$, pageTermId)

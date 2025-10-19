@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai"
 import { optionsRelatedTerm$, serverRelatedTerm$, uiRelatedTermLabel$ } from "./ui.atoms"
 import type { RelatedTerm } from "./types"
-import { useSyncAtom } from "~/libs/jotai-utils/use-atom"
+import { useSyncAtom } from "~/libs/jotai-utils/hooks"
 
 export function useRelatedTermUi(initials: RelatedTerm[], options: RelatedTerm[]) {
   useSyncAtom(serverRelatedTerm$, new Map(initials.map((item) => [item.title, item.id])))
