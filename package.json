@@ -8,7 +8,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "format": "prettier --write .",
-    "show-deps": "depcruise --config .dependency-cruiser.cjs ./app --output-type dot | dot -T svg > dependency-graph.svg"
+    "show-deps": "depcruise --config .dependency-cruiser.cjs ./app --output-type dot | dot -T svg > docs/dependency-graph.svg"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.5",

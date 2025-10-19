@@ -343,7 +343,8 @@ module.exports = {
 
           // 1つのノードとしてまとめて表示
           "^(app/libs/xyflow-folder-map)",
-          "^(app/libs/jotai)"
+          "^(app/libs/jotai)",
+          "^(app/db)"
         ],
 
         /* Options to tweak the appearance of your graph.See
@@ -360,11 +361,10 @@ module.exports = {
             rankdir: "TD"
           },
           edge: {
-            arrowhead: "vee",
-            arrowsize: "0.5",
+            arrowsize: "0.75",
             penwidth: "1.0",
-            color: "#8ea5eb",
-            fontcolor: "#8ea5eb"
+            color: "#8ed6ff",
+            fontcolor: "#8ed6ff"
           }
         }
       },
