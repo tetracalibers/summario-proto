@@ -343,7 +343,6 @@ module.exports = {
 
           // 1つのノードとしてまとめて表示
           "^(app/libs/xyflow-folder-map)",
-          "^(app/libs/jotai)",
           "^(app/db)"
         ],
 
