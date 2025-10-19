@@ -1,4 +1,4 @@
-import { $mapLabelsToItems, $createDiff } from "~/libs/jotai/create-atom"
+import { $mapLabelsToItems, $createDiff } from "~/libs/jotai-utils/create-atom"
 import { serverAlias$, uiAliasLabel$ } from "./ui.atoms"
 import { atom } from "jotai"
 import type { Alias } from "./types"
