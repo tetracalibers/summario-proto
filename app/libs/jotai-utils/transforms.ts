@@ -1,7 +1,7 @@
 import { atom, type Atom, type Getter } from "jotai"
 
 // 差分だけを返す
-export const $createDiff = <T extends string>(
+export const deriveDiffAtom = <T extends string>(
   debugLabel: string,
   getLeft: (get: Getter) => Iterable<T>,
   getRight: (get: Getter) => Iterable<T>
@@ -16,7 +16,7 @@ export const $createDiff = <T extends string>(
 }
 
 // 配列をオブジェクト配列へ変換するヘルパー
-export const $mapLabelsToItems = <Label extends string, Id extends number>(
+export const deriveItemsAtomFromLabels = <Label extends string, Id extends number>(
   debugLabel: string,
   labelsAtom: Atom<Iterable<Label>>,
   mapAtom: Atom<Map<Label, Id>>

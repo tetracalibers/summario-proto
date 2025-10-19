@@ -1,10 +1,10 @@
-import { $mapLabelsToItems, $createDiff } from "~/libs/jotai-utils/transforms"
+import { deriveItemsAtomFromLabels, deriveDiffAtom } from "~/libs/jotai-utils/transforms"
 import { serverAlias$, uiAliasLabel$ } from "./ui.atoms"
 import { atom } from "jotai"
 import type { Alias } from "./types"
 
 // 追加：UIにあるが serverData には無い
-const toAddAliasLabels$ = $createDiff(
+const toAddAliasLabels$ = deriveDiffAtom(
   "toAddAliasLabels",
   (get) => get(uiAliasLabel$),
   (get) => get(serverAlias$).keys()
@@ -14,12 +14,16 @@ const toAddAlias$ = atom<Omit<Alias, "id">[]>((get) => {
 })
 
 // 削除：serverData にはあるが UI には無い
-const toRemoveAliasLabels$ = $createDiff(
+const toRemoveAliasLabels$ = deriveDiffAtom(
   "toRemoveAliasLabels",
   (get) => get(serverAlias$).keys(),
   (get) => get(uiAliasLabel$)
 )
-const toRemoveAlias$ = $mapLabelsToItems("toRemoveAlias", toRemoveAliasLabels$, serverAlias$)
+const toRemoveAlias$ = deriveItemsAtomFromLabels(
+  "toRemoveAlias",
+  toRemoveAliasLabels$,
+  serverAlias$
+)
 
 // Save活性（差分があるか）
 export const isDirtyAlias$ = atom((get) => {
