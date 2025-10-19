@@ -15,7 +15,7 @@ import { Link } from "react-router"
 import ScrollArea from "../scroll-area/ScrollArea"
 import NewFolderInput from "./NewFolderInput"
 import NewFileInput from "./NewFileInput"
-import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/ui.actions"
+import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/ui.hooks"
 import type { loader } from "~/routes/api/folders/children"
 
 interface Props {

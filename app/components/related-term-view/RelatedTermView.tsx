@@ -2,8 +2,8 @@ import MiniView from "./MiniView"
 import NetworkGraph from "./NetworkGraph"
 import type { loader } from "~/routes/api/terms/preview"
 import { useQuery } from "@tanstack/react-query"
-import { useRelatedGraphUi } from "~/usecases/term-relation-graph/ui.actions"
-import { useMiniviewUi } from "~/usecases/miniview/ui.actions"
+import { useRelatedGraphUi } from "~/usecases/term-relation-graph/ui.hooks"
+import { useMiniviewUi } from "~/usecases/miniview/ui.hooks"
 import type { TermNode } from "~/usecases/term-relation-graph/types"
 
 interface Props {
