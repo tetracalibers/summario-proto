@@ -1,10 +1,10 @@
 import { useAtom, useAtomValue } from "jotai"
 import { miniviewTermId$, pageTermId$ } from "./ui.atoms"
 import { isVisibleMiniview$ } from "./ui.selectors"
-import { useHydrateAtoms } from "jotai/utils"
+import { useSyncAtom } from "~/libs/jotai-utils/use-atom"
 
 export const useMiniviewUi = (pageTermId: number) => {
-  useHydrateAtoms([[pageTermId$, pageTermId]])
+  useSyncAtom(pageTermId$, pageTermId)
 
   const [miniviewTermId, setMiniviewTermId] = useAtom(miniviewTermId$)
   const isVisibleMiniview = useAtomValue(isVisibleMiniview$)
