@@ -5,19 +5,19 @@ import { useTermContentsSavingState } from "~/usecases/term-edit/ui.selectors"
 
 interface Props {
   initials: RelatedTerm[]
-  suggestions: RelatedTerm[]
+  options: RelatedTerm[]
 }
 
-export default function RelatedInput({ initials, suggestions }: Props) {
+export default function RelatedInput({ initials, options }: Props) {
   const { isSaving } = useTermContentsSavingState()
-  const { setUiValues } = useRelatedTermUi(initials, suggestions)
+  const { setUiValues } = useRelatedTermUi(initials, options)
 
   return (
     <TagsInput
       label="Related Terms"
       placeholder="Enter"
       defaultValue={initials.map((term) => term.title)}
-      data={suggestions.map((term) => term.title)}
+      data={options.map((term) => term.title)}
       onChange={(values) => setUiValues(values)}
       comboboxProps={{ shadow: "sm" }}
       disabled={isSaving}
