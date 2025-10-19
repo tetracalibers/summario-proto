@@ -1,6 +1,6 @@
 import { getFolder } from "~/queries/folder-detail/reader.server"
 import type { Route } from "./+types/children"
-import { getFolderChildren } from "~/queries/folder-children/reader.server"
+import { getFolderChildren } from "~/queries/folder-detail/reader.server"
 
 export async function loader({ params }: Route.ActionArgs) {
   const { folderId } = params

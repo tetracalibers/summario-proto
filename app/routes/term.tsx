@@ -20,7 +20,7 @@ import { useLocation } from "react-router"
 import React from "react"
 import ScrollArea from "~/components/scroll-area/ScrollArea"
 import { getTermWithMeta } from "~/queries/term-detail/reader.server"
-import { getFolderChildren } from "~/queries/folder-children/reader.server"
+import { getFolderChildren } from "~/queries/folder-detail/reader.server"
 import { getRelatedTermOptions } from "~/queries/term-list/reader.server"
 
 export async function loader({ params }: Route.LoaderArgs) {
