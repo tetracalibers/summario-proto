@@ -331,6 +331,7 @@ module.exports = {
      */
     skipAnalysisNotInRules: true,
 
+    // 参考： https://scrapbox.io/mrsekut-p/.dependency-cruiser.js%E3%81%AEoptions%E3%81%AEreporterOptions
     reporterOptions: {
       dot: {
         /* pattern of modules that can be consolidated in the detailed
@@ -341,7 +342,7 @@ module.exports = {
         collapsePattern: [
           "node_modules/(?:@[^/]+/[^/]+|[^/]+)",
 
-          // 1つのノードとしてまとめて表示
+          // ディレクトリ自体を1つのノードとして表示
           "^(app/libs/xyflow-folder-map)",
           "^(app/db)"
         ],
