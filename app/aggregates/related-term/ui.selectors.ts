@@ -3,7 +3,7 @@ import { optionsRelatedTerm$, serverRelatedTerm$, uiRelatedTermLabel$ } from "./
 import { atom } from "jotai"
 
 // 追加：UIにあるが serverData には無い
-const toAddRelatedTermLabels$ = deriveDiffAtom(
+export const toAddRelatedTermLabels$ = deriveDiffAtom(
   "toAddRelatedTermLabels",
   (get) => get(uiRelatedTermLabel$),
   (get) => get(serverRelatedTerm$).keys()
@@ -15,7 +15,7 @@ const toAddRelatedTerm$ = deriveItemsAtomFromLabels(
 )
 
 // 削除：serverData にはあるが UI には無い
-const toRemoveRelatedTermLabels$ = deriveDiffAtom(
+export const toRemoveRelatedTermLabels$ = deriveDiffAtom(
   "toRemoveRelatedTermLabels",
   (get) => get(serverRelatedTerm$).keys(),
   (get) => get(uiRelatedTermLabel$)
