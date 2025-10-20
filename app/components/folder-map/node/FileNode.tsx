@@ -13,9 +13,9 @@ import { ActionIcon, Group, TextInput } from "@mantine/core"
 import { IconExternalLink, IconNote } from "@tabler/icons-react"
 import { clsx } from "clsx"
 import { NavLink } from "react-router"
-import { parseFileNodeId } from "../node-edge-id"
+import { parseFileNodeId } from "../../../libs/xyflow-folder-map/node-edge-id"
 import DeleteNodeButton from "./DeleteNodeButton"
-import type { FileNodeData } from "../custom-node"
+import type { FileNodeData } from "../../../libs/xyflow-folder-map/custom-node"
 
 const MAX_CONNECTIONS = 1
 

@@ -1,17 +1,13 @@
 import { Button } from "@mantine/core"
 import { useCurrentEditor } from "@tiptap/react"
-import { useAtomValue, useSetAtom } from "jotai"
 import { useEffect, type ButtonHTMLAttributes } from "react"
 import { useFetcher, useParams } from "react-router"
-import { setServerAliasAtom } from "../alias-input/atoms"
-import { setServerRelatedAtom } from "../related-input/atoms"
 import { notifications } from "@mantine/notifications"
 import reversedNotificationStyles from "./reversed-notification.module.css"
-import { canSaveAtom, saveMetaPayloadAtom, savingStateAtom } from "./atoms"
-import { dirtyEditorAtom } from "../editor/atoms"
 import { IconLoader } from "@tabler/icons-react"
 import loadingStyle from "./loading.module.css"
 import type { action } from "~/routes/api/terms/edit"
+import { useTermContentSaveUi } from "~/usecases/term-edit/ui.hooks"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -22,17 +18,17 @@ const SaveButton = (props: Props) => {
 
   const { editor } = useCurrentEditor()
 
-  const canSave = useAtomValue(canSaveAtom)
-  const setSavingState = useSetAtom(savingStateAtom)
-
-  const setServerAlias = useSetAtom(setServerAliasAtom)
-  const setServerRelated = useSetAtom(setServerRelatedAtom)
-
-  const saveMetaPayload = useAtomValue(saveMetaPayloadAtom)
-  const isDirtyEditor = useAtomValue(dirtyEditorAtom)
+  const {
+    termMetaDiff,
+    isCanSave,
+    isDirtyEditor,
+    setIsSaving,
+    applyServerAliasSnapshot,
+    applyServerRelatedTermSnapshot
+  } = useTermContentSaveUi()
 
   useEffect(() => {
-    setSavingState(fetcher.state)
+    setIsSaving(fetcher.state === "submitting")
   }, [fetcher.state])
 
   // ボタン押下後、保存が成功したら
@@ -41,8 +37,8 @@ const SaveButton = (props: Props) => {
     if (!fetcher.data) return
     if (!fetcher.data.ok) return
 
-    setServerAlias(fetcher.data.alias.created, fetcher.data.alias.deleted)
-    setServerRelated(fetcher.data.related.created, fetcher.data.related.deleted)
+    applyServerAliasSnapshot(fetcher.data.alias.created, fetcher.data.alias.deleted)
+    applyServerRelatedTermSnapshot(fetcher.data.related.created, fetcher.data.related.deleted)
 
     // 保存開始時から未変更なら未編集化
     const cleaned = editor.commands.markCleanIfUnmodified()
@@ -79,7 +75,7 @@ const SaveButton = (props: Props) => {
       variant="gradient"
       gradient={{ from: "grape", to: "indigo", deg: 90 }}
       radius="sm"
-      disabled={!canSave || isSubmitting}
+      disabled={!isCanSave || isSubmitting}
       onClick={() => {
         if (!editor) return
 
@@ -87,7 +83,7 @@ const SaveButton = (props: Props) => {
         editor.commands.takeSnapshot()
 
         const payload = {
-          ...saveMetaPayload,
+          ...termMetaDiff,
           content: isDirtyEditor ? editor.getJSON() : null
         }
 

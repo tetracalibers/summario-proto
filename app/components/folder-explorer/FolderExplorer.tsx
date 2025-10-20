@@ -4,7 +4,6 @@ import styles from "./FolderExplorer.module.css"
 import { ActionIcon, UnstyledButton } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
-import type { loader } from "~/routes/api/folder"
 import {
   IconChevronLeft,
   IconFolderOpen,
@@ -14,10 +13,10 @@ import {
 } from "@tabler/icons-react"
 import { Link } from "react-router"
 import ScrollArea from "../scroll-area/ScrollArea"
-import { useAtom } from "jotai"
-import { displayedEntryInputTypeAtom } from "./atoms"
 import NewFolderInput from "./NewFolderInput"
 import NewFileInput from "./NewFileInput"
+import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/ui.hooks"
+import type { loader } from "~/routes/api/folders/children"
 
 interface Props {
   currentTermId: number
@@ -28,11 +27,12 @@ interface Props {
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
   const [folderId, setFolderId] = useState<number | "root" | null>(null)
 
-  const [displayedEntryInputType, showEntryInput] = useAtom(displayedEntryInputTypeAtom)
+  const { showEntryInput, resetAndHideEntryInput, isActiveFileInput, isActiveFolderInput } =
+    useFolderExplorerInputUi()
 
   const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
-    queryKey: ["folders", "detail", folderId],
-    queryFn: () => fetch(`/api/folder/${folderId}`).then((res) => res.json()),
+    queryKey: ["folders", "detail", folderId, "children"],
+    queryFn: () => fetch(`/api/folders/${folderId}/children`).then((res) => res.json()),
     refetchOnWindowFocus: false,
     staleTime: Infinity,
     placeholderData: initials,
@@ -60,7 +60,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
               radius="xl"
               aria-label="new folder"
               onClick={() => showEntryInput("folder")}
-              disabled={displayedEntryInputType === "folder"}
+              disabled={isActiveFolderInput}
             >
               <IconFolderPlus size={16} color="var(--mantine-color-gray-7)" />
             </ActionIcon>
@@ -69,7 +69,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
               radius="xl"
               aria-label="new note"
               onClick={() => showEntryInput("file")}
-              disabled={displayedEntryInputType === "file"}
+              disabled={isActiveFileInput}
             >
               <IconPencilPlus size={16} color="var(--mantine-color-gray-7)" />
             </ActionIcon>
@@ -94,13 +94,13 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
               />
             </li>
           ))}
-          {displayedEntryInputType === "folder" && <NewFolderInput />}
+          {isActiveFolderInput && <NewFolderInput resetAndHideFn={resetAndHideEntryInput} />}
           {data?.files.map((file) => (
             <li key={file.id}>
               <FileLink targetTerm={file} isActive={currentTermId === file.id} />
             </li>
           ))}
-          {displayedEntryInputType === "file" && <NewFileInput />}
+          {isActiveFileInput && <NewFileInput resetAndHideFn={resetAndHideEntryInput} />}
         </ul>
       </ScrollArea>
       <Link

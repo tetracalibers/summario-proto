@@ -13,7 +13,7 @@ import { Group, TextInput } from "@mantine/core"
 import { useState } from "react"
 import clsx from "clsx"
 import DeleteNodeButton from "./DeleteNodeButton"
-import type { FolderNodeData } from "../custom-node"
+import type { FolderNodeData } from "../../../libs/xyflow-folder-map/custom-node"
 
 const MAX_TARGET_CONNECTIONS = 1
 

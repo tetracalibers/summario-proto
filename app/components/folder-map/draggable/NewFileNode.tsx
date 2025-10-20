@@ -2,11 +2,11 @@ import { TextInput } from "@mantine/core"
 import { IconGripHorizontal, IconNote } from "@tabler/icons-react"
 import styles from "./NewNode.module.css"
 import { useReactFlow, type XYPosition, type Node } from "@xyflow/react"
-import { createTmpFileNodeId } from "../node-edge-id"
+import { createTmpFileNodeId } from "../../../libs/xyflow-folder-map/node-edge-id"
 import DraggableNode from "./DraggableNode"
 import { useCallback, useState } from "react"
 import { isInMapArea } from "./drop-area"
-import { FILE_NODE_TYPE, type FileNodeData } from "../custom-node"
+import { FILE_NODE_TYPE, type FileNodeData } from "../../../libs/xyflow-folder-map/custom-node"
 
 export default function NewFileNode() {
   const [name, setName] = useState("")

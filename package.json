@@ -7,7 +7,9 @@
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "deps-check": "depcruise --config .dependency-cruiser.cjs ./app",
+    "deps-graph": "depcruise --config .dependency-cruiser.cjs ./app --output-type dot | dot -T svg > docs/dependency-graph.svg"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.5",
@@ -50,6 +52,7 @@
     "@types/node": "^24.7.2",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "dependency-cruiser": "^17.1.0",
     "drizzle-kit": "^0.31.5",
     "jotai-devtools": "^0.13.0",
     "prettier": "^3.6.2",

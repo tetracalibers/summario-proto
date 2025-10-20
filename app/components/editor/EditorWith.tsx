@@ -2,17 +2,16 @@ import { useMemo, type PropsWithChildren } from "react"
 import { useTiptapEditor } from "./use-tiptap-editor"
 import { EditorContext, type JSONContent } from "@tiptap/react"
 import TipTapEditor from "./Editor"
-import { useSetAtom } from "jotai"
-import { dirtyEditorAtom } from "./atoms"
+import { useTermContentEditUi } from "~/aggregates/term/ui.hooks"
 
 interface Props {
   initialJSON?: JSONContent
 }
 
 const EditorWith = ({ children, initialJSON }: PropsWithChildren<Props>) => {
-  const setIsDirtyEditor = useSetAtom(dirtyEditorAtom)
+  const { setIsDirty } = useTermContentEditUi()
 
-  const editor = useTiptapEditor(initialJSON, setIsDirtyEditor)
+  const editor = useTiptapEditor(initialJSON, setIsDirty)
   const editorValue = useMemo(() => ({ editor }), [editor])
 
   return (
