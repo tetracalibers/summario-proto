@@ -85,10 +85,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
         <div className="rightside-area">
           <Stack gap="xs">
             <AliasInput initials={alias} />
-            <RelatedInput
-              initials={related.filter((n) => n.id !== term.id)}
-              options={relatedOptions}
-            />
+            <RelatedInput initials={related} options={relatedOptions} />
           </Stack>
           <RelatedTermView centerNode={{ id: term.id, title: term.title }} />
         </div>
