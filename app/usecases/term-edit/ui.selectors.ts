@@ -16,8 +16,3 @@ export const termMetaDiff$ = atom((get) => {
   const related = get(relatedTermDiff$)
   return { alias, related }
 })
-
-export const useTermContentsSavingState = () => {
-  const isSaving = useAtomValue(isSaving$)
-  return { isSaving }
-}

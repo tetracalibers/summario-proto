@@ -1,7 +1,7 @@
 import { TagsInput } from "@mantine/core"
 import { useAliasUi } from "~/aggregates/alias/ui.hooks"
 import type { Alias } from "~/aggregates/alias/types"
-import { useTermContentsSavingState } from "~/usecases/term-edit/ui.selectors"
+import { useTermContentsSavingState } from "~/usecases/term-edit/ui.hooks"
 
 interface Props {
   initials: Alias[]

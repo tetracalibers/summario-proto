@@ -22,3 +22,8 @@ export function useTermContentSaveUi() {
     applyServerRelatedTermSnapshot
   }
 }
+
+export const useTermContentsSavingState = () => {
+  const isSaving = useAtomValue(isSaving$)
+  return { isSaving }
+}
