@@ -4,7 +4,7 @@ import { eq, or, and, inArray, sql } from "drizzle-orm"
 import { debugLog } from "~/libs/debug.server"
 
 // 関連ノード（双方向）をすべて取得
-export const findAllRelatedTerms = async (termId: number) => {
+export const findAllByTermId = async (termId: number) => {
   const rows = await db
     .select({ id: terms.id, title: terms.title })
     .from(terms)

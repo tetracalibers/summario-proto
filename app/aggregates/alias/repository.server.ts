@@ -2,7 +2,7 @@ import { db } from "~/db/connection"
 import { termAliases } from "~/db/schema"
 import { eq, inArray } from "drizzle-orm"
 
-export const findAllAliasesByTermId = async (termId: number) => {
+export const findAllByTermId = async (termId: number) => {
   const rows = await db
     .select({ id: termAliases.id, title: termAliases.title })
     .from(termAliases)

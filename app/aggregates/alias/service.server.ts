@@ -1,7 +1,7 @@
 import * as AliasRepository from "~/aggregates/alias/repository.server"
 
 export const getAliases = async (termId: number) => {
-  return AliasRepository.findAllAliasesByTermId(termId)
+  return AliasRepository.findAllByTermId(termId)
 }
 
 export const addAliases = async (termId: number, aliasLabels: string[]) => {
