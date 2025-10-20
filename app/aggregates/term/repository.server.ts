@@ -11,11 +11,11 @@ export const findAllTerms = async () => {
   return rows
 }
 
-export const findTermById = async (id: string) => {
+export const findTermById = async (id: number) => {
   const rows = await db
     .select({ id: terms.id, title: terms.title, content: terms.content, folderId: terms.folderId })
     .from(terms)
-    .where(eq(terms.id, Number(id)))
+    .where(eq(terms.id, id))
 
   return rows
 }

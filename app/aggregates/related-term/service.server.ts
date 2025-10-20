@@ -1,6 +1,6 @@
 import * as RelatedTermRepository from "~/aggregates/related-term/repository.server"
 
-export const getRelatedTerms = async (termId: string) => {
+export const getRelatedTerms = async (termId: number) => {
   return RelatedTermRepository.findAllRelatedTerms(termId)
 }
 

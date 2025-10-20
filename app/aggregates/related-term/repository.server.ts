@@ -4,15 +4,15 @@ import { eq, or, and, inArray, sql } from "drizzle-orm"
 import { debugLog } from "~/libs/debug.server"
 
 // 関連ノード（双方向）をすべて取得
-export const findAllRelatedTerms = async (termId: string) => {
+export const findAllRelatedTerms = async (termId: number) => {
   const rows = await db
     .select({ id: terms.id, title: terms.title })
     .from(terms)
     .innerJoin(
       termEdges,
       or(
-        and(eq(termEdges.sourceTermId, terms.id), eq(termEdges.targetTermId, Number(termId))),
-        and(eq(termEdges.targetTermId, terms.id), eq(termEdges.sourceTermId, Number(termId)))
+        and(eq(termEdges.sourceTermId, terms.id), eq(termEdges.targetTermId, termId)),
+        and(eq(termEdges.targetTermId, terms.id), eq(termEdges.sourceTermId, termId))
       )
     )
 

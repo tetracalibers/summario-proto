@@ -5,7 +5,7 @@ import type { JSONContent } from "@tiptap/react"
 import { getTerm } from "~/queries/term-detail/reader.server"
 
 export async function loader({ params }: Route.ActionArgs) {
-  const term = await getTerm(params.termId)
+  const term = await getTerm(Number(params.termId))
   const contentJson = term.content as JSONContent
 
   const html = renderToHTMLString({

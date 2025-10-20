@@ -6,7 +6,7 @@ export const getAllTerms = async () => {
   return await TermRepository.findAllTerms()
 }
 
-export const getTerm = async (id: string) => {
+export const getTerm = async (id: number) => {
   const [term] = await TermRepository.findTermById(id)
   debugLog(term)
   return term
