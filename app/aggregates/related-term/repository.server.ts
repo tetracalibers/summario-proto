@@ -1,7 +1,7 @@
 import { db } from "~/db/connection"
 import { terms, termEdges } from "~/db/schema"
 import { eq, or, and, inArray, sql } from "drizzle-orm"
-import { debugLog } from "~/libs/debug"
+import { debugLog } from "~/libs/debug.server"
 
 // 関連ノード（双方向）をすべて取得
 export const findAllRelatedTerms = async (termId: string) => {
