@@ -2,8 +2,6 @@ import FileLink from "./FileLink"
 import FolderLink from "./FolderLink"
 import styles from "./FolderExplorer.module.css"
 import { ActionIcon, UnstyledButton } from "@mantine/core"
-import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
 import {
   IconChevronLeft,
   IconFolderOpen,
@@ -15,7 +13,7 @@ import { Link } from "react-router"
 import ScrollArea from "../scroll-area/ScrollArea"
 import NewFolderInput from "./NewFolderInput"
 import NewFileInput from "./NewFileInput"
-import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/ui.hooks"
+import { useFolderExplorerInputUi, useFolderExplorerUi } from "~/usecases/folder-explorer/ui.hooks"
 import type { loader } from "~/routes/api/folders/children"
 
 interface Props {
@@ -25,19 +23,10 @@ interface Props {
 }
 
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
-  const [folderId, setFolderId] = useState<number | "root" | null>(null)
-
   const { showEntryInput, resetAndHideEntryInput, isActiveFileInput, isActiveFolderInput } =
     useFolderExplorerInputUi()
 
-  const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
-    queryKey: ["folders", "detail", folderId, "children"],
-    queryFn: () => fetch(`/api/folders/${folderId}/children`).then((res) => res.json()),
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-    placeholderData: initials,
-    enabled: folderId !== null
-  })
+  const { data, setFolderId } = useFolderExplorerUi(initials)
 
   return (
     <div className={styles.root}>
