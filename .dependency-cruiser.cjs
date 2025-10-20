@@ -177,6 +177,107 @@ module.exports = {
       to: {
         dependencyTypes: ["npm-peer"]
       }
+    },
+
+    // --- db アクセスの制限 ----------------------------------------------------
+    // db/ 配下へアクセスできるのは
+    //  - app/aggregates/**/repository.ts
+    //  - app/queries/**/readstore.ts
+    // のみ
+    {
+      name: "db-access-only-from-repository-or-readstore",
+      severity: "error",
+      from: {
+        pathNot:
+          "^(?:app/aggregates/[^/]+/repository\\.server\\.ts|app/queries/[^/]+/readstore\\.server\\.ts)$"
+      },
+      to: { path: "^app/db(/|$)" }
+    },
+
+    // --- aggregates レイヤ ----------------------------------------------------
+    // repository.ts は service.ts からしか呼ばせない
+    {
+      name: "repository-called-only-from-service",
+      severity: "error",
+      from: {
+        pathNot: "^app/aggregates/[^/]+/service\\.ts$"
+      },
+      to: { path: "^app/aggregates/[^/]+/repository\\.ts$" }
+    },
+    // service.ts は UI/DB/queries/routes/components を直接触らない（=リポジトリと libs だけ）
+    {
+      name: "service-only-wraps-repository-and-libs",
+      severity: "error",
+      from: { path: "^app/aggregates/[^/]+/service\\.ts$" },
+      to: {
+        path: "^(app/(components|routes|styles|db|queries|usecases)/|app/(aggregates|usecases)/[^/]+/ui\\.)"
+      }
+    },
+
+    // --- usecases レイヤ ------------------------------------------------------
+    // usecases/** は他の usecase ディレクトリに依存しない（feature.ts を想定）
+    {
+      name: "no-cross-usecases",
+      severity: "error",
+      from: { path: "^app/usecases/[^/]+/" },
+      to: { path: "^app/usecases/(?![^/]+/)" }
+    },
+    // feature.ts は UI/DB/queries(readstore 直叩き) を直接触らない（= aggregates の service と libs 経由）
+    {
+      name: "feature-restrict-imports",
+      severity: "error",
+      from: { path: "^app/usecases/[^/]+/feature\\.ts$" },
+      to: {
+        path: "^(app/(components|routes|styles|db)/|app/queries/[^/]+/readstore\\.ts$|app/(aggregates|usecases)/[^/]+/ui\\.)"
+      }
+    },
+
+    // --- queries レイヤ -------------------------------------------------------
+    // readstore.ts は reader.ts からしか呼ばれない
+    {
+      name: "readstore-called-only-from-reader",
+      severity: "error",
+      from: { pathNot: "^app/queries/[^/]+/reader\\.ts$" },
+      to: { path: "^app/queries/[^/]+/readstore\\.ts$" }
+    },
+    // queries/** は他の queries/** ディレクトリに依存しない
+    {
+      name: "no-cross-queries",
+      severity: "error",
+      from: { path: "^app/queries/[^/]+/" },
+      to: { path: "^app/queries/(?![^/]+/)" }
+    },
+
+    // --- components レイヤ ----------------------------------------------------
+    // components から UI の内部(atom/selector/action)へは直接アクセス禁止
+    {
+      name: "components-cannot-touch-ui-internals",
+      severity: "error",
+      from: { path: "^app/components/" },
+      to: {
+        path: "^app/(aggregates|usecases)/[^/]+/ui\\.(atoms|selectors|actions)\\.ts$"
+      }
+    },
+
+    // --- routes/api レイヤ ----------------------------------------------------
+    // API からは UI/Components/Styles を触らない
+    {
+      name: "api-no-ui-or-components",
+      severity: "error",
+      from: { path: "^app/routes/api/[^/]+\\.ts$" },
+      to: {
+        path: "^(app/components/|app/styles/|app/(aggregates|usecases)/[^/]+/ui\\.)"
+      }
+    },
+    // API は queries の reader と usecases の feature 経由のみでデータ操作
+    // （= aggregates/db/readstore を直接触らない）
+    {
+      name: "api-restrict-data-layer",
+      severity: "error",
+      from: { path: "^app/routes/api/[^/]+\\.ts$" },
+      to: {
+        path: "^(app/aggregates/|app/db/|app/queries/[^/]+/readstore\\.ts$)"
+      }
     }
   ],
   options: {
