@@ -84,9 +84,6 @@ APIエンドポイントを表すファイルです。
 - データの取得は`app/queries/**/reader.ts`を介して行います。
 - データの変更は`app/usecases/**/feature.ts`を介して行います。
 
-> [!NOTE]
-> いずれはAPIを[Nest.js](https://nestjs.com/)等で書き直し、React Routerの仕組みから分離させることを検討しています。
-
 ### `app/components`
 
 UIコンポーネントを置く場所です。
@@ -94,9 +91,6 @@ UIコンポーネントを置く場所です。
 - 見た目上の部品単位でディレクトリを分けます。
 - そのコンポーネント専用のスタイル（CSS Module）やロジックも合わせて置くことができます。
 - ただし、UIの状態は`app/(usecases|aggregates)/**/ui.hooks.ts`から参照するようにします。
-
-> [!NOTE]
-> APIの呼び出しについてはTanStack Queryを用いて整理する予定です。
 
 ### `app/styles`
 
