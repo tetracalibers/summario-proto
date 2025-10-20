@@ -13,8 +13,9 @@ import { Link } from "react-router"
 import ScrollArea from "../scroll-area/ScrollArea"
 import NewFolderInput from "./NewFolderInput"
 import NewFileInput from "./NewFileInput"
-import { useFolderExplorerInputUi, useFolderExplorerUi } from "~/usecases/folder-explorer/ui.hooks"
+import { useFolderExplorerUi } from "~/usecases/folder-explorer/ui.hooks"
 import type { loader } from "~/routes/api/folders/children"
+import { useFolderExplorerInputUi } from "~/usecases/folder-explorer-input/ui.hooks"
 
 interface Props {
   currentTermId: number
