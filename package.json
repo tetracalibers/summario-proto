@@ -8,6 +8,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "format": "prettier --write .",
+    "test": "vitest run",
     "deps-check": "depcruise --config .dependency-cruiser.cjs ./app",
     "deps-graph": "depcruise --config .dependency-cruiser.cjs ./app --output-type dot | dot -T svg > docs/dependency-graph.svg"
   },
