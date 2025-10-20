@@ -50,7 +50,7 @@ export async function action({ request, params }: Route.ActionArgs) {
       }
     })
 
-    return data({ ok: false, errors } as const, { status: 500 })
+    return data(errors, { status: 500 })
   }
 
   return result

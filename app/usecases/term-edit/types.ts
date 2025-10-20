@@ -52,3 +52,13 @@ export interface SaveFailure {
   ok: false
   rejected: SaveRejected[]
 }
+
+export class SaveActionError extends Error {
+  details: { title: string; message: string }[]
+
+  constructor(message: string, details: { title: string; message: string }[]) {
+    super(message)
+    this.name = "SaveActionError"
+    this.details = details
+  }
+}
