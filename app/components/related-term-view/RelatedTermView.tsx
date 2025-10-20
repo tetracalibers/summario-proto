@@ -1,7 +1,5 @@
 import MiniView from "./MiniView"
 import NetworkGraph from "./NetworkGraph"
-import type { loader } from "~/routes/api/terms/preview"
-import { useQuery } from "@tanstack/react-query"
 import { useRelatedGraphUi } from "~/usecases/term-relation-graph/ui.hooks"
 import { useMiniviewUi } from "~/usecases/miniview/ui.hooks"
 import type { TermNode } from "~/usecases/term-relation-graph/types"
@@ -12,13 +10,7 @@ interface Props {
 
 export default function RelatedTermView({ centerNode }: Props) {
   const { nodes, edges } = useRelatedGraphUi(centerNode)
-  const { miniviewTermId, setMiniviewTermId, isVisibleMiniview } = useMiniviewUi(centerNode.id)
-
-  const { data } = useQuery<Awaited<ReturnType<typeof loader>>>({
-    queryKey: ["terms", "detail", miniviewTermId, "preview"],
-    queryFn: () => fetch(`/api/terms/${miniviewTermId}/preview`).then((res) => res.text()),
-    enabled: isVisibleMiniview && miniviewTermId !== null
-  })
+  const { data, setMiniviewTermId, isVisibleMiniview } = useMiniviewUi(centerNode.id)
 
   return (
     <>
