@@ -2,6 +2,8 @@ import { useAtom, useAtomValue } from "jotai"
 import { miniviewTermId$, pageTermId$ } from "./ui.atoms"
 import { isVisibleMiniview$ } from "./ui.selectors"
 import { useSyncAtom } from "~/libs/jotai-utils/hooks"
+import { useQuery } from "@tanstack/react-query"
+import type { loader } from "~/routes/api/terms/preview"
 
 export const useMiniviewUi = (pageTermId: number) => {
   useSyncAtom(pageTermId$, pageTermId)
@@ -9,5 +11,11 @@ export const useMiniviewUi = (pageTermId: number) => {
   const [miniviewTermId, setMiniviewTermId] = useAtom(miniviewTermId$)
   const isVisibleMiniview = useAtomValue(isVisibleMiniview$)
 
-  return { miniviewTermId, setMiniviewTermId, isVisibleMiniview }
+  const { data, isPending, isError } = useQuery<Awaited<ReturnType<typeof loader>>>({
+    queryKey: ["terms", "detail", miniviewTermId, "preview"],
+    queryFn: () => fetch(`/api/terms/${miniviewTermId}/preview`).then((res) => res.text()),
+    enabled: isVisibleMiniview && miniviewTermId !== null
+  })
+
+  return { setMiniviewTermId, isVisibleMiniview, data, isPending, isError }
 }

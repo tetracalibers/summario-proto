@@ -1,6 +1,7 @@
 import { db } from "~/db/connection"
 import { terms, termEdges } from "~/db/schema"
-import { eq, or, and, inArray } from "drizzle-orm"
+import { eq, or, and, inArray, sql } from "drizzle-orm"
+import { debugLog } from "~/libs/debug"
 
 // 関連ノード（双方向）をすべて取得
 export const findAllRelatedTerms = async (termId: string) => {
@@ -14,6 +15,8 @@ export const findAllRelatedTerms = async (termId: string) => {
         and(eq(termEdges.targetTermId, terms.id), eq(termEdges.sourceTermId, Number(termId)))
       )
     )
+
+  debugLog(rows)
 
   return rows
 }
@@ -30,10 +33,18 @@ export const createTermRelations = async (termId: number, relatedTermIds: number
 
   // INSERT ... ON CONFLICT DO NOTHING RETURNING ... を CTE 化
   const ins = db.$with("ins").as(
-    db.insert(termEdges).values(edgeValues).onConflictDoNothing().returning({
-      sourceId: termEdges.sourceTermId,
-      targetId: termEdges.targetTermId
-    })
+    db
+      .insert(termEdges)
+      .values(edgeValues)
+      .onConflictDoNothing()
+      .returning({
+        otherId: sql<number>`
+          CASE
+            WHEN ${termEdges.sourceTermId} = ${termId} THEN ${termEdges.targetTermId}
+            ELSE ${termEdges.sourceTermId}
+          END
+        `.as("otherId")
+      })
   )
 
   // CTE で返った source/target に紐づく terms をそのまま 1 ステートメントで取得
@@ -41,12 +52,9 @@ export const createTermRelations = async (termId: number, relatedTermIds: number
     .with(ins)
     .selectDistinct({ id: terms.id, title: terms.title })
     .from(terms)
-    .where(
-      or(
-        inArray(terms.id, db.select({ id: ins.sourceId }).from(ins)),
-        inArray(terms.id, db.select({ id: ins.targetId }).from(ins))
-      )
-    )
+    .where(inArray(terms.id, db.select({ id: ins.otherId }).from(ins)))
+
+  debugLog(rows)
 
   return rows
 }
@@ -65,8 +73,12 @@ export const deleteTermRelations = async (termId: number, relatedTermIds: number
         )
       )
       .returning({
-        sourceId: termEdges.sourceTermId,
-        targetId: termEdges.targetTermId
+        otherId: sql<number>`
+          CASE
+            WHEN ${termEdges.sourceTermId} = ${termId} THEN ${termEdges.targetTermId}
+            ELSE ${termEdges.sourceTermId}
+          END
+        `.as("otherId")
       })
   )
 
@@ -75,12 +87,7 @@ export const deleteTermRelations = async (termId: number, relatedTermIds: number
     .with(del)
     .selectDistinct({ id: terms.id, title: terms.title })
     .from(terms)
-    .where(
-      or(
-        inArray(terms.id, db.select({ id: del.sourceId }).from(del)),
-        inArray(terms.id, db.select({ id: del.targetId }).from(del))
-      )
-    )
+    .where(inArray(terms.id, db.select({ id: del.otherId }).from(del)))
 
   return rows
 }
