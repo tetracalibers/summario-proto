@@ -1,4 +1,4 @@
-import * as AliasRepository from "~/aggregates/alias/repository.server"
+import * as AliasRepository from "~/units/alias/repository.server"
 
 export const getAliases = async (termId: number) => {
   return AliasRepository.findAllByTermId(termId)

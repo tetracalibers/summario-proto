@@ -182,7 +182,7 @@ module.exports = {
 
     // --- db アクセスの制限 ----------------------------------------------------
     // db/ 配下へアクセスできるのは
-    //  - app/aggregates/**/repository.ts
+    //  - app/units/**/repository.ts
     //  - app/queries/**/readstore.ts
     // のみ
     {
@@ -190,28 +190,28 @@ module.exports = {
       severity: "error",
       from: {
         pathNot:
-          "^(?:app/aggregates/[^/]+/repository\\.server\\.ts|app/queries/[^/]+/readstore\\.server\\.ts)$"
+          "^(?:app/units/[^/]+/repository\\.server\\.ts|app/queries/[^/]+/readstore\\.server\\.ts)$"
       },
       to: { path: "^app/db(/|$)" }
     },
 
-    // --- aggregates レイヤ ----------------------------------------------------
+    // --- units レイヤ ----------------------------------------------------
     // repository.ts は service.ts からしか呼ばせない
     {
       name: "repository-called-only-from-service",
       severity: "error",
       from: {
-        pathNot: "^app/aggregates/[^/]+/service\\.ts$"
+        pathNot: "^app/units/[^/]+/service\\.ts$"
       },
-      to: { path: "^app/aggregates/[^/]+/repository\\.ts$" }
+      to: { path: "^app/units/[^/]+/repository\\.ts$" }
     },
     // service.ts は UI/DB/queries/routes/components を直接触らない（=リポジトリと libs だけ）
     {
       name: "service-only-wraps-repository-and-libs",
       severity: "error",
-      from: { path: "^app/aggregates/[^/]+/service\\.ts$" },
+      from: { path: "^app/units/[^/]+/service\\.ts$" },
       to: {
-        path: "^(app/(components|routes|styles|db|queries|usecases)/|app/(aggregates|usecases)/[^/]+/ui\\.)"
+        path: "^(app/(components|routes|styles|db|queries|usecases)/|app/(units|usecases)/[^/]+/ui\\.)"
       }
     },
 
@@ -223,13 +223,13 @@ module.exports = {
       from: { path: "^app/usecases/[^/]+/" },
       to: { path: "^app/usecases/(?![^/]+/)" }
     },
-    // feature.ts は UI/DB/queries(readstore 直叩き) を直接触らない（= aggregates の service と libs 経由）
+    // feature.ts は UI/DB/queries(readstore 直叩き) を直接触らない（= units の service と libs 経由）
     {
       name: "feature-restrict-imports",
       severity: "error",
       from: { path: "^app/usecases/[^/]+/feature\\.ts$" },
       to: {
-        path: "^(app/(components|routes|styles|db)/|app/queries/[^/]+/readstore\\.ts$|app/(aggregates|usecases)/[^/]+/ui\\.)"
+        path: "^(app/(components|routes|styles|db)/|app/queries/[^/]+/readstore\\.ts$|app/(units|usecases)/[^/]+/ui\\.)"
       }
     },
 
@@ -256,7 +256,7 @@ module.exports = {
       severity: "error",
       from: { path: "^app/components/" },
       to: {
-        path: "^app/(aggregates|usecases)/[^/]+/ui\\.(atoms|selectors|actions)\\.ts$"
+        path: "^app/(units|usecases)/[^/]+/ui\\.(atoms|selectors|actions)\\.ts$"
       }
     },
 
@@ -267,17 +267,17 @@ module.exports = {
       severity: "error",
       from: { path: "^app/routes/api/[^/]+\\.ts$" },
       to: {
-        path: "^(app/components/|app/styles/|app/(aggregates|usecases)/[^/]+/ui\\.)"
+        path: "^(app/components/|app/styles/|app/(units|usecases)/[^/]+/ui\\.)"
       }
     },
     // API は queries の reader と usecases の feature 経由のみでデータ操作
-    // （= aggregates/db/readstore を直接触らない）
+    // （= units/db/readstore を直接触らない）
     {
       name: "api-restrict-data-layer",
       severity: "error",
       from: { path: "^app/routes/api/[^/]+\\.ts$" },
       to: {
-        path: "^(app/aggregates/|app/db/|app/queries/[^/]+/readstore\\.ts$)"
+        path: "^(app/units/|app/db/|app/queries/[^/]+/readstore\\.ts$)"
       }
     }
   ],

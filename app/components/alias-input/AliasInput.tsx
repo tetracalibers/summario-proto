@@ -1,6 +1,6 @@
 import { TagsInput } from "@mantine/core"
-import { useAliasUi } from "~/aggregates/alias/ui.hooks"
-import type { Alias } from "~/aggregates/alias/types"
+import { useAliasUi } from "~/units/alias/ui.hooks"
+import type { Alias } from "~/units/alias/types"
 import { useTermContentsSavingState } from "~/usecases/term-edit/ui.hooks"
 import { useParams } from "react-router"
 

@@ -1,4 +1,4 @@
-import * as FolderService from "~/aggregates/folder/service.server"
+import * as FolderService from "~/units/folder/service.server"
 import * as FolderChildrenReadStore from "../folder-detail/readstore.server"
 
 export const getFolder = async (folderId: number | null) => {

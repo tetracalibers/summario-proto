@@ -1,5 +1,5 @@
 import { createStore } from "jotai"
-import { serverRelatedTerm$, uiRelatedTermLabel$ } from "~/aggregates/related-term/ui.atoms"
+import { serverRelatedTerm$, uiRelatedTermLabel$ } from "~/units/related-term/ui.atoms"
 import { applyServerRelatedTermSnapshot$ } from "./ui.actions"
 
 test("applyServerRelatedTermSnapshot$", () => {
