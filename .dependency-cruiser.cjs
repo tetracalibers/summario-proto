@@ -24,6 +24,7 @@ module.exports = {
       from: {
         orphan: true,
         pathNot: [
+          "(^app/routes\\.ts$)", // routes.ts は許容
           "(^|/)[.][^/]+[.](?:js|cjs|mjs|ts|cts|mts|json)$", // dot files
           "[.]d[.]ts$", // TypeScript declaration files
           "(^|/)tsconfig[.]json$", // TypeScript config
