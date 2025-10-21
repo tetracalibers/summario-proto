@@ -18,6 +18,6 @@ export const getRecentTerm = async () => {
   return terms
 }
 
-export const updateTermContent = async (termId: number, content: JSONContent) => {
-  return TermRepository.updateContent(termId, content)
+export const updateTermContent = async (termId: number, title: string, content: JSONContent) => {
+  return TermRepository.updateContent(termId, { title, content })
 }

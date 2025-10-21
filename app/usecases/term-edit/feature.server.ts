@@ -7,13 +7,13 @@ export const saveTermContents = async (
   termId: number,
   payload: SavePayload
 ): Promise<SaveSuccess | SaveFailure> => {
-  const { content, alias, related } = payload
+  const { title, content, alias, related } = payload
 
   const tasks: SavingTask[] = [
     {
       key: "content",
       condition: content !== null,
-      action: () => TermService.updateTermContent(termId, content!),
+      action: () => TermService.updateTermContent(termId, title, content!),
       targets: termId
     },
     {
