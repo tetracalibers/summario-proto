@@ -1,5 +1,5 @@
-import * as TermService from "~/aggregates/term/service.server"
-import * as FolderService from "~/aggregates/folder/service.server"
+import * as TermService from "~/units/term/service.server"
+import * as FolderService from "~/units/folder/service.server"
 import type { JSONContent } from "@tiptap/react"
 import { type Edge, type Node } from "@xyflow/react"
 import { FILE_NODE_TYPE, FOLDER_NODE_TYPE } from "~/libs/xyflow-folder-map/custom-node"

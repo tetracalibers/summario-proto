@@ -1,7 +1,7 @@
-import * as RelatedTermRepository from "~/aggregates/related-term/repository.server"
+import * as RelatedTermRepository from "~/units/related-term/repository.server"
 
-export const getRelatedTerms = async (termId: string) => {
-  return RelatedTermRepository.findAllRelatedTerms(termId)
+export const getRelatedTerms = async (termId: number) => {
+  return RelatedTermRepository.findAllByTermId(termId)
 }
 
 export const addRelatedTerms = async (termId: number, relatedTermIds: number[]) => {

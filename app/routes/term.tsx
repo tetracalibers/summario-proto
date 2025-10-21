@@ -25,8 +25,7 @@ import { getRelatedTermOptions } from "~/queries/term-list/reader.server"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { termId } = params
-
-  const { term, alias, related } = await getTermWithMeta(termId)
+  const { term, alias, related } = await getTermWithMeta(Number(termId))
 
   const folderId = term.folderId ? Number(term.folderId) : null
   const [entries, current, paths, relatedOptions] = await Promise.all([

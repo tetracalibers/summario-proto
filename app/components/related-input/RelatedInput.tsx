@@ -1,6 +1,6 @@
 import { TagsInput } from "@mantine/core"
-import { useRelatedTermUi } from "~/aggregates/related-term/ui.hooks"
-import type { RelatedTerm } from "~/aggregates/related-term/types"
+import { useRelatedTermUi } from "~/units/related-term/ui.hooks"
+import type { RelatedTerm } from "~/units/related-term/types"
 import { useTermContentsSavingState } from "~/usecases/term-edit/ui.hooks"
 import { useParams } from "react-router"
 

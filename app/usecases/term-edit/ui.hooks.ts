@@ -1,5 +1,5 @@
 import { useAtomValue, useSetAtom } from "jotai"
-import { isDirtyContent$ } from "~/aggregates/term/ui.atoms"
+import { isDirtyContent$ } from "~/units/term/ui.atoms"
 import { applyServerAliasSnapshot$, applyServerRelatedTermSnapshot$ } from "./ui.actions"
 import { isCanSave$, termMetaDiff$ } from "./ui.selectors"
 import { SaveActionError, type SaveSuccess } from "./types"

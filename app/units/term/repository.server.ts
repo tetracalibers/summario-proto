@@ -3,7 +3,7 @@ import { terms } from "~/db/schema"
 import { eq, desc } from "drizzle-orm"
 import type { JSONContent } from "@tiptap/react"
 
-export const findAllTerms = async () => {
+export const findAll = async () => {
   const rows = await db
     .select({ id: terms.id, title: terms.title, content: terms.content, folderId: terms.folderId })
     .from(terms)
@@ -11,16 +11,16 @@ export const findAllTerms = async () => {
   return rows
 }
 
-export const findTermById = async (id: string) => {
+export const findById = async (id: number) => {
   const rows = await db
     .select({ id: terms.id, title: terms.title, content: terms.content, folderId: terms.folderId })
     .from(terms)
-    .where(eq(terms.id, Number(id)))
+    .where(eq(terms.id, id))
 
   return rows
 }
 
-export const findRecentTerm = async ({ limit = 1 }) => {
+export const findRecent = async ({ limit = 1 }) => {
   const rows = await db
     .select({ id: terms.id, title: terms.title, content: terms.content, folderId: terms.folderId })
     .from(terms)
@@ -30,7 +30,7 @@ export const findRecentTerm = async ({ limit = 1 }) => {
   return rows
 }
 
-export const updateTermContent = async (termId: number, content: JSONContent) => {
+export const updateContent = async (termId: number, content: JSONContent) => {
   return db
     .update(terms)
     .set({ content })

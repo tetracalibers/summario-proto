@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm"
 import { db } from "~/db/connection"
 import { folders, terms } from "~/db/schema"
-import { debugLog } from "~/libs/debug"
+import { debugLog } from "~/libs/debug.server"
 
 export const findChildrenFolders = async (parentId: number | null) => {
   const query = sql`

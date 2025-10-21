@@ -1,6 +1,6 @@
-import * as TermService from "~/aggregates/term/service.server"
-import * as AliasService from "~/aggregates/alias/service.server"
-import * as RelatedTermService from "~/aggregates/related-term/service.server"
+import * as TermService from "~/units/term/service.server"
+import * as AliasService from "~/units/alias/service.server"
+import * as RelatedTermService from "~/units/related-term/service.server"
 import type { SaveFailure, SavePayload, SaveRejected, SaveSuccess, SavingTask } from "./types"
 
 export const saveTermContents = async (

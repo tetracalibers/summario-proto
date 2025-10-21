@@ -1,6 +1,6 @@
 import { atom } from "jotai"
 import { miniviewTermId$, pageTermId$ } from "./ui.atoms"
-import { currentRelatedTerms$ } from "~/aggregates/related-term/ui.selectors"
+import { currentRelatedTerms$ } from "~/units/related-term/ui.selectors"
 
 export const isVisibleMiniview$ = atom((get) => {
   const miniviewTermId = get(miniviewTermId$)

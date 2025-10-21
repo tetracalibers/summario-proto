@@ -1,7 +1,7 @@
 import { atom } from "jotai"
-import { aliasDiff$, isDirtyAlias$ } from "~/aggregates/alias/ui.selectors"
-import { isDirtyRelatedTerm$, relatedTermDiff$ } from "~/aggregates/related-term/ui.selectors"
-import { isDirtyContent$ } from "~/aggregates/term/ui.atoms"
+import { aliasDiff$, isDirtyAlias$ } from "~/units/alias/ui.selectors"
+import { isDirtyRelatedTerm$, relatedTermDiff$ } from "~/units/related-term/ui.selectors"
+import { isDirtyContent$ } from "~/units/term/ui.atoms"
 
 export const isCanSave$ = atom((get) => {
   const isDirtyAlias = get(isDirtyAlias$)

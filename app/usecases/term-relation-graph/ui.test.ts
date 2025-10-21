@@ -1,9 +1,9 @@
 import { createStore } from "jotai"
-import { optionsRelatedTerm$, serverRelatedTerm$ } from "~/aggregates/related-term/ui.atoms"
+import { optionsRelatedTerm$, serverRelatedTerm$ } from "~/units/related-term/ui.atoms"
 import { centerNode$ } from "./ui.atoms"
 import { applyServerRelatedTermSnapshot$ } from "../term-edit/ui.actions"
 import { nodes$ } from "./ui.selectors"
-import { currentRelatedTerms$ } from "~/aggregates/related-term/ui.selectors"
+import { currentRelatedTerms$ } from "~/units/related-term/ui.selectors"
 
 test("nodes$", () => {
   const store = createStore()

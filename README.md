@@ -90,7 +90,7 @@ UIコンポーネントを置く場所です。
 
 - 見た目上の部品単位でディレクトリを分けます。
 - そのコンポーネント専用のスタイル（CSS Module）やロジックも合わせて置くことができます。
-- ただし、UIの状態は`app/(usecases|aggregates)/**/ui.hooks.ts`から参照するようにします。
+- ただし、UIの状態は`app/(usecases|units)/**/ui.hooks.ts`から参照するようにします。
 
 ### `app/styles`
 
@@ -105,16 +105,16 @@ UIコンポーネントを置く場所です。
 データベースのスキーマ定義や接続設定はここで行います。
 
 > [!WARNING]
-> ここで公開している`db`インスタンスには、`app/aggregates/**/repository.ts`または`app/queries/**/readstore.ts`のみがアクセスするようにします。
+> ここで公開している`db`インスタンスには、`app/units/**/repository.ts`または`app/queries/**/readstore.ts`のみがアクセスするようにします。
 
-### `app/aggregates`
+### `app/units`
 
 1つのオブジェクトで完結するロジックを扱う層です。
 
 - アプリ上で意味を持つ概念（オブジェクト）ごとにディレクトリを分けます。
 
 > [!WARNING]
-> `aggregates`配下のディレクトリ同士が依存しないようにします。
+> `units`配下のディレクトリ同士が依存しないようにします。
 
 #### `repository.ts`
 
@@ -138,7 +138,7 @@ drizzle APIやSQLをラップした関数をここで定義し、データベー
 
 #### `feature.ts`
 
-複数の`aggregates/**/service.ts`を組み合わせて、アプリの機能に即した形でロジックを実装します。
+複数の`units/**/service.ts`を組み合わせて、アプリの機能に即した形でロジックを実装します。
 
 ### `app/queries`
 
@@ -156,11 +156,11 @@ drizzle APIやSQLをラップした関数を定義し、データベースから
 
 #### `reader.ts`
 
-`readstore.ts`や`aggregates/**/service.ts`が提供する読み取り専用の関数を組み合わせ、アプリ上で必要となる形でデータ取得処理をまとめます。
+`readstore.ts`や`units/**/service.ts`が提供する読み取り専用の関数を組み合わせ、アプリ上で必要となる形でデータ取得処理をまとめます。
 
-### `app/(aggregates|usecases)/**/ui.*.ts`
+### `app/(units|usecases)/**/ui.*.ts`
 
-1つのオブジェクトで完結するUIの状態管理は`aggregates`配下で、複数のオブジェクトにまたがるUIの状態管理は`usecases`配下で行います。
+1つのオブジェクトで完結するUIの状態管理は`units`配下で、複数のオブジェクトにまたがるUIの状態管理は`usecases`配下で行います。
 
 #### `ui.atoms.ts`
 

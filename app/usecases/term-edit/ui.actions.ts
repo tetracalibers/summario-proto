@@ -1,8 +1,8 @@
 import { atom } from "jotai"
-import type { RelatedTerm } from "~/aggregates/related-term/types"
-import { serverRelatedTerm$, uiRelatedTermLabel$ } from "~/aggregates/related-term/ui.atoms"
-import { serverAlias$, uiAliasLabel$ } from "~/aggregates/alias/ui.atoms"
-import type { Alias } from "~/aggregates/alias/types"
+import type { RelatedTerm } from "~/units/related-term/types"
+import { serverRelatedTerm$, uiRelatedTermLabel$ } from "~/units/related-term/ui.atoms"
+import { serverAlias$, uiAliasLabel$ } from "~/units/alias/ui.atoms"
+import type { Alias } from "~/units/alias/types"
 
 // サーバから読んだ“正”を反映（初期化/再同期）
 export const applyServerAliasSnapshot$ = atom(

@@ -1,7 +1,7 @@
 import { atom } from "jotai"
 import type { Edge, TermNode } from "./types"
 import { centerNode$ } from "./ui.atoms"
-import { currentRelatedTerms$ } from "~/aggregates/related-term/ui.selectors"
+import { currentRelatedTerms$ } from "~/units/related-term/ui.selectors"
 
 export const nodes$ = atom<TermNode[]>((get) => {
   const centerNode = get(centerNode$)

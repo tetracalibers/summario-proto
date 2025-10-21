@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm"
 import { db } from "~/db/connection"
 import { terms } from "~/db/schema"
-import { debugLog } from "~/libs/debug"
+import { debugLog } from "~/libs/debug.server"
 
 /**
  * excludeId を除外しつつ、フォルダ「近さ」順で並べ替える
