@@ -1,6 +1,13 @@
 import { Extension } from "@tiptap/core"
 import { Plugin } from "prosemirror-state"
-import { createSectionBlockJson } from "../section-block/helper"
+
+const createSectionBlockJson = (title: string) => ({
+  type: "section_block",
+  content: [
+    { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: title }] },
+    { type: "paragraph", content: [] }
+  ]
+})
 
 export const DropSectionBlock = Extension.create({
   name: "drop-section-block",
