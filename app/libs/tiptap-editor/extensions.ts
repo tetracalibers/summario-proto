@@ -14,7 +14,7 @@ import { DropSectionBlock } from "./extensions/drop-section-block/extension"
 import { CustomDocumentControl } from "./extensions/doc-control/extension"
 
 const CustomDocument = Document.extend({
-  content: "title_block (section|block)*"
+  content: "title (section|block)*"
 })
 
 const lowlight = createLowlight(all)
