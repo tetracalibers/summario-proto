@@ -60,7 +60,7 @@ const deleteBlock = (editor: Editor) => {
     }
 
     // 子が1つだけの場合はセクションブロックごと削除
-    editor.chain().focus().deleteSectionBlock().setCursorToPrevNodeEnd().run()
+    editor.chain().focus().deleteSectionBlock().run()
     return
   }
 }
