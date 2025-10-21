@@ -73,7 +73,7 @@ export const CustomDocumentControl = Extension.create({
               activeNodePos,
               (node) => node.type.name === "section_block"
             )
-            if (!activeSectionBlock) return true
+            if (!activeSectionBlock) return false
 
             // 子が複数ある場合は現在のノードだけ削除
             if (activeSectionBlock.node.childCount > 1) {
@@ -84,7 +84,7 @@ export const CustomDocumentControl = Extension.create({
             return chain().focus().deleteSectionBlock().run()
           }
 
-          return true
+          return false
         }
     }
   }
