@@ -2,7 +2,7 @@ import { NavLink } from "react-router"
 import { IconNote } from "@tabler/icons-react"
 import styles from "./EntryLink.module.css"
 import { clsx } from "clsx"
-import { useReadTermTitle } from "~/usecases/sync-term-title/ui.hooks"
+import { useTermTitleState } from "~/units/term/ui.hooks"
 
 interface Props {
   targetTerm: {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function FileLink({ targetTerm, isActive }: Props) {
-  const { termTitle: activeTermTitle } = useReadTermTitle()
+  const { termTitle: activeTermTitle } = useTermTitleState()
 
   const Tag = isActive ? "div" : NavLink
 

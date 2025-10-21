@@ -2,8 +2,7 @@ import { useMemo, type PropsWithChildren } from "react"
 import { useTiptapEditor } from "./use-tiptap-editor"
 import { EditorContext, type JSONContent } from "@tiptap/react"
 import TipTapEditor from "./Editor"
-import { useTermContentState } from "~/units/term/ui.hooks"
-import { useSyncTermTitle } from "~/usecases/sync-term-title/ui.hooks"
+import { useSyncTermTitle, useTermContentState } from "~/units/term/ui.hooks"
 
 interface Props {
   title: string
