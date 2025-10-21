@@ -445,8 +445,11 @@ module.exports = {
           "node_modules/(?:@[^/]+/[^/]+|[^/]+)",
 
           // ディレクトリ自体を1つのノードとして表示
-          "^(app/libs/xyflow-folder-map)",
-          "^(app/db)"
+          "^(app/db)",
+
+          // 直下の各ディレクトリを個別ノードとして表示
+          "app/components/[^/]+",
+          "app/libs/[^/]+"
         ],
 
         /* Options to tweak the appearance of your graph.See

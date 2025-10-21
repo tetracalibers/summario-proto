@@ -14,27 +14,12 @@ declare module "@tiptap/core" {
 
 export default Node.create({
   name: "section_block",
-
   group: "section",
-
   content: "block*",
-
   draggable: true,
 
-  addAttributes() {
-    return {
-      type: {
-        default: ""
-      }
-    }
-  },
-
   parseHTML() {
-    return [
-      {
-        tag: "section-block"
-      }
-    ]
+    return [{ tag: "section-block" }]
   },
 
   renderHTML({ HTMLAttributes }) {

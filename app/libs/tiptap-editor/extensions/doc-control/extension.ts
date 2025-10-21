@@ -68,12 +68,12 @@ export const CustomDocumentControl = Extension.create({
             return chain().focus().selectParentNode().deleteSelection().run()
           }
 
-          if (editor.isActive("sectionBlock")) {
+          if (editor.isActive("section_block")) {
             const activeSectionBlock = findParentNodeClosestToPos(
               activeNodePos,
-              (node) => node.type.name === "sectionBlock"
+              (node) => node.type.name === "section_block"
             )
-            if (!activeSectionBlock) return true
+            if (!activeSectionBlock) return false
 
             // 子が複数ある場合は現在のノードだけ削除
             if (activeSectionBlock.node.childCount > 1) {
@@ -84,7 +84,7 @@ export const CustomDocumentControl = Extension.create({
             return chain().focus().deleteSectionBlock().run()
           }
 
-          return true
+          return false
         }
     }
   }
