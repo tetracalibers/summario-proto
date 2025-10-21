@@ -27,6 +27,10 @@
     height: 0;
     pointer-events: none;
   }
+
+  h1 > * {
+    font-size: inherit;
+  }
 }
 
 .drag-handle {
