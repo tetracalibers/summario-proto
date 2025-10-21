@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai"
 import { isDirtyContent$ } from "./ui.atoms"
 
-export function useTermContentEditUi() {
+export function useTermContentState() {
   const setIsDirty = useSetAtom(isDirtyContent$)
   return { setIsDirty }
 }

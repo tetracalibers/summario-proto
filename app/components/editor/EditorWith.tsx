@@ -2,7 +2,7 @@ import { useMemo, type PropsWithChildren } from "react"
 import { useTiptapEditor } from "./use-tiptap-editor"
 import { EditorContext, type JSONContent } from "@tiptap/react"
 import TipTapEditor from "./Editor"
-import { useTermContentEditUi } from "~/units/term/ui.hooks"
+import { useTermContentState } from "~/units/term/ui.hooks"
 import { useSyncTermTitle } from "~/usecases/sync-term-title/ui.hooks"
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const EditorWith = ({ children, initialJSON, title }: PropsWithChildren<Props>) => {
-  const { setIsDirty } = useTermContentEditUi()
+  const { setIsDirty } = useTermContentState()
   const { setTermTitle } = useSyncTermTitle(title)
 
   const editor = useTiptapEditor(initialJSON, {
