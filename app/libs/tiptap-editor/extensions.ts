@@ -69,7 +69,7 @@ export const tiptapExtensions = (
     showOnlyCurrent: false,
     includeChildren: true,
     placeholder: ({ node }) => {
-      if (node.type.name === "title_block") return "Title"
+      if (node.type.name === "title_block") return "Title*"
       if (node.type.name === "heading") {
         return "Heading " + node.attrs.level
       }
