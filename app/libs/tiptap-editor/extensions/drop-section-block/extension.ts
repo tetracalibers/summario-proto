@@ -60,7 +60,7 @@ export const DropSectionBlock = Extension.create({
               // テキストの途中にdropされた場合は何もしない
               if (nodeAtDroppedPos.type.name === "text") return false
               // セクションブロックの中には入れない
-              if (nodeAtDroppedPos.type.name === "sectionBlock") return false
+              if (nodeAtDroppedPos.type.name === "section_block") return false
 
               // 最後のnodeにdropされた場合はそこに挿入
               // resolveでエラーになってしまうため、先に処理

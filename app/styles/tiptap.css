@@ -12,15 +12,15 @@
     margin-block-end: 0;
   }
 
-  .node-sectionBlock {
+  .node-section_block {
     margin-block: 1rem;
   }
   /* 最後のセクションブロックとその下のdropcursorの間に余白を持たせる */
-  .node-sectionBlock:last-child {
+  .node-section_block:last-child {
     padding-block-end: 0.5rem;
   }
 
-  .is-empty:not(.node-sectionBlock)::before {
+  .is-empty:not(.node-section_block)::before {
     color: #adb5bd;
     content: attr(data-placeholder);
     float: left;

@@ -1,5 +1,5 @@
 export const createSectionBlockJson = (type: string, label: string) => ({
-  type: "sectionBlock",
+  type: "section_block",
   attrs: { type },
   content: [
     {
