@@ -13,7 +13,7 @@ declare module "@tiptap/core" {
 }
 
 export default Node.create({
-  name: "sectionBlock",
+  name: "section_block",
 
   group: "section",
 
@@ -58,9 +58,9 @@ export default Node.create({
         ({ chain }) => {
           const { editor } = this
 
-          const $sectionBlocks = editor.$nodes("sectionBlock")
+          const $sectionBlocks = editor.$nodes("section_block")
           if (!$sectionBlocks) {
-            return chain().toggleWrap("sectionBlock").run()
+            return chain().toggleWrap("section_block").run()
           }
 
           const activeNodePos = editor.state.selection.$head
@@ -70,18 +70,18 @@ export default Node.create({
             )
           })
 
-          // sectionBlock外：通常のtoggleWrap
+          // section_block外：通常のtoggleWrap
           if (!activeSectionBlock) {
-            return chain().toggleWrap("sectionBlock").run()
+            return chain().toggleWrap("section_block").run()
           }
 
-          // sectionBlock内：子コンテンツ全体を選択してアンラップ
+          // section_block内：子コンテンツ全体を選択してアンラップ
           const from = activeSectionBlock.pos + 1
           const to = activeSectionBlock.pos + activeSectionBlock.node.nodeSize - 1
 
           return chain()
             .setTextSelection({ from, to })
-            .toggleWrap("sectionBlock")
+            .toggleWrap("section_block")
             .setTextSelection(to) // 選択解除してカーソルだけ戻す
             .run()
         }
