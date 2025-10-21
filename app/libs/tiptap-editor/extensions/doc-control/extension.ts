@@ -68,10 +68,10 @@ export const CustomDocumentControl = Extension.create({
             return chain().focus().selectParentNode().deleteSelection().run()
           }
 
-          if (editor.isActive("sectionBlock")) {
+          if (editor.isActive("section_block")) {
             const activeSectionBlock = findParentNodeClosestToPos(
               activeNodePos,
-              (node) => node.type.name === "sectionBlock"
+              (node) => node.type.name === "section_block"
             )
             if (!activeSectionBlock) return true
 
