@@ -1,14 +1,11 @@
 import { useEditor, type JSONContent } from "@tiptap/react"
-import { tiptapExtensions } from "../../libs/tiptap-editor/extensions"
+import { tiptapExtensions, type EditorActionHooks } from "~/libs/tiptap-editor/extensions"
 
-export const useTiptapEditor = (
-  initialJSON?: JSONContent,
-  onDirtyChange?: (dirty: boolean) => void
-) => {
+export const useTiptapEditor = (initialJSON?: JSONContent, actions?: EditorActionHooks) => {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     immediatelyRender: false, // Disable immediate rendering to prevent SSR issues
-    extensions: tiptapExtensions(initialJSON, onDirtyChange),
+    extensions: tiptapExtensions(initialJSON, actions),
     content: initialJSON
   })
 
