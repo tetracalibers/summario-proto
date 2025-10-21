@@ -1,6 +1,5 @@
-export const createSectionBlockJson = (type: string, label: string) => ({
+export const createSectionBlockJson = (title: string) => ({
   type: "section_block",
-  attrs: { type },
   content: [
     {
       type: "heading",
@@ -8,7 +7,7 @@ export const createSectionBlockJson = (type: string, label: string) => ({
       content: [
         {
           type: "text",
-          text: label
+          text: title
         }
       ]
     },

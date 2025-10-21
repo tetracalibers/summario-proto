@@ -12,10 +12,7 @@ const BlockTypeMenu = () => {
           draggable
           key={block.name}
           onDragStart={(e) => {
-            e.dataTransfer.setData(
-              "application/x-block",
-              JSON.stringify({ type: block.name, label: block.label })
-            )
+            e.dataTransfer.setData("application/x-block-title", block.label)
           }}
         >
           <div>

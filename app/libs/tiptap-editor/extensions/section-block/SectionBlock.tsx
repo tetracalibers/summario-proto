@@ -1,10 +1,10 @@
-import { NodeViewWrapper, NodeViewContent, type ReactNodeViewProps } from "@tiptap/react"
+import { NodeViewWrapper, NodeViewContent } from "@tiptap/react"
 import styles from "./style.module.css"
 
-export default ({ node }: ReactNodeViewProps) => {
+export default () => {
   return (
     <NodeViewWrapper className={styles.sectionBlock}>
-      <NodeViewContent data-block-type={node.attrs.type} />
+      <NodeViewContent />
     </NodeViewWrapper>
   )
 }

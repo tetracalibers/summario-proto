@@ -21,14 +21,6 @@ export default Node.create({
 
   draggable: true,
 
-  addAttributes() {
-    return {
-      type: {
-        default: ""
-      }
-    }
-  },
-
   parseHTML() {
     return [
       {

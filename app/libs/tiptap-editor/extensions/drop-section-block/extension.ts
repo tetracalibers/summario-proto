@@ -17,17 +17,8 @@ export const DropSectionBlock = Extension.create({
               event.preventDefault()
             },
             drop: (view, event) => {
-              const data = event.dataTransfer?.getData("application/x-block")
-              if (!data) return false // TipTapのデフォルトの挙動に任せる
-
-              const block = (() => {
-                try {
-                  return JSON.parse(data)
-                } catch {
-                  return null
-                }
-              })()
-              if (!block) return false
+              const title = event.dataTransfer?.getData("application/x-block-title")
+              if (!title) return false // TipTapのデフォルトの挙動に任せる
 
               // 座標から近傍の pos を取得
               const droppedCoords = { left: event.clientX, top: event.clientY }
@@ -46,10 +37,7 @@ export const DropSectionBlock = Extension.create({
 
               // nodeの間にdropされた場合はそこに挿入
               if (!isInsideNode) {
-                editor.commands.insertContentAt(
-                  droppedPos.pos,
-                  createSectionBlockJson(block.type, block.label)
-                )
+                editor.commands.insertContentAt(droppedPos.pos, createSectionBlockJson(title))
                 return true // TipTapのデフォルトのドロップ処理を停止
               }
 
@@ -67,10 +55,7 @@ export const DropSectionBlock = Extension.create({
               const isLastNode =
                 view.state.doc.resolve(view.state.doc.content.size).nodeBefore === nodeAtDroppedPos
               if (isLastNode) {
-                editor.commands.insertContentAt(
-                  droppedPos.pos,
-                  createSectionBlockJson(block.type, block.label)
-                )
+                editor.commands.insertContentAt(droppedPos.pos, createSectionBlockJson(title))
                 return true
               }
 
@@ -79,10 +64,7 @@ export const DropSectionBlock = Extension.create({
 
               // トップレベルのparagraphにdropされた場合はそこに挿入
               if (nodeAtDroppedPos.type.name === "paragraph" && droppedNodeDepth === 1) {
-                editor.commands.insertContentAt(
-                  droppedPos.pos,
-                  createSectionBlockJson(block.type, block.label)
-                )
+                editor.commands.insertContentAt(droppedPos.pos, createSectionBlockJson(title))
                 return true
               }
 
