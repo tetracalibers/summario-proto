@@ -32,11 +32,8 @@ export const DropSectionBlock = Extension.create({
               const droppedPos = view.posAtCoords(droppedCoords)
               if (!droppedPos) return false
 
-              // dropされた位置にあるnode
-              // nodeの間にdropされた場合はnullになる
-              const nodeAtDroppedPos = view.state.doc.nodeAt(droppedPos.pos - 1)
               // dropされた位置がnode内かnode間か
-              const isInsideNode = nodeAtDroppedPos !== null
+              const isInsideNode = droppedPos.inside > 0
 
               //
               // nodeの間にdropされた場合
@@ -51,6 +48,10 @@ export const DropSectionBlock = Extension.create({
               //
               // node内にdropされた場合
               //
+
+              // dropされた位置にあるnode
+              const nodeAtDroppedPos = view.state.doc.nodeAt(droppedPos.pos - 1)
+              if (!nodeAtDroppedPos) return false
 
               // テキストの途中にdropされた場合は何もしない
               if (nodeAtDroppedPos.type.name === "text") return false
