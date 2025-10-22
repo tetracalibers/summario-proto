@@ -37,7 +37,7 @@ function mappingTouchesRange(tr: Transaction, from: number, to: number): boolean
   return tr.mapping.maps.some((m) => mapTouchesRange(m as StepMap, from, to))
 }
 
-export interface TitleWatcherOptions {
+interface TitleWatcherOptions {
   onTitleChange: (text: string | null) => void
 }
 
