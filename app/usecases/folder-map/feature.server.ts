@@ -8,25 +8,9 @@ import {
   createFileNodeId,
   createFolderNodeId
 } from "~/libs/xyflow-folder-map/node-edge-id"
+import { judgeContentEmpty } from "~/libs/tiptap-editor/utils"
 
 const TMP_POSITION = { x: 0, y: 0 }
-
-const judgeContentEmpty = (json: JSONContent) => {
-  if (!json.content) return true
-  if (json.content.length === 0) return true
-
-  if (json.content.length === 1) {
-    const firstNode = json.content[0]
-    if (!firstNode.content) return true
-
-    const children = firstNode.content
-    if (children.length === 0) return true
-
-    if (firstNode.type === "title_block") return true
-  }
-
-  return false
-}
 
 export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }> => {
   const [folders, terms] = await Promise.all([
