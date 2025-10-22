@@ -1,7 +1,4 @@
 import { mergeAttributes, Node } from "@tiptap/core"
-import { ReactNodeViewRenderer } from "@tiptap/react"
-
-import SectionBlock from "./SectionBlock"
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -19,15 +16,15 @@ export default Node.create({
   draggable: true,
 
   parseHTML() {
-    return [{ tag: "section-block" }]
+    return [{ tag: ".node-section_block" }]
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ["section-block", mergeAttributes(HTMLAttributes), 0]
-  },
-
-  addNodeView() {
-    return ReactNodeViewRenderer(SectionBlock)
+    return [
+      "div",
+      mergeAttributes(HTMLAttributes, { class: "node-section_block" }),
+      ["div", { class: "node-section_block__content" }, 0]
+    ]
   },
 
   addCommands() {
