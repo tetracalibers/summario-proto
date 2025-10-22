@@ -1,4 +1,4 @@
-import { mergeAttributes, Node } from "@tiptap/core"
+import { Node } from "@tiptap/core"
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -19,10 +19,10 @@ export default Node.create({
     return [{ tag: "section-block" }]
   },
 
-  renderHTML({ HTMLAttributes }) {
+  renderHTML() {
     return [
       "div",
-      mergeAttributes(HTMLAttributes, { class: "node-section_block" }),
+      { class: "node-section_block" },
       ["div", { class: "node-section_block__content" }, 0]
     ]
   },
