@@ -9,7 +9,7 @@ declare module "@tiptap/core" {
   }
 }
 
-export default Node.create({
+export const SectionBlockNode = Node.create({
   name: "section_block",
   group: "section",
   content: "block*",
