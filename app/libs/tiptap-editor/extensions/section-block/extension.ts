@@ -16,7 +16,7 @@ export default Node.create({
   draggable: true,
 
   parseHTML() {
-    return [{ tag: ".node-section_block" }]
+    return [{ tag: "section-block" }]
   },
 
   renderHTML({ HTMLAttributes }) {
