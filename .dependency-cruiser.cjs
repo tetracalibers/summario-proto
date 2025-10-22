@@ -448,8 +448,7 @@ module.exports = {
           "^(app/db)",
 
           // 直下の各ディレクトリを個別ノードとして表示
-          "app/components/[^/]+",
-          "app/libs/[^/]+"
+          "app/components/[^/]+"
         ],
 
         /* Options to tweak the appearance of your graph.See

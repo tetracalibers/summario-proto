@@ -4,7 +4,7 @@ import "@mantine/tiptap/styles.css"
 import "~/styles/tiptap.css"
 
 import { Paper, Stack } from "@mantine/core"
-import SaveButton from "~/components/term-note/SaveButton"
+import SaveButton from "~/components/term-save-button/SaveButton"
 import EditorWith from "~/components/editor/EditorWith"
 import type { Route } from "./+types/term"
 import AliasInput from "~/components/alias-input/AliasInput"

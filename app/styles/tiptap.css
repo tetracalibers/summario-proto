@@ -20,6 +20,13 @@
     padding-block-end: 0.5rem;
   }
 
+  .node-section_block__content {
+    border: 1px solid #e4edf4;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 0;
+  }
+
   .is-empty:not(.node-section_block)::before {
     color: #adb5bd;
     content: attr(data-placeholder);
