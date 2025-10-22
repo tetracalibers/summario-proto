@@ -3,6 +3,7 @@ import type { JSONContent } from "@tiptap/react"
 type MetaItem = { id: number; title: string }
 
 export type SavePayload = {
+  title: string
   content: JSONContent | null
   alias: { add: Omit<MetaItem, "id">[]; remove: MetaItem[] }
   related: { add: MetaItem[]; remove: MetaItem[] }

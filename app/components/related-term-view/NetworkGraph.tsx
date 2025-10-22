@@ -1,29 +1,31 @@
 import { useEffect, useRef } from "react"
-import { Network } from "vis-network"
+import { Network, type Node } from "vis-network"
 import { DataSet } from "vis-data"
+import { useTermTitleState } from "~/units/term/ui.hooks"
 
 interface Props {
   nodes: { id: number; title: string }[]
   edges: { source: number; target: number }[]
-  centerId: number
+  centerNode: { id: number; title: string } | null
   onNodeClick: (nodeId: number) => void
 }
 
-const NetworkGraph = ({ nodes, edges, centerId, onNodeClick }: Props) => {
+const NetworkGraph = ({ nodes, edges, centerNode, onNodeClick }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
+  const visNodesRef = useRef<DataSet<Node> | null>(null)
+  const { termTitle: editedCenterNodeTitle } = useTermTitleState()
 
   useEffect(() => {
-    if (!ref.current) {
-      return
-    }
+    if (!ref.current) return
+    if (!centerNode) return
 
-    const visNodes = new DataSet(
-      nodes.map((node) => ({
+    visNodesRef.current = new DataSet(
+      [centerNode, ...nodes].map((node) => ({
         id: node.id,
-        label: node.title,
+        label: node.id === centerNode.id ? editedCenterNodeTitle || centerNode.title : node.title,
         shape: "dot",
-        size: node.id === centerId ? 20 : 12,
-        color: node.id === centerId ? "#FF90BC" : "#C6E7FF"
+        size: node.id === centerNode.id ? 20 : 12,
+        color: node.id === centerNode.id ? "#FF90BC" : "#C6E7FF"
       }))
     )
 
@@ -57,7 +59,11 @@ const NetworkGraph = ({ nodes, edges, centerId, onNodeClick }: Props) => {
       }
     }
 
-    const network = new Network(ref.current, { nodes: visNodes, edges: visEdges }, options)
+    const network = new Network(
+      ref.current,
+      { nodes: visNodesRef.current, edges: visEdges },
+      options
+    )
 
     network.on("click", (params: { nodes: (string | number)[] }) => {
       if (params.nodes.length > 0) {
@@ -68,8 +74,20 @@ const NetworkGraph = ({ nodes, edges, centerId, onNodeClick }: Props) => {
 
     return () => {
       network.destroy()
+      visNodesRef.current = null
     }
-  }, [nodes, edges, centerId])
+  }, [nodes, edges, centerNode])
+
+  // centerNodeTitleが変わったらノードのラベルを更新
+  useEffect(() => {
+    if (!centerNode) return
+    if (!visNodesRef.current) return
+
+    visNodesRef.current.update({
+      id: centerNode.id,
+      label: editedCenterNodeTitle || centerNode.title
+    })
+  }, [editedCenterNodeTitle, centerNode])
 
   return (
     <div

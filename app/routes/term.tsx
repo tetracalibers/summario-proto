@@ -72,7 +72,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
       </div>
 
       <React.Fragment key={location.pathname}>
-        <EditorWith initialJSON={term.content}>
+        <EditorWith initialJSON={term.content} title={term.title}>
           <div className="controls-area">
             <FolderPath folders={paths} />
             <EditorActionMenu />
@@ -86,7 +86,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
             <AliasInput initials={alias} />
             <RelatedInput initials={related} options={relatedOptions} />
           </Stack>
-          <RelatedTermView centerNode={{ id: term.id, title: term.title }} />
+          <RelatedTermView initialCenterNode={term} />
         </div>
       </React.Fragment>
     </div>

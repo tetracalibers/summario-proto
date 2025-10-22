@@ -4,10 +4,7 @@ import { centerNode$ } from "./ui.atoms"
 import { currentRelatedTerms$ } from "~/units/related-term/ui.selectors"
 
 export const nodes$ = atom<TermNode[]>((get) => {
-  const centerNode = get(centerNode$)
-  if (!centerNode) return []
-  const relatedNodes = get(currentRelatedTerms$)
-  return [centerNode, ...relatedNodes]
+  return get(currentRelatedTerms$)
 })
 
 export const edges$ = atom<Edge[]>((get) => {

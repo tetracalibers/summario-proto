@@ -2,6 +2,7 @@ import { NavLink } from "react-router"
 import { IconNote } from "@tabler/icons-react"
 import styles from "./EntryLink.module.css"
 import { clsx } from "clsx"
+import { useTermTitleState } from "~/units/term/ui.hooks"
 
 interface Props {
   targetTerm: {
@@ -12,6 +13,8 @@ interface Props {
 }
 
 export default function FileLink({ targetTerm, isActive }: Props) {
+  const { termTitle: activeTermTitle } = useTermTitleState()
+
   const Tag = isActive ? "div" : NavLink
 
   return (
@@ -20,7 +23,9 @@ export default function FileLink({ targetTerm, isActive }: Props) {
       className={clsx(styles.entry_link, styles.file_link, isActive && styles.highlight_active)}
     >
       <IconNote size={18} />
-      <span className={styles.label}>{targetTerm.name}</span>
+      <span className={styles.label}>
+        {isActive && activeTermTitle ? activeTermTitle : targetTerm.name}
+      </span>
     </Tag>
   )
 }

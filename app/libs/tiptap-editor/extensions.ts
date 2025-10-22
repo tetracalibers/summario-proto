@@ -12,6 +12,7 @@ import { Placeholder } from "@tiptap/extension-placeholder"
 import { DirtyState } from "./extensions/dirty-state/extension"
 import { DropSectionBlock } from "./extensions/drop-section-block/extension"
 import { CustomDocumentControl } from "./extensions/doc-control/extension"
+import { TitleWatcher } from "./extensions/title-watcher/extension"
 
 const CustomDocument = Document.extend({
   content: "title (section|block)*"
@@ -19,14 +20,20 @@ const CustomDocument = Document.extend({
 
 const lowlight = createLowlight(all)
 
+export interface EditorActionHooks {
+  onDirtyChange?: (dirty: boolean) => void
+  onTitleChange?: (title: string | null) => void
+}
+
 export const tiptapExtensions = (
   initialJSON?: JSONContent,
-  onDirtyChange?: (dirty: boolean) => void
+  { onDirtyChange, onTitleChange }: EditorActionHooks = {}
 ): Extensions => [
   CustomDocument,
   CustomDocumentControl,
   CursorControl,
   DirtyState.configure({ initialJSON, onDirtyChange }),
+  TitleWatcher.configure({ onTitleChange }),
   StarterKit.configure({
     document: false, // CustomDocumentを使うので無効化
     link: false, // Link拡張を使うので無効化
@@ -62,7 +69,7 @@ export const tiptapExtensions = (
     showOnlyCurrent: false,
     includeChildren: true,
     placeholder: ({ node }) => {
-      if (node.type.name === "title_block") return "Title"
+      if (node.type.name === "title_block") return "Title*"
       if (node.type.name === "heading") {
         return "Heading " + node.attrs.level
       }

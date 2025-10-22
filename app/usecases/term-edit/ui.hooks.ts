@@ -1,5 +1,5 @@
 import { useAtomValue, useSetAtom } from "jotai"
-import { isDirtyContent$ } from "~/units/term/ui.atoms"
+import { isDirtyContent$, termTitle$ } from "~/units/term/ui.atoms"
 import { applyServerAliasSnapshot$, applyServerRelatedTermSnapshot$ } from "./ui.actions"
 import { isCanSave$, termMetaDiff$ } from "./ui.selectors"
 import { SaveActionError, type SaveSuccess } from "./types"
@@ -10,6 +10,7 @@ export function useTermContentSaveUi(termId: number) {
   const isCanSave = useAtomValue(isCanSave$)
   const isDirtyEditor = useAtomValue(isDirtyContent$)
 
+  const termTitle = useAtomValue(termTitle$)
   const termMetaDiff = useAtomValue(termMetaDiff$)
   const applyServerAliasSnapshot = useSetAtom(applyServerAliasSnapshot$)
   const applyServerRelatedTermSnapshot = useSetAtom(applyServerRelatedTermSnapshot$)
@@ -20,7 +21,7 @@ export function useTermContentSaveUi(termId: number) {
       fetch(`/api/terms/${termId}/edit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...termMetaDiff, content })
+        body: JSON.stringify({ ...termMetaDiff, title: termTitle, content })
       }).then(async (res) => {
         const data = await res.json()
         if (!res.ok) throw new SaveActionError("Failed to update term.", data)

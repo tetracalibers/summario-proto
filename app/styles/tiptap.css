@@ -29,6 +29,10 @@
   }
 }
 
+:is(.tiptap, .tiptap-static) h1 > * {
+  font-size: inherit;
+}
+
 .drag-handle {
   align-items: center;
   background: white;

@@ -5,19 +5,19 @@ import { useMiniviewUi } from "~/usecases/miniview/ui.hooks"
 import type { TermNode } from "~/usecases/term-relation-graph/types"
 
 interface Props {
-  centerNode: TermNode
+  initialCenterNode: TermNode
 }
 
-export default function RelatedTermView({ centerNode }: Props) {
-  const { nodes, edges } = useRelatedGraphUi(centerNode)
-  const { data, setMiniviewTermId, isVisibleMiniview } = useMiniviewUi(centerNode.id)
+export default function RelatedTermView({ initialCenterNode }: Props) {
+  const { nodes, edges, centerNode } = useRelatedGraphUi(initialCenterNode)
+  const { data, setMiniviewTermId, isVisibleMiniview } = useMiniviewUi(initialCenterNode.id)
 
   return (
     <>
       <NetworkGraph
         nodes={nodes}
         edges={edges}
-        centerId={centerNode.id}
+        centerNode={centerNode}
         onNodeClick={(nodeId) => {
           setMiniviewTermId(nodeId)
         }}

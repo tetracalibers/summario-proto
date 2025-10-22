@@ -30,10 +30,14 @@ export const findRecent = async ({ limit = 1 }) => {
   return rows
 }
 
-export const updateContent = async (termId: number, content: JSONContent) => {
+interface UpdateContentData {
+  title: string
+  content: JSONContent
+}
+export const updateContent = async (termId: number, { title, content }: UpdateContentData) => {
   return db
     .update(terms)
-    .set({ content })
+    .set({ title, content })
     .where(eq(terms.id, termId))
     .returning({ id: terms.id, title: terms.title })
 }
