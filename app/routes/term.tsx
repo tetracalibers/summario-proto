@@ -86,7 +86,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
             <AliasInput initials={alias} />
             <RelatedInput initials={related} options={relatedOptions} />
           </Stack>
-          <RelatedTermView centerNode={{ id: term.id, title: term.title }} />
+          <RelatedTermView initialCenterNode={term} />
         </div>
       </React.Fragment>
     </div>
