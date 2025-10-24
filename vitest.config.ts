@@ -7,8 +7,9 @@ export default defineConfig({
     projects: [
       {
         test: {
-          include: ["app/**/ui.{test,spec}.ts"],
-          name: "ui",
+          include: ["app/**/*.{test,spec}.ts"],
+          exclude: ["app/**/*.browser.{test,spec}.ts"],
+          name: "script",
           environment: "node",
           alias: {
             "~": resolve(__dirname, "./app")
@@ -17,7 +18,7 @@ export default defineConfig({
       },
       {
         test: {
-          include: ["app/libs/tiptap-editor/extensions/**/*.{test,spec}.ts"],
+          include: ["app/**/*.browser.{test,spec}.ts"],
           name: "browser",
           alias: {
             "~": resolve(__dirname, "./app")
