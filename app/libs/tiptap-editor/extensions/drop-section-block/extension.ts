@@ -51,17 +51,6 @@ export const DropSectionBlock = Extension.create({
 
               // テキストの途中にdropされた場合は何もしない
               if (nodeAtDroppedPos.type.name === "text") return false
-              // セクションブロックの中には入れない
-              if (nodeAtDroppedPos.type.name === "section_block") return false
-
-              // 最後のnodeにdropされた場合はそこに挿入
-              // resolveでエラーになってしまうため、先に処理
-              const isLastNode =
-                view.state.doc.resolve(view.state.doc.content.size).nodeBefore === nodeAtDroppedPos
-              if (isLastNode) {
-                editor.commands.insertContentAt(droppedPos.pos, createSectionBlockJson(title))
-                return true
-              }
 
               // depthを調べる
               const droppedNodeDepth = view.state.doc.resolve(droppedPos.pos).depth
