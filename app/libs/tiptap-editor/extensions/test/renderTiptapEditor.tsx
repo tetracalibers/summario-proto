@@ -15,12 +15,8 @@ interface RenderTiptapEditorProps {
   setUpEditor: (editor: Editor) => void
 }
 
-/*
-  renderTiptapEditor はエディターを任意のコンテンツとExtensionで
-  初期化してブラウザ上に展開します。
-  エディターの初期化はTiptapのuseEditor、
-  ブラウザ上への展開は@testing-library/reactのrenderで行います。
-*/
+// エディターを任意のコンテンツとExtensionで初期化してブラウザ上に展開
+// ブラウザ上への展開は@testing-library/reactのrenderで行う
 export async function renderTiptapEditor({
   content,
   extensions,
@@ -39,15 +35,10 @@ export async function renderTiptapEditor({
     <TiptapEditor content={content} extensions={extensions} setUpEditor={editorOperation} />
   )
 
-  /* 
-	render 実行後、editorのカーソル操作などを行う setUpEditor の実行完了を待ちます。
-	これは setUpEditor でエディター初期化後にテストのためにエディター上で
-	行いたい動作を行うまで待っています。
-	具体例は後述しますが、初期化時に特定のポジションにカーソルを合わせる時などに使用します。
-   */
+  // render 実行後、editorのカーソル操作などを行う setUpEditor の実行完了を待つ
   await waitFor(() => {
     expect(waitForEditorSetupComplete).toHaveBeenCalled()
-  }) /* render の実行結果である renderResult をそのまま返します。*/
+  })
 
   if (!editorInstance) {
     throw new Error("Editor was not instantiated.")
