@@ -1,6 +1,7 @@
 import { Extension } from "@tiptap/core"
 import { Plugin } from "prosemirror-state"
 import { createSectionBlockJson } from "../../utils"
+import { testLog } from "~/libs/debug"
 
 export const DropSectionBlock = Extension.create({
   name: "drop-section-block",
@@ -27,6 +28,7 @@ export const DropSectionBlock = Extension.create({
 
               // dropされた位置がnode内かnode間か
               const isInsideNode = droppedPos.inside > 0
+              testLog("isInsideNode", isInsideNode)
 
               //
               // nodeの間にdropされた場合
@@ -45,6 +47,7 @@ export const DropSectionBlock = Extension.create({
               // dropされた位置にあるnode
               const nodeAtDroppedPos = view.state.doc.nodeAt(droppedPos.pos - 1)
               if (!nodeAtDroppedPos) return false
+              testLog("nodeAtDroppedPos.type.name", nodeAtDroppedPos.type.name)
 
               // テキストの途中にdropされた場合は何もしない
               if (nodeAtDroppedPos.type.name === "text") return false
@@ -62,6 +65,7 @@ export const DropSectionBlock = Extension.create({
 
               // depthを調べる
               const droppedNodeDepth = view.state.doc.resolve(droppedPos.pos).depth
+              testLog("droppedNodeDepth", droppedNodeDepth)
 
               // トップレベルのparagraphにdropされた場合はそこに挿入
               if (nodeAtDroppedPos.type.name === "paragraph" && droppedNodeDepth === 1) {
