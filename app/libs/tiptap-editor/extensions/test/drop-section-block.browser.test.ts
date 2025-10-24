@@ -63,7 +63,7 @@ describe("DropSectionBlock extension", () => {
     const gapPos = posAfterTopLevel(editor, -1) // 先頭ノード前ギャップ
     const spy = mockPosAtCoords(editor, { pos: gapPos, inside: 0 })
 
-    const ev = makeDragEvent("drop", { x: 100, y: 50, title: "My Section" })
+    const ev = makeDragEvent("drop", { title: "My Section" })
     editor.view.dom.dispatchEvent(ev)
 
     expect(editor.getJSON()).toEqual({
@@ -90,7 +90,7 @@ describe("DropSectionBlock extension", () => {
     const gapPos = posAfterTopLevel(editor, 0) // 1番目ノード後ギャップ
     const spy = mockPosAtCoords(editor, { pos: gapPos, inside: 0 })
 
-    const ev = makeDragEvent("drop", { x: 100, y: 50, title: "My Section" })
+    const ev = makeDragEvent("drop", { title: "My Section" })
     editor.view.dom.dispatchEvent(ev)
 
     expect(editor.getJSON()).toEqual({
@@ -117,7 +117,7 @@ describe("DropSectionBlock extension", () => {
     const endGap = editor.state.doc.content.size
     const spy = mockPosAtCoords(editor, { pos: endGap, inside: -1 })
 
-    const ev = makeDragEvent("drop", { x: 100, y: 50, title: "My Section" })
+    const ev = makeDragEvent("drop", { title: "My Section" })
     editor.view.dom.dispatchEvent(ev)
 
     expect(editor.getJSON()).toEqual({
