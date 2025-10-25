@@ -56,8 +56,8 @@ export const CustomDocumentControl = Extension.create({
       clearTitleContent:
         () =>
         ({ chain }) => {
-          const titleLength = this.editor.state.doc.content.firstChild?.content.size || 0
-          const range = { from: 1, to: titleLength + 1 }
+          const titleSize = this.editor.state.doc.content.firstChild?.content.size ?? 0
+          const range = { from: 1, to: titleSize + 1 }
           return chain().insertContentAt(range, "").run()
         },
 
