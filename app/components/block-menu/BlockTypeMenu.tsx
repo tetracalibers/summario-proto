@@ -2,6 +2,7 @@ import BLOCK_TYPES from "./block-type.json"
 import { Stack } from "@mantine/core"
 import { IconGripVertical } from "@tabler/icons-react"
 import styles from "./card.module.css"
+import { BLOCK_TITLE_MIME } from "~/libs/tiptap-editor/constants"
 
 const BlockTypeMenu = () => {
   return (
@@ -12,7 +13,7 @@ const BlockTypeMenu = () => {
           draggable
           key={block.name}
           onDragStart={(e) => {
-            e.dataTransfer.setData("application/x-block-title", block.label)
+            e.dataTransfer.setData(BLOCK_TITLE_MIME, block.label)
           }}
         >
           <div>
