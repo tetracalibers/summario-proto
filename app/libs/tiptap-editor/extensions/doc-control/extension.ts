@@ -1,6 +1,6 @@
 import { Extension, findParentNodeClosestToPos } from "@tiptap/core"
 import { TextSelection } from "@tiptap/pm/state"
-import { SECTION_BLOCK } from "../../constants"
+import { SECTION_BLOCK, TITLE_BLOCK } from "../../constants"
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -77,7 +77,7 @@ export const CustomDocumentControl = Extension.create({
           const activeNode = activeNodePos.parent
 
           // トップタイトルはコンテンツのクリアのみ
-          if (activeNode.type.name === "title_block") {
+          if (activeNode.type.name === TITLE_BLOCK) {
             return chain().focus().clearTitleContent().run()
           }
 

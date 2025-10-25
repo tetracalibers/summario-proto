@@ -1,5 +1,5 @@
 import type { JSONContent } from "@tiptap/react"
-import { SECTION_BLOCK } from "./constants"
+import { SECTION_BLOCK, TITLE_BLOCK } from "./constants"
 
 export const judgeContentEmpty = (doc: JSONContent) => {
   // ルート content が無い/空 → 空
@@ -10,7 +10,7 @@ export const judgeContentEmpty = (doc: JSONContent) => {
   if (nodes.length === 1) {
     // そのノードが title_block → 空
     const first = nodes[0]
-    if (first.type === "title_block") return true
+    if (first.type === TITLE_BLOCK) return true
 
     // そのノードの content が無い/空 → 空
     const children = first.content ?? []
