@@ -1,7 +1,7 @@
 import "../test/mock.css"
 
 import { describe, expect, it } from "vitest"
-import { renderTiptapEditor } from "../test/renderTiptapEditor"
+import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
 import StarterKit from "@tiptap/starter-kit"
 import { SectionBlockNode } from "../section-block/extension"
 import { TitleBlockNode } from "../title-block/extension"

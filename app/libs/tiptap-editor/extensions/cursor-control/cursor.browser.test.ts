@@ -2,7 +2,7 @@ import "../test/mock.css"
 
 import { cleanup } from "@testing-library/react"
 import { beforeEach, describe, expect, it } from "vitest"
-import { renderTiptapEditor } from "../test/renderTiptapEditor"
+import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
 import StarterKit from "@tiptap/starter-kit"
 import { CursorControl } from "./extension"
 import type { Editor } from "@tiptap/react"
