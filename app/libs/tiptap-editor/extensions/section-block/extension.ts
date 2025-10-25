@@ -1,5 +1,40 @@
-import { findParentNodeClosestToPos, Node } from "@tiptap/core"
+import { type ChainedCommands, type Editor, findParentNodeClosestToPos, Node } from "@tiptap/core"
+import { type Node as PMNode } from "@tiptap/pm/model"
 import { SECTION_BLOCK } from "../../constants"
+
+const hasAnySectionBlock = (editor: Editor) => {
+  const nodes = editor.$nodes(SECTION_BLOCK)
+  return nodes !== null && nodes.length > 0
+}
+
+const getActiveSectionBlock = (editor: Editor) => {
+  const $head = editor.state.selection.$head
+  return findParentNodeClosestToPos($head, (node) => node.type.name === SECTION_BLOCK)
+}
+
+const contentRangeOfNode = (pos: number, node: PMNode) => {
+  // 内部コンテンツだけを選択（自身の先頭+1 〜 自身の末尾-1）
+  const from = pos + 1
+  const to = pos + node.nodeSize - 1
+  return { from, to }
+}
+
+const unwrapActiveSectionBlock = (
+  chain: () => ChainedCommands,
+  active: { pos: number; node: PMNode }
+) => {
+  const { from, to } = contentRangeOfNode(active.pos, active.node)
+  return chain()
+    .setTextSelection({ from, to })
+    .toggleWrap(SECTION_BLOCK)
+    .setTextSelection(from) // キャレットを元の位置に戻す
+    .run()
+}
+
+const wrapAtSelection = (editor: Editor, chain: () => ChainedCommands) => {
+  const { from } = editor.state.selection
+  return chain().toggleWrap(SECTION_BLOCK).setTextSelection(from).run()
+}
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -39,34 +74,22 @@ export const SectionBlockNode = Node.create({
       toggleSectionBlock:
         () =>
         ({ chain }) => {
-          const { editor } = this
+          const editor = this.editor
 
-          const $sectionBlocks = editor.$nodes(SECTION_BLOCK)
-          if (!$sectionBlocks) {
+          // セクションブロックが1つもなければ通常の wrap を試みる
+          if (!hasAnySectionBlock(editor)) {
             return chain().toggleWrap(SECTION_BLOCK).run()
           }
 
-          const activeNodePos = editor.state.selection.$head
-          const activeSectionBlock = findParentNodeClosestToPos(
-            activeNodePos,
-            (node) => node.type.name === SECTION_BLOCK
-          )
+          const activeSectionBlock = getActiveSectionBlock(editor)
 
-          // section_block外：通常のtoggleWrap
+          // セクション外：現在の選択位置を基準に wrap
           if (!activeSectionBlock) {
-            const { from } = editor.state.selection
-            return chain().toggleWrap(SECTION_BLOCK).setTextSelection(from).run()
+            return wrapAtSelection(editor, chain)
           }
 
-          // section_block内：子コンテンツ全体を選択してアンラップ
-          const from = activeSectionBlock.pos + 1 // section_blockノード直下の最初の子ノード開始位置
-          const to = activeSectionBlock.pos + activeSectionBlock.node.nodeSize - 1 // section_blockノード直下の最後の子ノード末尾位置
-
-          return chain()
-            .setTextSelection({ from, to })
-            .toggleWrap(SECTION_BLOCK)
-            .setTextSelection(from) // キャレットを元の位置に戻す
-            .run()
+          // セクション内：子コンテンツ全体を選択して unwrap
+          return unwrapActiveSectionBlock(chain, activeSectionBlock)
         }
     }
   }
