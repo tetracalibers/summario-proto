@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
 import StarterKit from "@tiptap/starter-kit"
 import { CustomDocumentControl } from "./extension"
-import { getBlockEndPos, getBlockStartPos } from "../../test-utils/pos"
+import { getBlockEndPos, getBlockStartPos, infoCursorAtPrevNodeEnd } from "../../test-utils/pos"
 
 const extensions = [StarterKit.configure({ trailingNode: false }), CustomDocumentControl]
 
@@ -69,12 +69,9 @@ describe("CustomDocumentControl.setCursorToPrevNodeEnd", () => {
     const ok = editor.chain().focus().setCursorToPrevNodeEnd().run()
     expect(ok).toBe(true)
 
-    // 期待：2段落目の末尾
-    const nodeAt = editor.state.doc.nodeAt(editor.state.selection.from - 1)
-    expect(nodeAt!.textContent).toBe("bbb") // 段落のテキスト内容確認
-    // 段落末尾位置確認
-    const nodeStart = editor.state.selection.from - nodeAt!.nodeSize + 1
-    const nodeEnd = nodeStart + nodeAt!.nodeSize - 1
-    expect(editor.state.selection.from).toBe(nodeEnd)
+    // カーソルは直前の兄弟ノードの末尾に移動していることを確認
+    const { prevNode, prevNodeEnd, cursorPos } = infoCursorAtPrevNodeEnd(editor)
+    expect(cursorPos).toBe(prevNodeEnd)
+    expect(prevNode!.textContent).toBe("bbb") // 段落のテキスト内容確認
   })
 })

@@ -8,7 +8,7 @@ import { TitleBlockNode } from "../title-block/extension"
 import Document from "@tiptap/extension-document"
 import { CustomDocumentControl } from "./extension"
 import { cleanup } from "@testing-library/react"
-import { getBlockEndPos, getBlockStartPos } from "../../test-utils/pos"
+import { getBlockEndPos, getBlockStartPos, infoCursorAtPrevNodeEnd } from "../../test-utils/pos"
 
 const CustomDocument = Document.extend({
   content: "title? (section|block)*"
@@ -112,12 +112,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
     expect(editor.getHTML()).toBe("<p>Paragraph 1</p>")
 
     // カーソルは前のノードの末尾に移動していることを確認
-    const nodeAt = editor.state.doc.nodeAt(editor.state.selection.from - 1)
-    expect(nodeAt!.textContent).toBe("Paragraph 1") // 段落のテキスト内容確認
-    // 段落末尾位置確認
-    const nodeStart = editor.state.selection.from - nodeAt!.nodeSize + 1
-    const nodeEnd = nodeStart + nodeAt!.nodeSize - 1
-    expect(editor.state.selection.from).toBe(nodeEnd)
+    const { prevNode, prevNodeEnd, cursorPos } = infoCursorAtPrevNodeEnd(editor)
+    expect(cursorPos).toBe(prevNodeEnd)
+    expect(prevNode!.textContent).toBe("Paragraph 1") // 段落のテキスト内容確認
   })
 
   it("リスト内：listItem 単位で削除される（他の item は存続）", async () => {
@@ -138,12 +135,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
     expect(editor.getHTML()).toBe("<ul><li><p>Item 1</p></li><li><p>Item 3</p></li></ul>")
 
     // カーソルは前のノードの末尾に移動していることを確認
-    const nodeAt = editor.state.doc.nodeAt(editor.state.selection.from - 1)
-    expect(nodeAt!.textContent).toBe("Item 1") // 段落のテキスト内容確認
-    // 段落末尾位置確認
-    const nodeStart = editor.state.selection.from - nodeAt!.nodeSize + 1
-    const nodeEnd = nodeStart + nodeAt!.nodeSize - 1
-    expect(editor.state.selection.from).toBe(nodeEnd)
+    const { prevNode, prevNodeEnd, cursorPos } = infoCursorAtPrevNodeEnd(editor)
+    expect(cursorPos).toBe(prevNodeEnd)
+    expect(prevNode!.textContent).toBe("Item 1") // 段落のテキスト内容確認
   })
 
   it("blockquote内：blockquoteごと削除される", async () => {
@@ -164,12 +158,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
     expect(editor.getHTML()).toBe("<p>Normal paragraph 1</p><p>Normal paragraph 2</p>")
 
     // カーソルは前のノードの末尾に移動していることを確認
-    const nodeAt = editor.state.doc.nodeAt(editor.state.selection.from - 1)
-    expect(nodeAt!.textContent).toBe("Normal paragraph 1") // 段落のテキスト内容確認
-    // 段落末尾位置確認
-    const nodeStart = editor.state.selection.from - nodeAt!.nodeSize + 1
-    const nodeEnd = nodeStart + nodeAt!.nodeSize - 1
-    expect(editor.state.selection.from).toBe(nodeEnd)
+    const { prevNode, prevNodeEnd, cursorPos } = infoCursorAtPrevNodeEnd(editor)
+    expect(cursorPos).toBe(prevNodeEnd)
+    expect(prevNode!.textContent).toBe("Normal paragraph 1") // 段落のテキスト内容確認
   })
 
   it("section_block内：子が複数ある場合は現在のノードだけ削除", async () => {
@@ -213,12 +204,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
     })
 
     // カーソルはsection_block内の削除されたノードの前のノードの末尾に移動していることを確認
-    const nodeAt = editor.state.doc.nodeAt(editor.state.selection.from - 1)
-    expect(nodeAt!.textContent).toBe("Child 1") // 段落のテキスト内容確認
-    // 段落末尾位置確認
-    const nodeStart = editor.state.selection.from - nodeAt!.nodeSize + 1
-    const nodeEnd = nodeStart + nodeAt!.nodeSize - 1
-    expect(editor.state.selection.from).toBe(nodeEnd)
+    const { prevNode, prevNodeEnd, cursorPos } = infoCursorAtPrevNodeEnd(editor)
+    expect(cursorPos).toBe(prevNodeEnd)
+    expect(prevNode!.textContent).toBe("Child 1") // 段落のテキスト内容確認
   })
 
   it("section_block内：子が1つだけの場合はセクションブロックごと削除", async () => {
@@ -254,12 +242,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
     expect(editor.getHTML()).toBe("<p>before section_block</p><p>after section_block</p>")
 
     // カーソルは前のノードの末尾に移動していることを確認
-    const nodeAt = editor.state.doc.nodeAt(editor.state.selection.from - 1)
-    expect(nodeAt!.textContent).toBe("before section_block") // 段落のテキスト内容確認
-    // 段落末尾位置確認
-    const nodeStart = editor.state.selection.from - nodeAt!.nodeSize + 1
-    const nodeEnd = nodeStart + nodeAt!.nodeSize - 1
-    expect(editor.state.selection.from).toBe(nodeEnd)
+    const { prevNode, prevNodeEnd, cursorPos } = infoCursorAtPrevNodeEnd(editor)
+    expect(cursorPos).toBe(prevNodeEnd)
+    expect(prevNode!.textContent).toBe("before section_block") // 段落のテキスト内容確認
   })
 
   it("section_block内：子が複数、最後のノード", async () => {
@@ -307,12 +292,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
     })
 
     // カーソルはsection_block内の最後のノードの末尾に移動していることを確認
-    const nodeAt = editor.state.doc.nodeAt(editor.state.selection.from - 1)
-    expect(nodeAt!.textContent).toBe("Child 1") // 段落のテキスト内容確認
-    // 段落末尾位置確認
-    const nodeStart = editor.state.selection.from - nodeAt!.nodeSize + 1
-    const nodeEnd = nodeStart + nodeAt!.nodeSize - 1
-    expect(editor.state.selection.from).toBe(nodeEnd)
+    const { prevNode, prevNodeEnd, cursorPos } = infoCursorAtPrevNodeEnd(editor)
+    expect(cursorPos).toBe(prevNodeEnd)
+    expect(prevNode!.textContent).toBe("Child 1") // 段落のテキスト内容確認
   })
 
   it("section_block内：子が1つ、最後のノード", async () => {
@@ -342,12 +324,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
     expect(editor.getHTML()).toBe("<p>before section_block 1</p><p>before section_block 2</p>")
 
     // カーソルは最後のノードの末尾に移動していることを確認
-    const nodeAt = editor.state.doc.nodeAt(editor.state.selection.from - 1)
-    expect(nodeAt!.textContent).toBe("before section_block 2") // 段落のテキスト内容確認
-    // 段落末尾位置確認
-    const nodeStart = editor.state.selection.from - nodeAt!.nodeSize + 1
-    const nodeEnd = nodeStart + nodeAt!.nodeSize - 1
-    expect(editor.state.selection.from).toBe(nodeEnd)
+    const { prevNode, prevNodeEnd, cursorPos } = infoCursorAtPrevNodeEnd(editor)
+    expect(cursorPos).toBe(prevNodeEnd)
+    expect(prevNode!.textContent).toBe("before section_block 2") // 段落のテキスト内容確認
   })
 
   it("section_block内：子が1つ、最後のノード、末尾にカーソル", async () => {
@@ -411,11 +390,8 @@ describe("CustomDocumentControl.deleteBlock", () => {
     })
 
     // カーソルは前のノードの末尾に移動していることを確認
-    const nodeAt = editor.state.doc.nodeAt(editor.state.selection.from - 1)
-    expect(nodeAt!.textContent).toBe("section_block 1 - list item 2") // 段落のテキスト内容確認
-    // 段落末尾位置確認
-    const nodeStart = editor.state.selection.from - nodeAt!.nodeSize + 1
-    const nodeEnd = nodeStart + nodeAt!.nodeSize - 1
-    expect(editor.state.selection.from).toBe(nodeEnd)
+    const { prevNode, prevNodeEnd, cursorPos } = infoCursorAtPrevNodeEnd(editor)
+    expect(cursorPos).toBe(prevNodeEnd)
+    expect(prevNode!.textContent).toBe("section_block 1 - list item 2") // 段落のテキスト内容確認
   })
 })
