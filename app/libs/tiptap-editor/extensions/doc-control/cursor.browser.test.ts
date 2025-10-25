@@ -5,17 +5,9 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
 import StarterKit from "@tiptap/starter-kit"
 import { CustomDocumentControl } from "./extension"
-import type { Editor } from "@tiptap/react"
-import type { TextSelection } from "@tiptap/pm/state"
 import { getBlockEndPos, getBlockStartPos } from "../../test-utils/pos"
 
 const extensions = [StarterKit.configure({ trailingNode: false }), CustomDocumentControl]
-
-// ---- 便利関数：キャレット位置（absolute pos）を取得 ----
-function getSelectionPos(editor: Editor) {
-  const sel = editor.state.selection as TextSelection
-  return { from: sel.from, to: sel.to, empty: sel.empty }
-}
 
 describe("CustomDocumentControl.setCursorToPrevNodeEnd", () => {
   beforeEach(() => cleanup())
@@ -33,10 +25,10 @@ describe("CustomDocumentControl.setCursorToPrevNodeEnd", () => {
       }
     })
 
-    const before = getSelectionPos(editor)
+    const before = editor.state.selection
     // textOffset>0 を想定して明示的に引数1で呼ぶ
     const ok = editor.commands.setCursorToPrevNodeEnd(1)
-    const after = getSelectionPos(editor)
+    const after = editor.state.selection
 
     expect(ok).toBe(true)
     expect(after.from).toBe(before.from)
@@ -55,9 +47,9 @@ describe("CustomDocumentControl.setCursorToPrevNodeEnd", () => {
       }
     })
 
-    const before = getSelectionPos(editor)
+    const before = editor.state.selection
     const ok = editor.commands.setCursorToPrevNodeEnd(0)
-    const after = getSelectionPos(editor)
+    const after = editor.state.selection
 
     expect(ok).toBe(true)
     expect(after.from).toBe(before.from)
