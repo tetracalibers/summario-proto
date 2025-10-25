@@ -7,6 +7,7 @@ import { SectionBlockNode } from "./extension"
 import Document from "@tiptap/extension-document"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
 import { getBlockStartPos, getBlockEndPos } from "../../test-utils/helder"
+import { SECTION_BLOCK } from "../../constants"
 
 const CustomDocument = Document.extend({
   content: "(section|block)*"
@@ -39,7 +40,7 @@ describe("SectionBlockNode.toggleSectionBlock", () => {
       type: "doc",
       content: [
         {
-          type: "section_block",
+          type: SECTION_BLOCK,
           content: [
             {
               type: "paragraph",
@@ -77,7 +78,7 @@ describe("SectionBlockNode.toggleSectionBlock", () => {
           content: [{ type: "text", text: "outside" }]
         },
         {
-          type: "section_block",
+          type: SECTION_BLOCK,
           content: [
             {
               type: "paragraph",
@@ -86,7 +87,7 @@ describe("SectionBlockNode.toggleSectionBlock", () => {
           ]
         },
         {
-          type: "section_block",
+          type: SECTION_BLOCK,
           content: [
             {
               type: "paragraph",
@@ -155,7 +156,7 @@ describe("SectionBlockNode.toggleSectionBlock", () => {
       type: "doc",
       content: [
         {
-          type: "section_block",
+          type: SECTION_BLOCK,
           content: [
             {
               type: "paragraph",

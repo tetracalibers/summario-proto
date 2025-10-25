@@ -9,6 +9,7 @@ import type { Editor } from "@tiptap/react"
 import Document from "@tiptap/extension-document"
 import { createSectionBlockJson } from "../../utils"
 import { cleanup } from "@testing-library/react"
+import { BLOCK_TITLE_MIME } from "../../constants"
 
 const CustomDocument = Document.extend({
   content: "(section|block)*"
@@ -26,7 +27,7 @@ function makeDragEvent(type: string, opts: { x?: number; y?: number; title?: str
   const { x = 10, y = 10, title } = opts
   const ev = new DragEvent(type, { bubbles: true, cancelable: true, clientX: x, clientY: y })
   const dt = new DataTransfer()
-  if (title != null) dt.setData("application/x-block-title", title)
+  if (title != null) dt.setData(BLOCK_TITLE_MIME, title)
   Object.defineProperty(ev, "dataTransfer", { value: dt })
   return ev
 }

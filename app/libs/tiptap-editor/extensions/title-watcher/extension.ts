@@ -2,6 +2,7 @@ import { Extension } from "@tiptap/core"
 import { Plugin } from "@tiptap/pm/state"
 import type { EditorState, Transaction } from "@tiptap/pm/state"
 import type { StepMap } from "@tiptap/pm/transform"
+import { TITLE_BLOCK } from "../../constants"
 
 // 先頭ノードが見出しである前提でO(1)で読む
 function readTopTitle(state: EditorState) {
@@ -10,7 +11,7 @@ function readTopTitle(state: EditorState) {
 
   const first = doc.child(0)
   const size = first.nodeSize // 旧doc基準の範囲判定で使う
-  if (first.type.name !== "title_block") return { text: null, size }
+  if (first.type.name !== TITLE_BLOCK) return { text: null, size }
 
   return { text: first.textContent ?? "", size }
 }

@@ -12,6 +12,7 @@ import { DirtyState } from "./extensions/dirty-state/extension"
 import { DropSectionBlock } from "./extensions/drop-section-block/extension"
 import { CustomDocumentControl } from "./extensions/doc-control/extension"
 import { TitleWatcher } from "./extensions/title-watcher/extension"
+import { TITLE_BLOCK } from "./constants"
 
 const CustomDocument = Document.extend({
   content: "title (section|block)*"
@@ -67,7 +68,7 @@ export const tiptapExtensions = (
     showOnlyCurrent: false,
     includeChildren: true,
     placeholder: ({ node }) => {
-      if (node.type.name === "title_block") return "Title*"
+      if (node.type.name === TITLE_BLOCK) return "Title*"
       if (node.type.name === "heading") {
         return "Heading " + node.attrs.level
       }

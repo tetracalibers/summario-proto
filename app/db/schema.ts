@@ -11,6 +11,7 @@ import {
   index,
   jsonb
 } from "drizzle-orm/pg-core"
+import { TITLE_BLOCK } from "~/libs/tiptap-editor/constants"
 
 // ------------------------------
 // folders: Adjacency List
@@ -53,7 +54,7 @@ export const terms = pgTable(
       .notNull()
       .default({
         type: "doc",
-        content: [{ type: "title_block", content: [] }]
+        content: [{ type: TITLE_BLOCK, content: [] }]
       }),
     folderId: integer("folder_id").references(() => folders.id, { onDelete: "set null" }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
