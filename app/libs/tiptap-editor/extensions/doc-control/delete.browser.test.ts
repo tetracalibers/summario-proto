@@ -1,4 +1,4 @@
-import "../test/mock.css"
+import "../../test-utils/mock.css"
 
 import { describe, expect, it } from "vitest"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
@@ -8,7 +8,6 @@ import { TitleBlockNode } from "../title-block/extension"
 import Document from "@tiptap/extension-document"
 import { CustomDocumentControl } from "./extension"
 import type { Editor } from "@tiptap/react"
-import { CursorControl } from "../cursor-control/extension"
 
 const CustomDocument = Document.extend({
   content: "title? (section|block)*"
@@ -17,7 +16,6 @@ const CustomDocument = Document.extend({
 const extensions = [
   CustomDocument,
   CustomDocumentControl,
-  CursorControl,
   StarterKit.configure({ document: false, trailingNode: false }),
   SectionBlockNode,
   TitleBlockNode

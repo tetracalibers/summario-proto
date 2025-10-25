@@ -3,7 +3,6 @@ import { ListKit } from "@tiptap/extension-list"
 import type { Extensions, JSONContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { Link } from "@mantine/tiptap"
-import { CursorControl } from "./extensions/cursor-control/extension"
 import { SectionBlockNode } from "./extensions/section-block/extension"
 import { TitleBlockNode } from "./extensions/title-block/extension"
 import Document from "@tiptap/extension-document"
@@ -31,7 +30,6 @@ export const tiptapExtensions = (
 ): Extensions => [
   CustomDocument,
   CustomDocumentControl,
-  CursorControl,
   DirtyState.configure({ initialJSON, onDirtyChange }),
   TitleWatcher.configure({ onTitleChange }),
   StarterKit.configure({

@@ -1,4 +1,4 @@
-import "./mock.css"
+import "../../test-utils/mock.css"
 
 import { StarterKit } from "@tiptap/starter-kit"
 import { describe, expect, it, vi } from "vitest"

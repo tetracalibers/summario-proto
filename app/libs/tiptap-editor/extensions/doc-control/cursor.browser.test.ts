@@ -1,14 +1,14 @@
-import "../test/mock.css"
+import "../../test-utils/mock.css"
 
 import { cleanup } from "@testing-library/react"
 import { beforeEach, describe, expect, it } from "vitest"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
 import StarterKit from "@tiptap/starter-kit"
-import { CursorControl } from "./extension"
+import { CustomDocumentControl } from "./extension"
 import type { Editor } from "@tiptap/react"
 import type { TextSelection } from "@tiptap/pm/state"
 
-const extensions = [StarterKit.configure({ trailingNode: false }), CursorControl]
+const extensions = [StarterKit.configure({ trailingNode: false }), CustomDocumentControl]
 
 // ---- 便利関数：キャレット位置（absolute pos）を取得 ----
 function getSelectionPos(editor: Editor) {
@@ -28,7 +28,7 @@ function getBlockEndPos(editor: Editor, n: number) {
   return pos - 1 // n番目ノードの末尾位置
 }
 
-describe("CursorControl.setCursorToPrevNodeEnd", () => {
+describe("CustomDocumentControl.setCursorToPrevNodeEnd", () => {
   beforeEach(() => cleanup())
 
   it("textOffset>0 の場合は何もしない（カーソル位置不変）", async () => {
