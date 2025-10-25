@@ -1,4 +1,4 @@
-import { Node } from "@tiptap/core"
+import { findParentNodeClosestToPos, Node } from "@tiptap/core"
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -46,25 +46,25 @@ export const SectionBlockNode = Node.create({
           }
 
           const activeNodePos = editor.state.selection.$head
-          const activeSectionBlock = $sectionBlocks.find((node) => {
-            return (
-              activeNodePos.pos >= node.pos && activeNodePos.pos <= node.pos + node.node.nodeSize
-            )
-          })
+          const activeSectionBlock = findParentNodeClosestToPos(
+            activeNodePos,
+            (node) => node.type.name === "section_block"
+          )
 
           // section_block外：通常のtoggleWrap
           if (!activeSectionBlock) {
-            return chain().toggleWrap("section_block").run()
+            const { from } = editor.state.selection
+            return chain().toggleWrap("section_block").setTextSelection(from).run()
           }
 
           // section_block内：子コンテンツ全体を選択してアンラップ
-          const from = activeSectionBlock.pos + 1
-          const to = activeSectionBlock.pos + activeSectionBlock.node.nodeSize - 1
+          const from = activeSectionBlock.pos + 1 // section_blockノード直下の最初の子ノード開始位置
+          const to = activeSectionBlock.pos + activeSectionBlock.node.nodeSize - 1 // section_blockノード直下の最後の子ノード末尾位置
 
           return chain()
             .setTextSelection({ from, to })
             .toggleWrap("section_block")
-            .setTextSelection(to) // 選択解除してカーソルだけ戻す
+            .setTextSelection(from) // キャレットを元の位置に戻す
             .run()
         }
     }
