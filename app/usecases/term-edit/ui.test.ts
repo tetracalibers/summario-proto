@@ -1,6 +1,7 @@
 import { createStore } from "jotai"
 import { serverRelatedTerm$, uiRelatedTermLabel$ } from "~/units/related-term/ui.atoms"
 import { applyServerRelatedTermSnapshot$ } from "./ui.actions"
+import { expect, test, vi } from "vitest"
 
 test("applyServerRelatedTermSnapshot$", () => {
   const store = createStore()

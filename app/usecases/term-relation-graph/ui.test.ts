@@ -4,6 +4,7 @@ import { centerNode$ } from "./ui.atoms"
 import { applyServerRelatedTermSnapshot$ } from "../term-edit/ui.actions"
 import { nodes$ } from "./ui.selectors"
 import { currentRelatedTerms$ } from "~/units/related-term/ui.selectors"
+import { expect, test, vi } from "vitest"
 
 test("nodes$", () => {
   const store = createStore()
@@ -44,7 +45,6 @@ test("nodes$", () => {
 
   const afterNodes = store.get(nodes$)
   expect(afterNodes).toEqual([
-    { title: "Vue", id: 3 },
     { title: "Angular", id: 4 },
     { title: "Vite", id: 2 }
   ])

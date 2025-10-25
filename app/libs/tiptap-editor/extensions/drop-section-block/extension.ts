@@ -1,13 +1,7 @@
 import { Extension } from "@tiptap/core"
 import { Plugin } from "prosemirror-state"
-
-const createSectionBlockJson = (title: string) => ({
-  type: "section_block",
-  content: [
-    { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: title }] },
-    { type: "paragraph", content: [] }
-  ]
-})
+import { createSectionBlockJson } from "../../utils"
+import { testLog } from "~/libs/debug"
 
 export const DropSectionBlock = Extension.create({
   name: "drop-section-block",
@@ -34,6 +28,7 @@ export const DropSectionBlock = Extension.create({
 
               // dropされた位置がnode内かnode間か
               const isInsideNode = droppedPos.inside > 0
+              testLog("isInsideNode", isInsideNode)
 
               //
               // nodeの間にdropされた場合
@@ -52,23 +47,14 @@ export const DropSectionBlock = Extension.create({
               // dropされた位置にあるnode
               const nodeAtDroppedPos = view.state.doc.nodeAt(droppedPos.pos - 1)
               if (!nodeAtDroppedPos) return false
+              testLog("nodeAtDroppedPos.type.name", nodeAtDroppedPos.type.name)
 
               // テキストの途中にdropされた場合は何もしない
               if (nodeAtDroppedPos.type.name === "text") return false
-              // セクションブロックの中には入れない
-              if (nodeAtDroppedPos.type.name === "section_block") return false
-
-              // 最後のnodeにdropされた場合はそこに挿入
-              // resolveでエラーになってしまうため、先に処理
-              const isLastNode =
-                view.state.doc.resolve(view.state.doc.content.size).nodeBefore === nodeAtDroppedPos
-              if (isLastNode) {
-                editor.commands.insertContentAt(droppedPos.pos, createSectionBlockJson(title))
-                return true
-              }
 
               // depthを調べる
               const droppedNodeDepth = view.state.doc.resolve(droppedPos.pos).depth
+              testLog("droppedNodeDepth", droppedNodeDepth)
 
               // トップレベルのparagraphにdropされた場合はそこに挿入
               if (nodeAtDroppedPos.type.name === "paragraph" && droppedNodeDepth === 1) {

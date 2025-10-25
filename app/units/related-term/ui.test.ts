@@ -2,6 +2,7 @@ import { currentRelatedTerms$, toRemoveRelatedTermLabels$ } from "./ui.selectors
 import { createStore } from "jotai"
 import { optionsRelatedTerm$, serverRelatedTerm$, uiRelatedTermLabel$ } from "./ui.atoms"
 import { toAddRelatedTermLabels$ } from "./ui.selectors"
+import { expect, test, vi } from "vitest"
 
 test("UIに関連用語を追加したら差分が更新される", () => {
   const store = createStore()

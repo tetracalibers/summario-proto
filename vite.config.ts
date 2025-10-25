@@ -21,8 +21,5 @@ export default defineConfig({
   ],
   ssr: {
     noExternal: ["jotai-devtools"]
-  },
-  test: {
-    globals: true
   }
 })
