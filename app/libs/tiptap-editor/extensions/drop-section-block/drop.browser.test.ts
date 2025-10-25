@@ -10,6 +10,17 @@ import Document from "@tiptap/extension-document"
 import { createSectionBlockJson } from "../../utils"
 import { cleanup } from "@testing-library/react"
 
+const CustomDocument = Document.extend({
+  content: "(section|block)*"
+})
+
+const extensions = [
+  CustomDocument,
+  StarterKit.configure({ document: false, trailingNode: false }),
+  SectionBlockNode,
+  DropSectionBlock
+]
+
 // Create a DragEvent with a writable dataTransfer in real browsers
 function makeDragEvent(type: string, opts: { x?: number; y?: number; title?: string } = {}) {
   const { x = 10, y = 10, title } = opts
@@ -35,17 +46,6 @@ function posAfterTopLevel(editor: Editor, index: number) {
   }
   return pos // index 番目ノードの直後ギャップ
 }
-
-const CustomDocument = Document.extend({
-  content: "(section|block)*"
-})
-
-const extensions = [
-  CustomDocument,
-  StarterKit.configure({ document: false, trailingNode: false }),
-  SectionBlockNode,
-  DropSectionBlock
-]
 
 describe("DropSectionBlock", () => {
   beforeEach(() => cleanup())
