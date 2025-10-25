@@ -1,6 +1,6 @@
 import "../../test-utils/mock.css"
 
-import { describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it } from "vitest"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
 import StarterKit from "@tiptap/starter-kit"
 import { SectionBlockNode } from "../section-block/extension"
@@ -8,6 +8,7 @@ import { TitleBlockNode } from "../title-block/extension"
 import Document from "@tiptap/extension-document"
 import { CustomDocumentControl } from "./extension"
 import type { Editor } from "@tiptap/react"
+import { cleanup } from "@testing-library/react"
 
 const CustomDocument = Document.extend({
   content: "title? (section|block)*"
@@ -52,6 +53,8 @@ function getBlockStartPos(editor: Editor, n: number) {
 }
 
 describe("CustomDocumentControl.deleteBlock", () => {
+  beforeEach(() => cleanup())
+
   it("選択範囲の削除：先頭からの範囲選択", async () => {
     const { editor } = await renderTiptapEditor({
       extensions,

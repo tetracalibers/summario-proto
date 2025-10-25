@@ -1,13 +1,14 @@
 import "../../test-utils/mock.css"
 
 import { StarterKit } from "@tiptap/starter-kit"
-import { describe, expect, it, vi } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 import { SectionBlockNode } from "../section-block/extension"
 import { DropSectionBlock } from "./extension"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
 import type { Editor } from "@tiptap/react"
 import Document from "@tiptap/extension-document"
 import { createSectionBlockJson } from "../../utils"
+import { cleanup } from "@testing-library/react"
 
 // Create a DragEvent with a writable dataTransfer in real browsers
 function makeDragEvent(type: string, opts: { x?: number; y?: number; title?: string } = {}) {
@@ -47,6 +48,8 @@ const extensions = [
 ]
 
 describe("DropSectionBlock", () => {
+  beforeEach(() => cleanup())
+
   it("ブロック間への挿入（先頭）", async () => {
     const initialJsonContent = [
       { type: "paragraph", content: [{ type: "text", text: "para1" }] },
