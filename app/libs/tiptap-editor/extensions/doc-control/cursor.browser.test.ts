@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
 import StarterKit from "@tiptap/starter-kit"
 import { CustomDocumentControl } from "./extension"
-import { getBlockEndPos, getBlockStartPos, infoCursorAtPrevNodeEnd } from "../../test-utils/pos"
+import { getBlockEndPos, getBlockStartPos, infoCursorAtPrevNodeEnd } from "../../test-utils/helder"
 
 const extensions = [StarterKit.configure({ trailingNode: false }), CustomDocumentControl]
 

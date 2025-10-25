@@ -8,7 +8,7 @@ import { TitleBlockNode } from "../title-block/extension"
 import Document from "@tiptap/extension-document"
 import { CustomDocumentControl } from "./extension"
 import { cleanup } from "@testing-library/react"
-import { getBlockEndPos, getBlockStartPos, infoCursorAtPrevNodeEnd } from "../../test-utils/pos"
+import { getBlockEndPos, getBlockStartPos, infoCursorAtPrevNodeEnd } from "../../test-utils/helder"
 
 const CustomDocument = Document.extend({
   content: "title? (section|block)*"

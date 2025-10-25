@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { SectionBlockNode } from "./extension"
 import Document from "@tiptap/extension-document"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
-import { getBlockStartPos, getBlockEndPos } from "../../test-utils/pos"
+import { getBlockStartPos, getBlockEndPos } from "../../test-utils/helder"
 
 const CustomDocument = Document.extend({
   content: "(section|block)*"
