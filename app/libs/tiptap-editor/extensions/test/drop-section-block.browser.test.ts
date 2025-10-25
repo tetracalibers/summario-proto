@@ -46,7 +46,7 @@ const extensions = [
   DropSectionBlock
 ]
 
-describe("DropSectionBlock extension", () => {
+describe("DropSectionBlock", () => {
   it("ブロック間への挿入（先頭）", async () => {
     const initialJsonContent = [
       { type: "paragraph", content: [{ type: "text", text: "para1" }] },
