@@ -12,11 +12,15 @@ const resolvedPrevPos = (state: EditorState, $from: ResolvedPos) => {
 const isLastChildInParent = ($pos: ResolvedPos) => $pos.parentOffset === $pos.parent.nodeSize - 2
 const caretAtBlockEnd = ($pos: ResolvedPos) => $pos.pos === $pos.end()
 
+const isRangeSelection = (state: EditorState) =>
+  state.selection.$from.pos !== state.selection.$to.pos
+
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     customDocumentControl: {
       setCursorToPrevNodeEnd: (textOffset?: number) => ReturnType
       clearTitleContent: () => ReturnType
+      deleteSelectionSafely: () => ReturnType
       deleteBlock: () => ReturnType
     }
   }
@@ -61,42 +65,44 @@ export const CustomDocumentControl = Extension.create({
           return chain().insertContentAt(range, "").run()
         },
 
+      deleteSelectionSafely:
+        () =>
+        ({ chain, state }) => {
+          const { $from, $to } = state.selection
+          // ドキュメント先頭を含む範囲は deleteSelection() が不安定なため deleteRange を使う
+          if ($from.pos === 1) {
+            return chain().deleteRange({ from: $from.pos, to: $to.pos }).run()
+          }
+          return chain().deleteSelection().run()
+        },
+
       deleteBlock:
         () =>
-        ({ chain }) => {
-          const { editor } = this
+        ({ chain, state }) => {
+          const editor = this.editor
+          const $from = state.selection.$from
+          const activeNode = $from.parent
 
-          const { $from, $to } = editor.state.selection
-
-          // 範囲選択されているときはその範囲を削除
-          if ($from.pos !== $to.pos) {
-            // ドキュメントの最初のノードが選択されている場合、deleteSelection()ではエラーになる…
-            if ($from.pos === 1) {
-              const range = { from: $from.pos, to: $to.pos }
-              return chain()
-                .focus()
-                .deleteRange(range)
-                .setCursorToPrevNodeEnd($from.textOffset)
-                .run()
-            }
-
-            return chain().focus().deleteSelection().setCursorToPrevNodeEnd($from.textOffset).run()
+          // 範囲選択はそのまま削除 → 直前終端へキャレット移動
+          if (isRangeSelection(state)) {
+            return chain()
+              .focus()
+              .deleteSelectionSafely()
+              .setCursorToPrevNodeEnd($from.textOffset)
+              .run()
           }
 
-          const activeNodePos = $from
-          const activeNode = activeNodePos.parent
-
-          // トップタイトルはコンテンツのクリアのみ
+          // タイトル行は内容クリアのみ
           if (activeNode.type.name === TITLE_BLOCK) {
             return chain().focus().clearTitleContent().run()
           }
 
-          // トップレベルのノードはそのまま削除
-          if (activeNodePos.depth === 1) {
+          // トップレベルノードはそのまま削除
+          if ($from.depth === 1) {
             return chain().focus().deleteNode(activeNode.type.name).setCursorToPrevNodeEnd().run()
           }
 
-          // リスト内の場合、リストアイテムごと削除
+          // リスト内：アイテムごと削除
           // activeNodeはparagraphになっているが、その親であるli:has(> p)要素を削除する
           if (editor.isActive("bulletList") || editor.isActive("orderedList")) {
             return chain()
@@ -107,7 +113,7 @@ export const CustomDocumentControl = Extension.create({
               .run()
           }
 
-          // blockquoteの場合も同様にp要素の親要素を削除する
+          // blockquote内の場合も同様にp要素の親要素を削除する
           if (editor.isActive("blockquote")) {
             return chain()
               .focus()
@@ -117,22 +123,24 @@ export const CustomDocumentControl = Extension.create({
               .run()
           }
 
+          // セクションブロック内の扱い
           if (editor.isActive(SECTION_BLOCK)) {
-            const activeSectionBlock = findParentNodeClosestToPos(
-              activeNodePos,
+            const activeSection = findParentNodeClosestToPos(
+              $from,
               (node) => node.type.name === SECTION_BLOCK
             )
-            if (!activeSectionBlock) return false
+            if (!activeSection) return false
 
-            // 子が複数ある場合は現在のノードだけ削除
-            if (activeSectionBlock.node.childCount > 1) {
+            // 子が複数 → 現在のノードだけ削除
+            if (activeSection.node.childCount > 1) {
               return chain().focus().deleteNode(activeNode.type.name).setCursorToPrevNodeEnd().run()
             }
 
-            // 子が1つだけの場合はセクションブロックごと削除
+            // 子が1つ → セクションブロックごと削除
             return chain().focus().deleteSectionBlock().setCursorToPrevNodeEnd().run()
           }
 
+          // その他は何もしない
           return false
         }
     }
