@@ -12,6 +12,7 @@
 - スタイリング：CSS Modules
 - 状態管理（client state）：[jotai](https://jotai.org/)
 - 状態管理（server state）：[TanStack Query](https://tanstack.com/query/latest)
+- テスト：[Vitest](https://vitest.dev/)
 
 ## ローカル開発
 
