@@ -54,18 +54,28 @@ export const CustomDocumentControl = Extension.create({
 
           // トップレベルのノードはそのまま削除
           if (activeNodePos.depth === 1) {
-            return chain().focus().deleteNode(activeNode.type.name).run()
+            return chain().focus().deleteNode(activeNode.type.name).setCursorToPrevNodeEnd().run()
           }
 
           // リスト内の場合、リストアイテムごと削除
           // activeNodeはparagraphになっているが、その親であるli:has(> p)要素を削除する
           if (editor.isActive("bulletList") || editor.isActive("orderedList")) {
-            return chain().focus().selectParentNode().deleteSelection().run()
+            return chain()
+              .focus()
+              .selectParentNode()
+              .deleteSelection()
+              .setCursorToPrevNodeEnd()
+              .run()
           }
 
           // blockquoteの場合も同様にp要素の親要素を削除する
           if (editor.isActive("blockquote")) {
-            return chain().focus().selectParentNode().deleteSelection().run()
+            return chain()
+              .focus()
+              .selectParentNode()
+              .deleteSelection()
+              .setCursorToPrevNodeEnd()
+              .run()
           }
 
           if (editor.isActive("section_block")) {
@@ -81,7 +91,7 @@ export const CustomDocumentControl = Extension.create({
             }
 
             // 子が1つだけの場合はセクションブロックごと削除
-            return chain().focus().deleteSectionBlock().run()
+            return chain().focus().deleteSectionBlock().setCursorToPrevNodeEnd().run()
           }
 
           return false
