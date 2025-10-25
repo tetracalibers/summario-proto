@@ -1,4 +1,5 @@
 import type { JSONContent } from "@tiptap/react"
+import { SECTION_BLOCK } from "./constants"
 
 export const judgeContentEmpty = (json: JSONContent) => {
   if (!json.content) return true
@@ -18,7 +19,7 @@ export const judgeContentEmpty = (json: JSONContent) => {
 }
 
 export const createSectionBlockJson = (title: string) => ({
-  type: "section_block",
+  type: SECTION_BLOCK,
   content: [
     { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: title }] },
     { type: "paragraph" }

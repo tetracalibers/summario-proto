@@ -9,6 +9,7 @@ import Document from "@tiptap/extension-document"
 import { CustomDocumentControl } from "./extension"
 import { cleanup } from "@testing-library/react"
 import { getBlockEndPos, getBlockStartPos, infoCursorAtPrevNodeEnd } from "../../test-utils/helder"
+import { SECTION_BLOCK } from "../../constants"
 
 const CustomDocument = Document.extend({
   content: "title? (section|block)*"
@@ -170,7 +171,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
         type: "doc",
         content: [
           {
-            type: "section_block",
+            type: SECTION_BLOCK,
             content: [
               { type: "paragraph", content: [{ type: "text", text: "Child 1" }] },
               { type: "paragraph", content: [{ type: "text", text: "Child 2" }] },
@@ -194,7 +195,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
       type: "doc",
       content: [
         {
-          type: "section_block",
+          type: SECTION_BLOCK,
           content: [
             { type: "paragraph", content: [{ type: "text", text: "Child 1" }] },
             { type: "paragraph", content: [{ type: "text", text: "Child 3" }] }
@@ -220,7 +221,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
             content: [{ type: "text", text: "before section_block" }]
           },
           {
-            type: "section_block",
+            type: SECTION_BLOCK,
             content: [{ type: "paragraph", content: [{ type: "text", text: "Only Child" }] }]
           },
           {
@@ -258,7 +259,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
             content: [{ type: "text", text: "before section_block" }]
           },
           {
-            type: "section_block",
+            type: SECTION_BLOCK,
             content: [
               { type: "paragraph", content: [{ type: "text", text: "Child 1" }] },
               { type: "paragraph", content: [{ type: "text", text: "Child 2" }] }
@@ -285,7 +286,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
           content: [{ type: "text", text: "before section_block" }]
         },
         {
-          type: "section_block",
+          type: SECTION_BLOCK,
           content: [{ type: "paragraph", content: [{ type: "text", text: "Child 1" }] }]
         }
       ]
@@ -306,7 +307,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
           { type: "paragraph", content: [{ type: "text", text: "before section_block 1" }] },
           { type: "paragraph", content: [{ type: "text", text: "before section_block 2" }] },
           {
-            type: "section_block",
+            type: SECTION_BLOCK,
             content: [{ type: "paragraph", content: [{ type: "text", text: "Only Child" }] }]
           }
         ]
@@ -359,7 +360,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
           content: [{ type: "text", text: "before section_block" }]
         },
         {
-          type: "section_block",
+          type: SECTION_BLOCK,
           content: [
             {
               type: "bulletList",
