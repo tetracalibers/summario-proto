@@ -7,8 +7,8 @@ import { SectionBlockNode } from "../section-block/extension"
 import { TitleBlockNode } from "../title-block/extension"
 import Document from "@tiptap/extension-document"
 import { CustomDocumentControl } from "./extension"
-import type { Editor } from "@tiptap/react"
 import { cleanup } from "@testing-library/react"
+import { getBlockEndPos, getBlockStartPos } from "../../test-utils/pos"
 
 const CustomDocument = Document.extend({
   content: "title? (section|block)*"
@@ -22,36 +22,6 @@ const extensions = [
   TitleBlockNode
 ]
 
-// ---- 便利関数：段落末尾の絶対位置を計算 ----
-// 「doc(paragraph(..), paragraph(..))」のような素朴な構成を前提に、
-// n番目のブロックノードの終端絶対位置を返す（1-based index）
-function getBlockEndPos(editor: Editor, n: number) {
-  const doc = editor.state.doc
-  let pos = 1 // doc の最初の子の直前
-  for (let i = 0; i < n; i++) {
-    pos += doc.child(i).nodeSize
-  }
-  return pos - 1 // n番目ノードの末尾位置
-}
-
-/** ブロック n(1-based) の開始絶対位置 */
-function getBlockStartPos(editor: Editor, n: number) {
-  const doc = editor.state.doc
-  let pos = 0
-  let count = 0
-  doc.descendants((node, posHere) => {
-    if (node.isBlock) {
-      count += 1
-      if (count === n) {
-        pos = posHere
-        return false
-      }
-    }
-    return true
-  })
-  return pos
-}
-
 describe("CustomDocumentControl.deleteBlock", () => {
   beforeEach(() => cleanup())
 
@@ -61,8 +31,8 @@ describe("CustomDocumentControl.deleteBlock", () => {
       content: "<p>head</p><p>middle</p><p>tail</p>",
       setUpEditor(editor) {
         // 先頭ブロック開始〜2ブロック目末尾までを選択
-        const from = 1 // doc の最初のテキスト位置
-        const to = getBlockEndPos(editor, 2)
+        const from = 0 // doc の最初のテキスト位置
+        const to = getBlockEndPos(editor.state.doc, 1)
         editor.chain().focus().setTextSelection({ from, to }).run()
       }
     })
@@ -80,8 +50,8 @@ describe("CustomDocumentControl.deleteBlock", () => {
       content: `<p>one</p><p>two</p><p>three</p>`,
       setUpEditor(editor) {
         // 2ブロック目開始〜3ブロック目末尾
-        const from = getBlockStartPos(editor, 2)
-        const to = getBlockEndPos(editor, 3)
+        const from = getBlockStartPos(editor.state.doc, 1)
+        const to = getBlockEndPos(editor.state.doc, 2)
         editor.chain().focus().setTextSelection({ from, to }).run()
       }
     })
@@ -97,9 +67,8 @@ describe("CustomDocumentControl.deleteBlock", () => {
       content: `<p>one</p><p>two</p><p>three</p>`,
       setUpEditor(editor) {
         // 2ブロック目の途中から3ブロック目末尾
-        const para2Start = getBlockStartPos(editor, 2)
-        const from = para2Start + 2 // 2ブロック目の途中
-        const to = getBlockEndPos(editor, 3)
+        const from = getBlockStartPos(editor.state.doc, 1) + 1
+        const to = getBlockEndPos(editor.state.doc, 2)
         editor.chain().focus().setTextSelection({ from, to }).run()
       }
     })
@@ -115,8 +84,8 @@ describe("CustomDocumentControl.deleteBlock", () => {
       content: `<title-block>Document Title</title-block><p>Some content here.</p>`,
       setUpEditor(editor) {
         // タイトルブロック内にキャレット
-        const titleStart = getBlockStartPos(editor, 1)
-        const pos = titleStart + 5 // タイトルの途中
+        const titleBlockStart = getBlockStartPos(editor.state.doc, 0)
+        const pos = titleBlockStart + 5 // タイトルの途中
         editor.chain().focus(pos).run()
       }
     })
@@ -132,8 +101,8 @@ describe("CustomDocumentControl.deleteBlock", () => {
       content: `<p>Paragraph 1</p><p>Paragraph 2</p>`,
       setUpEditor(editor) {
         // 2番目の段落にキャレット
-        const para2Start = getBlockStartPos(editor, 2)
-        const pos = para2Start + 1
+        const paragraph2Start = getBlockStartPos(editor.state.doc, 1)
+        const pos = paragraph2Start + 2 // 段落の途中
         editor.chain().focus(pos).run()
       }
     })
@@ -157,10 +126,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
       content: "<ul><li><p>Item 1</p></li><li><p>Item 2</p></li><li><p>Item 3</p></li></ul>",
       setUpEditor(editor) {
         // 2番目のリストアイテム内にキャレット
-        const listStart = getBlockStartPos(editor, 1) // ul の開始
-        const item2Start = listStart + editor.state.doc.child(0).child(0).nodeSize // 1つ目のliの後
-        // liの中のpの先頭
-        const pos = item2Start + editor.state.doc.child(0).child(1).child(0).nodeSize + 1
+        const list = editor.state.doc.child(0)
+        const item2Start = getBlockStartPos(list, 1)
+        const pos = item2Start + 5 // 2番目のリストアイテム内の途中
         editor.chain().focus(pos).run()
       }
     })
@@ -185,7 +153,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
         "<p>Normal paragraph 1</p><blockquote><p>Quote 1</p></blockquote><p>Normal paragraph 2</p>",
       setUpEditor(editor) {
         // blockquote内にキャレット
-        const quoteStart = getBlockStartPos(editor, 2)
+        const quoteStart = getBlockStartPos(editor.state.doc, 1)
         const pos = quoteStart + 2 // blockquote内のpの途中
         editor.chain().focus(pos).run()
       }
@@ -222,9 +190,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
       },
       setUpEditor(editor) {
         // 2番目の子ノード内にキャレット
-        const sectionStart = getBlockStartPos(editor, 1)
-        const child2Start = sectionStart + editor.state.doc.child(0).child(0).nodeSize // 1つ目の子の後
-        const pos = child2Start + 2 // 2番目の子ノードの途中
+        const section = editor.state.doc.child(0)
+        const child2Start = getBlockStartPos(section, 1)
+        const pos = child2Start + 5 // 2番目の子ノード内の途中
         editor.chain().focus(pos).run()
       }
     })
@@ -275,7 +243,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
       },
       setUpEditor(editor) {
         // section_block内の唯一の子ノードにキャレット
-        const sectionStart = getBlockStartPos(editor, 2)
+        const sectionStart = getBlockStartPos(editor.state.doc, 1)
         const pos = sectionStart + 5 // 子ノードの途中
         editor.chain().focus(pos).run()
       }
@@ -315,10 +283,9 @@ describe("CustomDocumentControl.deleteBlock", () => {
       },
       setUpEditor(editor) {
         // section_block内の最後の子ノードにキャレット
-        const sectionStart = getBlockStartPos(editor, 2)
-        const child1Size = editor.state.doc.child(1).child(0).nodeSize
-        const child2Start = sectionStart + child1Size
-        const pos = child2Start + 5 // 子ノードの途中
+        const section = editor.state.doc.child(1)
+        const child2Start = getBlockStartPos(editor.state.doc, 1) + section.child(0).nodeSize
+        const pos = child2Start + 3 // 子ノードの途中
         editor.chain().focus(pos).run()
       }
     })
@@ -364,7 +331,7 @@ describe("CustomDocumentControl.deleteBlock", () => {
       },
       setUpEditor(editor) {
         // section_block内の唯一の子ノードにキャレット
-        const sectionStart = getBlockStartPos(editor, 3)
+        const sectionStart = getBlockStartPos(editor.state.doc, 2)
         const pos = sectionStart + 5 // 子ノードの途中
         editor.chain().focus(pos).run()
       }

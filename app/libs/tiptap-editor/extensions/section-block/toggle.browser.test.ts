@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it } from "vitest"
 import { SectionBlockNode } from "./extension"
 import Document from "@tiptap/extension-document"
 import { renderTiptapEditor } from "../../test-utils/renderTiptapEditor"
-import type { Editor } from "@tiptap/react"
+import { getBlockStartPos, getBlockEndPos } from "../../test-utils/pos"
 
 const CustomDocument = Document.extend({
   content: "(section|block)*"
@@ -18,35 +18,6 @@ const extensions = [
   SectionBlockNode
 ]
 
-// 「doc(paragraph(..), paragraph(..))」のような素朴な構成を前提に、
-// n番目のブロックノードの終端絶対位置を返す（1-based index）
-function getBlockEndPos(editor: Editor, n: number) {
-  const doc = editor.state.doc
-  let pos = 1 // doc の最初の子の直前
-  for (let i = 0; i < n; i++) {
-    pos += doc.child(i).nodeSize
-  }
-  return pos - 1 // n番目ノードの末尾位置
-}
-
-/** ブロック n(1-based) の開始絶対位置 */
-function getBlockStartPos(editor: Editor, n: number) {
-  const doc = editor.state.doc
-  let pos = 0
-  let count = 0
-  doc.descendants((node, posHere) => {
-    if (node.isBlock) {
-      count += 1
-      if (count === n) {
-        pos = posHere
-        return false
-      }
-    }
-    return true
-  })
-  return pos
-}
-
 describe("SectionBlockNode.toggleSectionBlock", () => {
   beforeEach(() => cleanup())
 
@@ -56,11 +27,8 @@ describe("SectionBlockNode.toggleSectionBlock", () => {
       content: `<p>target</p><p>outside</p>`,
       setUpEditor(editor) {
         // 1段落目の先頭にキャレット
-        const p1Start = getBlockStartPos(editor, 1)
-        editor
-          .chain()
-          .focus(p1Start + 1)
-          .run()
+        const p1Start = getBlockStartPos(editor.state.doc, 0)
+        editor.chain().focus(p1Start).run()
       }
     })
 
@@ -93,11 +61,8 @@ describe("SectionBlockNode.toggleSectionBlock", () => {
       content: `<p>outside</p><p>target</p><section-block><p>inside</p></section-block>`,
       setUpEditor(editor) {
         // 2段落目の先頭にキャレット
-        const p2Start = getBlockStartPos(editor, 2)
-        editor
-          .chain()
-          .focus(p2Start + 1)
-          .run()
+        const p2Start = getBlockStartPos(editor.state.doc, 1)
+        editor.chain().focus(p2Start).run()
       }
     })
 
@@ -138,13 +103,11 @@ describe("SectionBlockNode.toggleSectionBlock", () => {
       extensions,
       content: `<p>outside 1</p><section-block><p>inside 1</p><p>inside 2</p></section-block><p>outside 2</p>`,
       setUpEditor(editor) {
-        const prevEnd = getBlockEndPos(editor, 1)
-        const sectionStart = prevEnd + 1
         // section_block内の先頭にキャレット
-        editor
-          .chain()
-          .focus(sectionStart + 1)
-          .run()
+        const sectionBlock = editor.state.doc.child(1)
+        const sectionStart =
+          getBlockStartPos(editor.state.doc, 1) + getBlockStartPos(sectionBlock, 0)
+        editor.chain().focus(sectionStart).run()
       }
     })
 
@@ -179,8 +142,8 @@ describe("SectionBlockNode.toggleSectionBlock", () => {
       extensions,
       content: `<p>target 1</p><p>target 2</p><p>outside</p>`,
       setUpEditor(editor) {
-        const from = getBlockStartPos(editor, 1) // p1開始
-        const to = getBlockEndPos(editor, 2) // p2終端まで
+        const from = getBlockStartPos(editor.state.doc, 0) // p1開始
+        const to = getBlockEndPos(editor.state.doc, 1) // p2終端まで
         editor.chain().focus().setTextSelection({ from, to }).run()
       }
     })

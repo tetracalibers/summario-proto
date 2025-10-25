@@ -7,6 +7,7 @@ import StarterKit from "@tiptap/starter-kit"
 import { CustomDocumentControl } from "./extension"
 import type { Editor } from "@tiptap/react"
 import type { TextSelection } from "@tiptap/pm/state"
+import { getBlockEndPos, getBlockStartPos } from "../../test-utils/pos"
 
 const extensions = [StarterKit.configure({ trailingNode: false }), CustomDocumentControl]
 
@@ -14,18 +15,6 @@ const extensions = [StarterKit.configure({ trailingNode: false }), CustomDocumen
 function getSelectionPos(editor: Editor) {
   const sel = editor.state.selection as TextSelection
   return { from: sel.from, to: sel.to, empty: sel.empty }
-}
-
-// ---- 便利関数：段落末尾の絶対位置を計算 ----
-// 「doc(paragraph(..), paragraph(..))」のような素朴な構成を前提に、
-// n番目のブロックノードの終端絶対位置を返す（1-based index）
-function getBlockEndPos(editor: Editor, n: number) {
-  const doc = editor.state.doc
-  let pos = 1 // doc の最初の子の直前
-  for (let i = 0; i < n; i++) {
-    pos += doc.child(i).nodeSize
-  }
-  return pos - 1 // n番目ノードの末尾位置
 }
 
 describe("CustomDocumentControl.setCursorToPrevNodeEnd", () => {
@@ -38,9 +27,9 @@ describe("CustomDocumentControl.setCursorToPrevNodeEnd", () => {
       setUpEditor(editor) {
         // 2段落目 "def" の "e" 上（途中=offset>0想定）にキャレット
         // 2段落目の開始絶対位置を軽く計算して、+2（"de"の位置）
-        const para2Start = getBlockEndPos(editor, 1) + 2 // 1段落目末尾の次＝2段落目開始
+        const para2Start = getBlockEndPos(editor.state.doc, 0) + 2 // 1段落目末尾の次＝2段落目開始
         const pos = para2Start + 1 // "e" の位置想定
-        editor.chain().focus().setTextSelection({ from: pos, to: pos }).run()
+        editor.chain().focus(pos).run()
       }
     })
 
@@ -62,7 +51,7 @@ describe("CustomDocumentControl.setCursorToPrevNodeEnd", () => {
         // 1段落目の任意位置にキャレット
         const para1Start = 1 // ルート直後（<doc>の最初）
         const pos = para1Start + 1 // "f"あたり
-        editor.chain().focus().setTextSelection({ from: pos, to: pos }).run()
+        editor.chain().focus(pos).run()
       }
     })
 
@@ -80,9 +69,8 @@ describe("CustomDocumentControl.setCursorToPrevNodeEnd", () => {
       content: "<p>aaa</p><p>bbb</p><p>ccc</p>",
       setUpEditor(editor) {
         // 3段落目先頭にキャレット
-        const para2End = getBlockEndPos(editor, 2)
-        const para3Start = para2End + 1
-        editor.chain().focus().setTextSelection({ from: para3Start, to: para3Start }).run()
+        const para3Start = getBlockStartPos(editor.state.doc, 2)
+        editor.chain().focus(para3Start).run()
       }
     })
 
