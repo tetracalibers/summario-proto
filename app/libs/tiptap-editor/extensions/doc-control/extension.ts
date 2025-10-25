@@ -1,6 +1,16 @@
 import { Extension, findParentNodeClosestToPos } from "@tiptap/core"
-import { TextSelection } from "@tiptap/pm/state"
+import { type EditorState, TextSelection } from "@tiptap/pm/state"
 import { SECTION_BLOCK, TITLE_BLOCK } from "../../constants"
+import type { ResolvedPos } from "@tiptap/pm/model"
+
+const resolvedPrevPos = (state: EditorState, $from: ResolvedPos) => {
+  const posBeforeParent = $from.before()
+  if (posBeforeParent < 1) return null
+  return state.doc.resolve(posBeforeParent - 1)
+}
+
+const isLastChildInParent = ($pos: ResolvedPos) => $pos.parentOffset === $pos.parent.nodeSize - 2
+const caretAtBlockEnd = ($pos: ResolvedPos) => $pos.pos === $pos.end()
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -20,27 +30,27 @@ export const CustomDocumentControl = Extension.create({
       setCursorToPrevNodeEnd:
         (textOffset = 0) =>
         ({ chain, state }) => {
-          // テキストの途中であれば何もしない
+          // テキスト途中の削除ではキャレット移動なし
           if (textOffset > 0) return true
 
           const { $from } = state.selection
-          const pos = $from.before()
-          if (pos < 1) return true // ドキュメントの最初のノードでは何もしない
-          const prevPos = state.doc.resolve(pos - 1)
+          const $prev = resolvedPrevPos(state, $from)
+          if (!$prev) return true // ドキュメント先頭なら何もしない
 
-          const isLastNode = $from.parentOffset === $from.parent.nodeSize - 2 // ノード末尾にいるかどうか
-          const isCaretAtEnd = $from.pos === $from.end()
+          const atEnd = caretAtBlockEnd($from)
 
-          if (isLastNode && isCaretAtEnd) {
+          // 文書末尾（最後のノード末尾）にいる場合はドキュメント末尾へ
+          if (isLastChildInParent($from) && atEnd) {
             return chain().setTextSelection(TextSelection.atEnd(state.doc)).run()
           }
 
-          if (isCaretAtEnd) {
-            return chain().setTextSelection(TextSelection.atEnd(prevPos.node())).run()
+          // ブロック末尾なら直前ブロック末尾へ
+          if (atEnd) {
+            return chain().setTextSelection(TextSelection.atEnd($prev.node())).run()
           }
 
-          // setTextSelectionコマンドを使用するとカーソルの位置を設定できる
-          return chain().setTextSelection(TextSelection.near(prevPos, -1)).run()
+          // それ以外は直前位置近傍へ
+          return chain().setTextSelection(TextSelection.near($prev, -1)).run()
         },
 
       clearTitleContent:
