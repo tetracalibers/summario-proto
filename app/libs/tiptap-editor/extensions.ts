@@ -3,9 +3,8 @@ import { ListKit } from "@tiptap/extension-list"
 import type { Extensions, JSONContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { Link } from "@mantine/tiptap"
-import { CursorControl } from "./extensions/cursor-control/extension"
-import SectionBlock from "./extensions/section-block/extension"
-import TitleBlock from "./extensions/title-block/extension"
+import { SectionBlockNode } from "./extensions/section-block/extension"
+import { TitleBlockNode } from "./extensions/title-block/extension"
 import Document from "@tiptap/extension-document"
 import { all, createLowlight } from "lowlight"
 import { Placeholder } from "@tiptap/extension-placeholder"
@@ -31,7 +30,6 @@ export const tiptapExtensions = (
 ): Extensions => [
   CustomDocument,
   CustomDocumentControl,
-  CursorControl,
   DirtyState.configure({ initialJSON, onDirtyChange }),
   TitleWatcher.configure({ onTitleChange }),
   StarterKit.configure({
@@ -62,8 +60,8 @@ export const tiptapExtensions = (
     lowlight
   }),
   Link.configure({ openOnClick: false }),
-  SectionBlock,
-  TitleBlock,
+  SectionBlockNode,
+  TitleBlockNode,
   DropSectionBlock,
   Placeholder.configure({
     showOnlyCurrent: false,

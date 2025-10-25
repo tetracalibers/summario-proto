@@ -291,7 +291,13 @@ module.exports = {
     /* Which modules to exclude */
     exclude: {
       /* path: an array of regular expressions in strings to match against */
-      path: ["[.]css$", "app/libs/debug.server.ts", "[.]test[.]ts$"]
+      path: [
+        "[.]css$",
+        "[.]test[.]ts$",
+        "app/libs/debug.server.ts",
+        "app/libs/debug.ts",
+        "app/libs/tiptap-editor/test-utils/*"
+      ]
     },
 
     /* Which modules to exclusively include (array of regular expressions in strings)
