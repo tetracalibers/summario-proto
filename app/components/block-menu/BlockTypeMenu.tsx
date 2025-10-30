@@ -17,8 +17,8 @@ const BlockTypeMenu = () => {
           }}
         >
           <div>
-            <div className={styles.card_title}>{block.label}</div>
-            <div className={styles.card_subtitle}>{block.label_ja}</div>
+            <div className={styles.card_title}>{block.label_ja}</div>
+            <div className={styles.card_subtitle}>{block.label}</div>
           </div>
           <div className={styles.card_content}>{block.description}</div>
           <div className={styles.card_icon} title="Drag into Editor">
