@@ -12,6 +12,12 @@
     "description": "簡単に説明するなら？"
   },
   {
+    "name": "detail",
+    "label": "Detail",
+    "label_ja": "詳細",
+    "description": "詳しく説明するなら？"
+  },
+  {
     "name": "definition",
     "label": "Definition",
     "label_ja": "定義",
@@ -56,25 +62,31 @@
   {
     "name": "pitfall",
     "label": "Pitfall",
-    "label_ja": "落とし穴",
-    "description": "注意すべき点は？"
+    "label_ja": "注意点",
+    "description": "落とし穴となりそうなところは？"
   },
   {
     "name": "constraints",
     "label": "Constraints",
-    "label_ja": "制約条件",
-    "description": "使う上でどんな制約がある？"
+    "label_ja": "使う上での制約",
+    "description": "使ってもできないことは？"
   },
   {
     "name": "limit",
     "label": "Limit",
-    "label_ja": "限界",
-    "description": "適用できない状況はある？"
+    "label_ja": "不向きな場合",
+    "description": "使えない状況はある？"
   },
   {
     "name": "insight",
     "label": "Insight",
     "label_ja": "知見",
     "description": "自分なりに気づいたことは？"
+  },
+  {
+    "name": "conclusion",
+    "label": "Conclusion",
+    "label_ja": "まとめ",
+    "description": "最後にまとめると？"
   }
 ]
