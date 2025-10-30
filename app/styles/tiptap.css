@@ -41,6 +41,13 @@
 :is(.tiptap, .tiptap-static) code {
   font-size: 1em;
 }
+
+.tiptap-static {
+  line-height: 1.5;
+
+  .node-section_block {
+    margin-block: 1.5rem;
+  }
 }
 
 .drag-handle {
