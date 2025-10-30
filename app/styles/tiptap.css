@@ -38,8 +38,9 @@
   }
 }
 
-:is(.tiptap, .tiptap-static) h1 > * {
-  font-size: inherit;
+:is(.tiptap, .tiptap-static) code {
+  font-size: 1em;
+}
 }
 
 .drag-handle {
