@@ -30,7 +30,7 @@
   }
 
   .is-empty:not(.node-section_block)::before {
-    color: #adb5bd;
+    color: var(--mantine-color-gray-5);
     content: attr(data-placeholder);
     float: left;
     height: 0;
