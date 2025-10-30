@@ -13,7 +13,7 @@ const BlockTypeMenu = () => {
           draggable
           key={block.name}
           onDragStart={(e) => {
-            e.dataTransfer.setData(BLOCK_TITLE_MIME, block.label)
+            e.dataTransfer.setData(BLOCK_TITLE_MIME, block.label_ja)
           }}
         >
           <div>
