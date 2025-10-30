@@ -52,7 +52,7 @@
 
 .drag-handle {
   align-items: center;
-  background: white;
+  background: var(--mantine-color-white);
   border-radius: 0.25rem;
   color: var(--mantine-color-gray-6);
   border: 1px solid var(--mantine-color-gray-3);

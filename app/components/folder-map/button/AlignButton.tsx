@@ -13,7 +13,7 @@ export default function AlignButton({ onClick }: Props) {
       aria-label="layout"
       variant="outline"
       color="grape"
-      bg="white"
+      bg="var(--mantine-color-white)"
     >
       <IconAlignLeft2 />
     </ActionIcon>

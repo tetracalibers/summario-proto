@@ -41,6 +41,8 @@ export const theme = createTheme({
   },
   fontFamily: "Montserrat, Zen Kaku Gothic Antique",
   fontFamilyMonospace: "DM Mono",
+  black: "#303841",
+  white: "#fcfefe",
 
   headings: {
     fontWeight: "500",

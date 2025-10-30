@@ -7,7 +7,7 @@
   position: relative;
   cursor: grab;
   z-index: 2; /** drag時にスクロールバーが乗るのを防ぐ */
-  background-color: white;
+  background-color: var(--mantine-color-white);
 }
 
 .card_title {
