@@ -2,6 +2,7 @@
   border-radius: 4px;
   margin: 0;
   padding: 1.25rem 1.75rem !important;
+  padding-block-start: 0 !important;
   min-height: 100%;
   line-height: 1.7;
 
@@ -11,6 +12,18 @@
 
   :last-child {
     margin-block-end: 0;
+  }
+
+  .node-title_block {
+    z-index: 100;
+    margin-block-end: 1.4rem;
+    margin-inline: -1.75rem;
+    padding-block-end: 0.7rem;
+    padding-inline: 0.6rem;
+    position: sticky;
+    top: 0;
+    background-color: var(--mantine-color-white);
+    border-block-end: 1px solid var(--mantine-color-gray-3);
   }
 
   .node-section_block {
@@ -75,7 +88,7 @@
 /** エディタ（drop可能範囲）を高さいっぱいに広げる */
 .mantine-RichTextEditor-root {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 1fr;
 }
 .mantine-RichTextEditor-root > .mantine-Typography-root {
   display: grid;

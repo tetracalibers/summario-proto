@@ -10,7 +10,7 @@ export const TitleBlockNode = Node.create({
   parseHTML() {
     return [{ tag: "title-block" }]
   },
-  renderHTML({ HTMLAttributes }) {
-    return ["h1", HTMLAttributes, 0]
+  renderHTML() {
+    return ["h1", { class: "node-title_block" }, 0]
   }
 })
