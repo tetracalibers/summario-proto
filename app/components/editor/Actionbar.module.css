@@ -1,0 +1,13 @@
+.toolbar {
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  max-width: fit-content;
+  max-height: fit-content;
+  margin-inline: auto;
+  gap: 0.6rem;
+  z-index: 100;
+  bottom: 0;
+  border: 2px solid var(--mantine-color-violet-2);
+  justify-content: center;
+  background-color: var(--mantine-color-violet-0);
+}
