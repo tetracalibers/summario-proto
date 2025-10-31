@@ -3,6 +3,7 @@ import { useTiptapEditor } from "./use-tiptap-editor"
 import { EditorContext, type JSONContent } from "@tiptap/react"
 import TipTapEditor from "./Editor"
 import { useSyncTermTitle, useTermContentState } from "~/units/term/ui.hooks"
+import ScrollArea from "../scroll-area/ScrollArea"
 
 interface Props {
   title: string
@@ -22,9 +23,9 @@ const EditorWith = ({ children, initialJSON, title }: PropsWithChildren<Props>) 
   return (
     <EditorContext.Provider value={editorValue}>
       {children}
-      <div className="editor-area">
+      <ScrollArea className="editor-area">
         <TipTapEditor editor={editor} />
-      </div>
+      </ScrollArea>
     </EditorContext.Provider>
   )
 }
