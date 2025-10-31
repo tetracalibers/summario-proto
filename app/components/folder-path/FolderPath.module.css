@@ -11,7 +11,6 @@
 .list_item {
   transform: skew(calc(var(--skew-deg) * -1));
   padding: 0 8px;
-  font-size: 0.75rem;
   border-inline-end: 1px solid lightslategray;
   height: fit-content;
 }
@@ -28,7 +27,13 @@
 }
 
 .item_title {
+  font-size: 0.75rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+pre.item_title {
+  margin: 0;
+  font-family: var(--mantine-font-family-monospace);
 }

@@ -44,6 +44,12 @@
   padding-inline-end: 0.5rem;
 }
 
+.dirname pre {
+  margin: 0;
+  font-family: var(--mantine-font-family-monospace);
+  font-size: 0.9em;
+}
+
 .list {
   list-style: none;
   margin: 0;

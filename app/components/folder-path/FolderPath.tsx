@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function FolderPath({ folders }: Props) {
-  return (
+  return folders.length > 0 ? (
     <ul className={styles.list}>
       {folders.map((folder) => (
         <li key={folder.id} className={styles.list_item}>
@@ -17,5 +17,10 @@ export default function FolderPath({ folders }: Props) {
         </li>
       ))}
     </ul>
+  ) : (
+    <div className={styles.item_inner}>
+      <IconFolder size={12} />
+      <pre className={styles.item_title}>(No Folder)</pre>
+    </div>
   )
 }

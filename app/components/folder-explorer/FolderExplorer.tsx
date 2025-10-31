@@ -67,7 +67,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
         </div>
         <div className={styles.dirname}>
           <IconFolderOpen size={18} color="var(--mantine-color-gray-6)" />
-          {data?.current?.name ?? "(root)"}
+          {data?.current?.name ?? <pre>(No Folder)</pre>}
         </div>
       </div>
       <ScrollArea h="100%" className={styles.scroll_shadows}>
