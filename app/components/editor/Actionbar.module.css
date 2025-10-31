@@ -7,7 +7,10 @@
   gap: 0.6rem;
   z-index: 100;
   bottom: 0;
-  border: 2px solid var(--mantine-color-violet-2);
+  border: 1px solid var(--mantine-color-indigo-1);
   justify-content: center;
-  background-color: var(--mantine-color-violet-0);
+
+  --bg: var(--mantine-color-indigo-0);
+  background-color: rgb(from var(--bg) r g b / 85%);
+  backdrop-filter: blur(2px);
 }
