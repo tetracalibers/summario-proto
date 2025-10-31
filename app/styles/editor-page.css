@@ -43,7 +43,6 @@
 
   .rightside-area {
     grid-area: rightside;
-    /* grid-row-start: 3; */
     display: grid;
     grid-template-rows: auto auto 1fr;
     gap: 1rem;
