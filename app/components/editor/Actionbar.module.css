@@ -10,7 +10,7 @@
   border: 1px solid var(--mantine-color-indigo-1);
   justify-content: center;
 
-  --bg: var(--mantine-color-indigo-0);
+  --bg: var(--mantine-color-white);
   background-color: rgb(from var(--bg) r g b / 85%);
   backdrop-filter: blur(2px);
 }
