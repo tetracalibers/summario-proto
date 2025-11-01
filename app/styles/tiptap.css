@@ -28,6 +28,7 @@
 
   .node-section_block {
     margin-block: 1.4rem;
+    background-color: var(--mantine-color-white);
   }
 
   /* 最後のセクションブロックとその下のdropcursorの間に余白を持たせる */
