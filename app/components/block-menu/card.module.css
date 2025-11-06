@@ -7,20 +7,17 @@
   position: relative;
   cursor: grab;
   z-index: 2; /** drag時にスクロールバーが乗るのを防ぐ */
-  background-color: white;
+  background-color: var(--mantine-color-white);
 }
 
 .card_title {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   margin: 0;
-  font-weight: 500;
 }
 
 .card_subtitle {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   margin: 0;
-  color: var(--mantine-color-magenta-5);
-  font-weight: 500;
 }
 
 .card_content {

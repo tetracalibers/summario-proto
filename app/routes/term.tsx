@@ -82,7 +82,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
           </div>
         </EditorWith>
         <div className="rightside-area">
-          <Stack gap="xs">
+          <Stack gap="0.5rem">
             <AliasInput initials={alias} />
             <RelatedInput initials={related} options={relatedOptions} />
           </Stack>

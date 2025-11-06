@@ -41,8 +41,8 @@ export default function NewFileNode() {
       <TextInput
         value={name}
         onChange={(event) => setName(event.currentTarget.value)}
-        placeholder="Enter file name and drag"
-        aria-label="Enter file name and drag"
+        placeholder="Enter name and drag"
+        aria-label="enter file name and drag"
         leftSection={<IconNote color="var(--mantine-color-cyan-4)" size={24} />}
         leftSectionPointerEvents="none"
       />

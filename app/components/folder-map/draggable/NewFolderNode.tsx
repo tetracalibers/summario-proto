@@ -40,8 +40,8 @@ export default function NewFolderNode() {
       <TextInput
         value={name}
         onChange={(event) => setName(event.currentTarget.value)}
-        placeholder="Enter folder name and drag"
-        aria-label="Enter folder name and drag"
+        placeholder="Enter name and drag"
+        aria-label="enter folder name and drag"
         leftSection={<IconFolder color="var(--mantine-color-bright-orange-6)" size={24} />}
         leftSectionPointerEvents="none"
       />

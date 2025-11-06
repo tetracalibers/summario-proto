@@ -2,15 +2,15 @@
   :scope {
     display: grid;
     grid-template-areas:
-      ". . ."
       "leftside controls save"
-      "leftside editor rightside"
-      "leftside . .";
+      "leftside editor rightside";
     grid-template-columns: 1fr 2.5fr minmax(220px, 1fr);
-    grid-template-rows: 0 auto 1fr;
-    gap: 1rem;
+    grid-template-rows: auto 1fr;
+    column-gap: 1rem;
+    row-gap: 0.5rem;
     height: 100svh;
-    padding-inline: 1rem;
+    padding: 1rem;
+    padding-block-end: 0;
   }
 
   .search-area {
@@ -38,14 +38,14 @@
 
   .editor-area {
     grid-area: editor;
-    overflow-y: auto;
+    margin-block-end: 1rem;
   }
 
   .rightside-area {
     grid-area: rightside;
-    /* grid-row-start: 3; */
     display: grid;
     grid-template-rows: auto auto 1fr;
     gap: 1rem;
+    padding-block-end: 1rem;
   }
 }

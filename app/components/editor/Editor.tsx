@@ -10,7 +10,6 @@ interface Props {
 const TipTapEditor = ({ editor }: Props) => {
   return (
     <RichTextEditor editor={editor} mih="100%" bd={0}>
-      <EditorActionbar editor={editor} />
       <DragHandle editor={editor!}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -23,6 +22,7 @@ const TipTapEditor = ({ editor }: Props) => {
         </svg>
       </DragHandle>
       <RichTextEditor.Content mih="100%" bdrs={0} />
+      <EditorActionbar editor={editor} />
     </RichTextEditor>
   )
 }

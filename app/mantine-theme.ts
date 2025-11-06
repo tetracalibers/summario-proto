@@ -39,5 +39,18 @@ export const theme = createTheme({
       "#a9004f"
     ]
   },
-  fontFamily: "Raleway, Zen Kaku Gothic New"
+  fontFamily: "Montserrat, Zen Kaku Gothic Antique",
+  fontFamilyMonospace: "DM Mono",
+  black: "#303841",
+  white: "#fcfefe",
+
+  headings: {
+    fontWeight: "500",
+    sizes: {
+      h1: { fontSize: "1.75rem" },
+      h2: { fontSize: "1.5rem" },
+      h3: { fontSize: "1.25rem" },
+      h4: { fontSize: "1.125rem" }
+    }
+  }
 })

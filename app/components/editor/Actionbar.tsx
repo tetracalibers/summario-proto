@@ -1,6 +1,7 @@
 import { type Editor } from "@tiptap/react"
 import { RichTextEditor } from "@mantine/tiptap"
 import { IconSection, IconTrash, IconSourceCode } from "@tabler/icons-react"
+import styles from "./Actionbar.module.css"
 
 interface Props {
   editor: Editor | null
@@ -8,7 +9,7 @@ interface Props {
 
 const EditorActionbar = ({ editor }: Props) => {
   return (
-    <RichTextEditor.Toolbar sticky pt={0}>
+    <RichTextEditor.Toolbar sticky className={styles.toolbar}>
       <RichTextEditor.ControlsGroup>
         <RichTextEditor.Undo />
         <RichTextEditor.Redo />

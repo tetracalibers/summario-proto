@@ -2,7 +2,9 @@
   border-radius: 4px;
   margin: 0;
   padding: 1.25rem 1.75rem !important;
+  padding-block-start: 0 !important;
   min-height: 100%;
+  line-height: 1.7;
 
   :first-child {
     margin-block-start: 0;
@@ -12,23 +14,37 @@
     margin-block-end: 0;
   }
 
-  .node-section_block {
-    margin-block: 1rem;
+  .node-title_block {
+    z-index: 100;
+    margin-block-end: 1.4rem;
+    margin-inline: -1.75rem;
+    padding-block-end: 0.7rem;
+    padding-inline: calc(1.75rem / 2);
+    position: sticky;
+    top: 0;
+    background-color: var(--mantine-color-white);
+    border-block-end: 1px solid var(--mantine-color-gray-3);
   }
+
+  .node-section_block {
+    margin-block: 1.4rem;
+    background-color: var(--mantine-color-white);
+  }
+
   /* 最後のセクションブロックとその下のdropcursorの間に余白を持たせる */
   .node-section_block:last-child {
     padding-block-end: 0.5rem;
   }
 
   .node-section_block__content {
-    border: 1px solid #e4edf4;
+    border: 1px dashed var(--mantine-color-gray-4);
     border-radius: 4px;
     padding: 1rem;
     margin: 0;
   }
 
   .is-empty:not(.node-section_block)::before {
-    color: #adb5bd;
+    color: var(--mantine-color-gray-5);
     content: attr(data-placeholder);
     float: left;
     height: 0;
@@ -36,13 +52,21 @@
   }
 }
 
-:is(.tiptap, .tiptap-static) h1 > * {
-  font-size: inherit;
+:is(.tiptap, .tiptap-static) code {
+  font-size: 1em;
+}
+
+.tiptap-static {
+  line-height: 1.5;
+
+  .node-section_block {
+    margin-block: 1.5rem;
+  }
 }
 
 .drag-handle {
   align-items: center;
-  background: white;
+  background: var(--mantine-color-white);
   border-radius: 0.25rem;
   color: var(--mantine-color-gray-6);
   border: 1px solid var(--mantine-color-gray-3);
@@ -65,7 +89,7 @@
 /** エディタ（drop可能範囲）を高さいっぱいに広げる */
 .mantine-RichTextEditor-root {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 1fr;
 }
 .mantine-RichTextEditor-root > .mantine-Typography-root {
   display: grid;
