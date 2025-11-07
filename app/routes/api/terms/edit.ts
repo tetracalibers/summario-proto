@@ -2,11 +2,6 @@ import { data } from "react-router"
 import type { Route } from "./+types/edit"
 import { saveTermContents } from "~/usecases/term-edit/feature.server"
 
-// [for debug]
-// const delay = (ms: number) => {
-//   return new Promise((resolve) => setTimeout(resolve, ms))
-// }
-
 const joinTitles = (items: { title: string }[]) => {
   return items.map((i) => i.title).join(", ")
 }
