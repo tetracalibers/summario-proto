@@ -15,7 +15,7 @@ import NewFolderInput from "./NewFolderInput"
 import NewFileInput from "./NewFileInput"
 import { useFolderExplorerUi } from "~/usecases/folder-explorer/ui.hooks"
 import type { loader } from "~/routes/api/folders/children"
-import { useFolderExplorerInputUi } from "~/usecases/folder-explorer-input/ui.hooks"
+import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/input/ui.hooks"
 
 interface Props {
   currentTermId: number
