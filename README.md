@@ -31,6 +31,7 @@ npx supabase stop
 ### DBのリセットとシーディングの実行
 
 次のコマンドでDBがリセットされ、`supabase/seed.sql`によってシードデータが投入されます。
+
 なお、このコマンドはコンテナを起動した状態で実行する必要があります。
 
 ```bash
@@ -46,6 +47,7 @@ npx supabase db dump -f supabase/seed.sql --data-only --local
 ```
 
 作成された`supabase/seed.sql`を開き、`setval`の引数を書き換える必要があります。
+
 直接INSERTした場合はシーケンスの最大値カウンタが更新されないので、次回のデータ追加時に備えて、シーケンスの最大値を適切に設定する必要があるからです。（参考：[PostgreSQLの重複キー問題とシーケンスの調整方法](https://zenn.dev/yicr/articles/0a3dd7a86e137d)）
 
 たとえば、`terms`テーブルの`id`シーケンスの設定は次のようになっていますが、
