@@ -1,6 +1,11 @@
 import type { JSONContent } from "@tiptap/react"
 import { SECTION_BLOCK, TITLE_BLOCK } from "./constants"
 
+export const defaultContentJson = (title: string) => ({
+  type: "doc",
+  content: [{ type: TITLE_BLOCK, content: [{ type: "text", text: title }] }]
+})
+
 export const judgeContentEmpty = (doc: JSONContent) => {
   // ルート content が無い/空 → 空
   const nodes = doc.content ?? []
