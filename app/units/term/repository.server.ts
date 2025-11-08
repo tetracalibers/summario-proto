@@ -41,3 +41,14 @@ export const updateContent = async (termId: number, { title, content }: UpdateCo
     .where(eq(terms.id, termId))
     .returning({ id: terms.id, title: terms.title })
 }
+
+interface CreateData {
+  title: string
+  folderId: number | null
+}
+export const createEmpty = async ({ title, folderId }: CreateData) => {
+  return db
+    .insert(terms)
+    .values({ title, folderId })
+    .returning({ id: terms.id, title: terms.title })
+}

@@ -21,3 +21,8 @@ export const getRecentTerm = async () => {
 export const updateTermContent = async (termId: number, title: string, content: JSONContent) => {
   return TermRepository.updateContent(termId, { title, content })
 }
+
+export const createEmptyTerm = async (title: string, folderId: number | null) => {
+  const [newTerm] = await TermRepository.createEmpty({ title, folderId })
+  return newTerm
+}
