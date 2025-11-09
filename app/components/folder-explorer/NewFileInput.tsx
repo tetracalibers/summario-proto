@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function NewFileInput({ resetAndHideFn }: Props) {
-  const { save, isSaving, setTitle, error } = useEmptyTermCreateUi()
+  const { save, isSaving, setName, error } = useEmptyTermCreateUi()
 
   return (
     <Form
@@ -65,7 +65,7 @@ export default function NewFileInput({ resetAndHideFn }: Props) {
             "--input-size": "calc(18px + 4px * 2)"
           }
         }}
-        onChange={(e) => setTitle(e.currentTarget.value)}
+        onChange={(e) => setName(e.currentTarget.value)}
         disabled={isSaving}
         onBlur={resetAndHideFn}
         onKeyDown={getHotkeyHandler([["Escape", resetAndHideFn]])}

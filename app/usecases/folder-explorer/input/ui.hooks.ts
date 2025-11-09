@@ -1,9 +1,8 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { resetEntryInput$ } from "./ui.actions"
 import { displayedInputEntryType$, entryInputError$, entryInputValue$ } from "./ui.atoms"
-import { isActiveFileInput$, isActiveFolderInput$ } from "./ui.selectors"
+import { folderIdforDB$, isActiveFileInput$, isActiveFolderInput$ } from "./ui.selectors"
 import { useMutation, useQueryClient, type MutateOptions } from "@tanstack/react-query"
-import { folderId$ } from "../ui.atoms"
 import { ActionError } from "~/libs/error"
 import type { CreationSuccess } from "./types"
 
@@ -20,18 +19,18 @@ export const useFolderExplorerInputUi = () => {
 export const useEmptyTermCreateUi = () => {
   const queryClient = useQueryClient()
 
-  const folderId = useAtomValue(folderId$)
-  const [title, setTitle] = useAtom(entryInputValue$)
+  const parentId = useAtomValue(folderIdforDB$)
+  const [name, setName] = useAtom(entryInputValue$)
   const [error, setError] = useAtom(entryInputError$)
   const resetAndHideEntryInput = useSetAtom(resetEntryInput$)
 
   const { mutate, isPending } = useMutation<CreationSuccess, ActionError, Object>({
-    mutationKey: ["terms", "new"],
+    mutationKey: ["folders", "new"],
     mutationFn: () =>
-      fetch("/api/terms/new", {
+      fetch("/api/folders/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, folderId: folderId === "root" ? null : folderId })
+        body: JSON.stringify({ type: "file", name, parentId })
       }).then(async (res) => {
         const data = await res.json()
         if (!res.ok) throw new ActionError("Failed to create a new term.", data)
@@ -39,7 +38,7 @@ export const useEmptyTermCreateUi = () => {
       }),
     onSuccess: () => {
       resetAndHideEntryInput()
-      queryClient.invalidateQueries({ queryKey: ["folders", "detail", folderId, "children"] })
+      queryClient.invalidateQueries({ queryKey: ["folders", "detail", parentId, "children"] })
     },
     onError: () => {
       setError("保存に失敗しました")
@@ -47,12 +46,12 @@ export const useEmptyTermCreateUi = () => {
   })
 
   const save = (options: MutateOptions<CreationSuccess, ActionError, Object>) => {
-    if (title.trim().length === 0) {
-      setError("タイトルを入力してください")
+    if (name.trim().length === 0) {
+      setError("名称を入力してください")
       return
     }
     mutate({}, options)
   }
 
-  return { save, isSaving: isPending, setTitle, error }
+  return { save, isSaving: isPending, setName, error }
 }
