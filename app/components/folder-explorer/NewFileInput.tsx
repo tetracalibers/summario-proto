@@ -6,6 +6,7 @@ import { useEmptyTermCreateUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import { notifications } from "@mantine/notifications"
 import notificationStyle from "./notification.module.css"
 import reversedNotificationStyles from "../term-save-button/reversed-notification.module.css"
+import IconLoadingSpinner from "~/components/icon-loading-spinner/IconLoadingSpinner"
 
 interface Props {
   resetAndHideFn: () => void
@@ -55,7 +56,7 @@ export default function NewFileInput({ resetAndHideFn }: Props) {
         placeholder="New File Name"
         aria-label="new file name"
         autoFocus
-        leftSection={<IconNote size={18} />}
+        leftSection={isSaving ? <IconLoadingSpinner size={16} /> : <IconNote size={18} />}
         styles={{
           section: { "--section-size": "18px", "--section-start": "4px" },
           input: {
