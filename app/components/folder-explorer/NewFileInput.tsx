@@ -5,7 +5,6 @@ import { getHotkeyHandler } from "@mantine/hooks"
 import { useEmptyTermCreateUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import { notifications } from "@mantine/notifications"
 import notificationStyle from "./notification.module.css"
-import reversedNotificationStyles from "../term-save-button/reversed-notification.module.css"
 import IconLoadingSpinner from "~/components/icon-loading-spinner/IconLoadingSpinner"
 
 interface Props {
@@ -21,7 +20,7 @@ export default function NewFileInput({ resetAndHideFn }: Props) {
         save({
           onSuccess: ({ id, title }) => {
             notifications.show({
-              title: "Success",
+              title: "SUCCESS",
               message: (
                 <>
                   <Link
@@ -45,7 +44,7 @@ export default function NewFileInput({ resetAndHideFn }: Props) {
               title: detail.title,
               message: detail.message,
               color: "pink",
-              classNames: reversedNotificationStyles,
+              classNames: notificationStyle,
               autoClose: false
             })
           }

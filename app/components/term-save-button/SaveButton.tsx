@@ -3,7 +3,7 @@ import { useCurrentEditor } from "@tiptap/react"
 import { type ButtonHTMLAttributes } from "react"
 import { useParams } from "react-router"
 import { notifications } from "@mantine/notifications"
-import reversedNotificationStyles from "./reversed-notification.module.css"
+import notificationStyles from "../folder-explorer/notification.module.css"
 import loadingStyle from "./loading.module.css"
 import { useTermContentSaveUi } from "~/usecases/term-edit/ui.hooks"
 import IconLoadingSpinner from "../icon-loading-spinner/IconLoadingSpinner"
@@ -35,11 +35,17 @@ const SaveButton = (props: Props) => {
             const cleaned = editor.commands.markCleanIfUnmodified()
 
             const notificationOption = cleaned
-              ? { title: "Success", message: "保存に成功しました 🎉", color: "cyan" }
+              ? {
+                  title: "SUCCESS",
+                  message: "保存に成功しました 🎉",
+                  color: "cyan",
+                  classNames: notificationStyles
+                }
               : {
-                  title: "Warning",
+                  title: "WARNING",
                   message: "保存中に編集されました。もう一度保存してください。",
-                  color: "yellow"
+                  color: "yellow",
+                  classNames: notificationStyles
                 }
             notifications.show(notificationOption)
           },
@@ -49,7 +55,7 @@ const SaveButton = (props: Props) => {
                 title: error.title,
                 message: error.message,
                 color: "pink",
-                classNames: reversedNotificationStyles,
+                classNames: notificationStyles,
                 autoClose: false
               })
             })

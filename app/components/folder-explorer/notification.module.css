@@ -3,11 +3,11 @@
 }
 
 .title {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: bold;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--notification-color);
+  font-family: "Zen Kaku Gothic Antique";
 }
 
 .description {

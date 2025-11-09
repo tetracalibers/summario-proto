@@ -16,7 +16,7 @@ export async function action({ request }: Route.ActionArgs) {
       console.error("Failed to create a new term", err)
       return data(
         {
-          title: "Termの新規作成エラー",
+          title: "ERROR",
           message: "新規作成に失敗しました: " + title
         },
         { status: 500 }
