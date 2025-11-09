@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function NewFileInput({ resetAndHideFn }: Props) {
-  const { save, isSaving, setTitle } = useEmptyTermCreateUi()
+  const { save, isSaving, setTitle, error } = useEmptyTermCreateUi()
 
   return (
     <Form
@@ -70,6 +70,7 @@ export default function NewFileInput({ resetAndHideFn }: Props) {
         disabled={isSaving}
         onBlur={resetAndHideFn}
         onKeyDown={getHotkeyHandler([["Escape", resetAndHideFn]])}
+        error={error}
       />
     </Form>
   )

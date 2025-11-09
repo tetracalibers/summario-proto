@@ -1,6 +1,6 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { resetEntryInput$ } from "./ui.actions"
-import { displayedInputEntryType$, entryInputValue$ } from "./ui.atoms"
+import { displayedInputEntryType$, entryInputError$, entryInputValue$ } from "./ui.atoms"
 import { isActiveFileInput$, isActiveFolderInput$ } from "./ui.selectors"
 import { useMutation, useQueryClient, type MutateOptions } from "@tanstack/react-query"
 import { folderId$ } from "../ui.atoms"
@@ -22,6 +22,7 @@ export const useEmptyTermCreateUi = () => {
 
   const folderId = useAtomValue(folderId$)
   const [title, setTitle] = useAtom(entryInputValue$)
+  const [error, setError] = useAtom(entryInputError$)
   const resetAndHideEntryInput = useSetAtom(resetEntryInput$)
 
   const { mutate, isPending } = useMutation<CreationSuccess, ActionError, Object>({
@@ -39,10 +40,19 @@ export const useEmptyTermCreateUi = () => {
     onSuccess: () => {
       resetAndHideEntryInput()
       queryClient.invalidateQueries({ queryKey: ["folders", "detail", folderId, "children"] })
+    },
+    onError: () => {
+      setError("保存に失敗しました")
     }
   })
 
-  const save = (options: MutateOptions<CreationSuccess, ActionError, Object>) => mutate({}, options)
+  const save = (options: MutateOptions<CreationSuccess, ActionError, Object>) => {
+    if (title.trim().length === 0) {
+      setError("タイトルを入力してください")
+      return
+    }
+    mutate({}, options)
+  }
 
-  return { save, isSaving: isPending, setTitle }
+  return { save, isSaving: isPending, setTitle, error }
 }
