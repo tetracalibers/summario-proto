@@ -1,9 +1,10 @@
 import { TextInput } from "@mantine/core"
 import { IconNote } from "@tabler/icons-react"
-import { Form } from "react-router"
+import { Form, Link } from "react-router"
 import { getHotkeyHandler } from "@mantine/hooks"
 import { useEmptyTermCreateUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import { notifications } from "@mantine/notifications"
+import notificationStyle from "./notification.module.css"
 import reversedNotificationStyles from "../term-save-button/reversed-notification.module.css"
 
 interface Props {
@@ -17,6 +18,27 @@ export default function NewFileInput({ resetAndHideFn }: Props) {
     <Form
       onSubmit={() => {
         save({
+          onSuccess: ({ id, title }) => {
+            notifications.show({
+              title: "Success",
+              message: (
+                <>
+                  <Link
+                    to={`/terms/${id}`}
+                    style={{
+                      textDecorationColor: "var(--mantine-color-indigo-5)",
+                      color: "var(--mantine-color-indigo-6)"
+                    }}
+                  >
+                    {title}
+                  </Link>
+                  が新規作成されました 🎉
+                </>
+              ),
+              color: "cyan",
+              classNames: notificationStyle
+            })
+          },
           onError: ({ detail }) => {
             notifications.show({
               title: detail.title,

@@ -1,0 +1,15 @@
+.root {
+  border: 1px solid rgb(from var(--notification-color) r g b / 60%);
+}
+
+.title {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--notification-color);
+}
+
+.description {
+  color: var(--mantine-color-black);
+}
