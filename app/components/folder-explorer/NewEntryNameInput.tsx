@@ -1,42 +1,52 @@
 import { TextInput } from "@mantine/core"
-import { IconNote } from "@tabler/icons-react"
+import { IconFolderFilled, IconNote } from "@tabler/icons-react"
 import { Form, Link } from "react-router"
 import { getHotkeyHandler } from "@mantine/hooks"
 import { useEmptyTermCreateUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import { notifications } from "@mantine/notifications"
 import notificationStyle from "./notification.module.css"
 import IconLoadingSpinner from "~/components/icon-loading-spinner/IconLoadingSpinner"
+import type { EntryType } from "~/usecases/folder-explorer/types"
 
 interface Props {
+  type: EntryType
   resetAndHideFn: () => void
 }
 
-export default function NewFileInput({ resetAndHideFn }: Props) {
+function IconEntry({ type }: Pick<Props, "type">) {
+  return type === "folder" ? <IconFolderFilled size={18} /> : <IconNote size={18} />
+}
+
+export default function NewEntryNameInput({ type, resetAndHideFn }: Props) {
   const { save, isSaving, setName, error } = useEmptyTermCreateUi()
 
   return (
     <Form
       onSubmit={() => {
-        save({
-          onSuccess: ({ id, title }) => {
+        save(type, {
+          onSuccess: ({ id, name }) => {
             notifications.show({
               title: "SUCCESS",
-              message: (
-                <>
-                  <Link
-                    to={`/terms/${id}`}
-                    style={{
-                      textDecorationColor: "var(--mantine-color-indigo-5)",
-                      color: "var(--mantine-color-indigo-6)"
-                    }}
-                  >
-                    {title}
-                  </Link>
-                  が新規作成されました 🎉
-                </>
-              ),
+              message:
+                type === "folder" ? (
+                  <>フォルダ「{name}」が新規作成されました 🎉</>
+                ) : (
+                  <>
+                    <Link
+                      to={`/terms/${id}`}
+                      style={{
+                        textDecorationColor: "var(--mantine-color-indigo-5)",
+                        color: "var(--mantine-color-indigo-6)"
+                      }}
+                    >
+                      {name}
+                    </Link>
+                    が新規作成されました 🎉
+                  </>
+                ),
               color: "cyan",
-              classNames: notificationStyle
+              classNames: notificationStyle,
+              autoClose: false
             })
           },
           onError: ({ detail }) => {
@@ -52,10 +62,10 @@ export default function NewFileInput({ resetAndHideFn }: Props) {
       }}
     >
       <TextInput
-        placeholder="New File Name"
-        aria-label="new file name"
+        placeholder={`New ${type === "folder" ? "Folder" : "File"} Name`}
+        aria-label={`new ${type === "folder" ? "folder" : "file"} name`}
         autoFocus
-        leftSection={isSaving ? <IconLoadingSpinner size={16} /> : <IconNote size={18} />}
+        leftSection={isSaving ? <IconLoadingSpinner size={16} /> : <IconEntry type={type} />}
         styles={{
           section: { "--section-size": "18px", "--section-start": "4px" },
           input: {

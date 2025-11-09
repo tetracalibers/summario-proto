@@ -12,3 +12,8 @@ export const getFolder = async (folderId: number) => {
 export const getFolderPath = async (folderId: number) => {
   return FolderRepository.findPath(folderId)
 }
+
+export const createEmptyFolder = async (name: string, parentId: number | null) => {
+  const [newFolder] = await FolderRepository.createEmpty({ name, parentId })
+  return newFolder
+}

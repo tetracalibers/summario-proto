@@ -43,3 +43,14 @@ export const findPath = async (folderId: number) => {
 
   return result
 }
+
+interface CreateData {
+  name: string
+  parentId: number | null
+}
+export const createEmpty = async ({ name, parentId }: CreateData) => {
+  return db
+    .insert(folders)
+    .values({ name, parentId })
+    .returning({ id: folders.id, name: folders.name })
+}

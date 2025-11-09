@@ -29,5 +29,5 @@ export const createEmptyTerm = async (title: string, folderId: number | null) =>
     folderId,
     content: defaultContentJson(title)
   })
-  return newTerm
+  return { id: newTerm.id, name: newTerm.title }
 }

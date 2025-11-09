@@ -11,11 +11,10 @@ import {
 } from "@tabler/icons-react"
 import { Link } from "react-router"
 import ScrollArea from "../scroll-area/ScrollArea"
-import NewFolderInput from "./NewFolderInput"
-import NewFileInput from "./NewFileInput"
 import { useFolderExplorerUi } from "~/usecases/folder-explorer/ui.hooks"
 import type { loader } from "~/routes/api/folders/children"
 import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/input/ui.hooks"
+import NewEntryNameInput from "./NewEntryNameInput"
 
 interface Props {
   currentTermId: number
@@ -84,13 +83,17 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
               />
             </li>
           ))}
-          {isActiveFolderInput && <NewFolderInput resetAndHideFn={resetAndHideEntryInput} />}
+          {isActiveFolderInput && (
+            <NewEntryNameInput resetAndHideFn={resetAndHideEntryInput} type="folder" />
+          )}
           {data?.files.map((file) => (
             <li key={file.id}>
               <FileLink targetTerm={file} isActive={currentTermId === file.id} />
             </li>
           ))}
-          {isActiveFileInput && <NewFileInput resetAndHideFn={resetAndHideEntryInput} />}
+          {isActiveFileInput && (
+            <NewEntryNameInput resetAndHideFn={resetAndHideEntryInput} type="file" />
+          )}
         </ul>
       </ScrollArea>
       <Link

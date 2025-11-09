@@ -5,6 +5,7 @@ import { folderIdforDB$, isActiveFileInput$, isActiveFolderInput$ } from "./ui.s
 import { useMutation, useQueryClient, type MutateOptions } from "@tanstack/react-query"
 import { ActionError } from "~/libs/error"
 import type { CreationSuccess } from "./types"
+import type { EntryType } from "../types"
 
 export const useFolderExplorerInputUi = () => {
   const showEntryInput = useSetAtom(displayedInputEntryType$)
@@ -24,13 +25,13 @@ export const useEmptyTermCreateUi = () => {
   const [error, setError] = useAtom(entryInputError$)
   const resetAndHideEntryInput = useSetAtom(resetEntryInput$)
 
-  const { mutate, isPending } = useMutation<CreationSuccess, ActionError, Object>({
+  const { mutate, isPending } = useMutation<CreationSuccess, ActionError, EntryType>({
     mutationKey: ["folders", "new"],
-    mutationFn: () =>
+    mutationFn: (type: EntryType) =>
       fetch("/api/folders/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "file", name, parentId })
+        body: JSON.stringify({ type, name, parentId })
       }).then(async (res) => {
         const data = await res.json()
         if (!res.ok) throw new ActionError("Failed to create a new term.", data)
@@ -45,12 +46,15 @@ export const useEmptyTermCreateUi = () => {
     }
   })
 
-  const save = (options: MutateOptions<CreationSuccess, ActionError, Object>) => {
+  const save = (
+    type: EntryType,
+    options?: MutateOptions<CreationSuccess, ActionError, EntryType>
+  ) => {
     if (name.trim().length === 0) {
       setError("名称を入力してください")
       return
     }
-    mutate({}, options)
+    mutate(type, options)
   }
 
   return { save, isSaving: isPending, setName, error }

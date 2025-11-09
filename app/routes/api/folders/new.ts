@@ -17,13 +17,15 @@ export async function action({ request }: Route.ActionArgs) {
       : () => createEmptyTerm(name, parentId)
 
   return create()
-    .then((term) => ({ ok: true, ...term }))
+    .then((newItem) => ({ ok: true, ...newItem }))
     .catch((err) => {
-      console.error("Failed to create a new term", err)
+      console.error("Failed to create a new " + type, err)
+      const messageBase =
+        type === "folder" ? "フォルダの新規作成に失敗しました" : "新規作成に失敗しました"
       return data(
         {
           title: "ERROR",
-          message: "新規作成に失敗しました: " + name
+          message: messageBase + ": " + name
         },
         { status: 500 }
       )
