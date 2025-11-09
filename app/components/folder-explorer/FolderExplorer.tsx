@@ -23,8 +23,7 @@ interface Props {
 }
 
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
-  const { showEntryInput, resetAndHideEntryInput, isActiveFileInput, isActiveFolderInput } =
-    useFolderExplorerInputUi()
+  const { showEntryInput, isActiveFileInput, isActiveFolderInput } = useFolderExplorerInputUi()
 
   const { data, setFolderId } = useFolderExplorerUi(initials)
 
@@ -83,17 +82,13 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
               />
             </li>
           ))}
-          {isActiveFolderInput && (
-            <NewEntryNameInput resetAndHideFn={resetAndHideEntryInput} type="folder" />
-          )}
+          {isActiveFolderInput && <NewEntryNameInput type="folder" />}
           {data?.files.map((file) => (
             <li key={file.id}>
               <FileLink targetTerm={file} isActive={currentTermId === file.id} />
             </li>
           ))}
-          {isActiveFileInput && (
-            <NewEntryNameInput resetAndHideFn={resetAndHideEntryInput} type="file" />
-          )}
+          {isActiveFileInput && <NewEntryNameInput type="file" />}
         </ul>
       </ScrollArea>
       <Link

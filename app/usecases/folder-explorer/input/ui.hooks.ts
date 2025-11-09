@@ -9,12 +9,11 @@ import type { EntryType } from "../types"
 
 export const useFolderExplorerInputUi = () => {
   const showEntryInput = useSetAtom(displayedInputEntryType$)
-  const resetAndHideEntryInput = useSetAtom(resetEntryInput$)
 
   const isActiveFileInput = useAtomValue(isActiveFileInput$)
   const isActiveFolderInput = useAtomValue(isActiveFolderInput$)
 
-  return { showEntryInput, resetAndHideEntryInput, isActiveFileInput, isActiveFolderInput }
+  return { showEntryInput, isActiveFileInput, isActiveFolderInput }
 }
 
 export const useNewEntryCreate = () => {
@@ -23,7 +22,7 @@ export const useNewEntryCreate = () => {
   const parentId = useAtomValue(folderIdforDB$)
   const [name, setName] = useAtom(entryInputValue$)
   const [error, setError] = useAtom(entryInputError$)
-  const resetAndHideEntryInput = useSetAtom(resetEntryInput$)
+  const resetAndHideInput = useSetAtom(resetEntryInput$)
 
   const { mutate, isPending } = useMutation<CreationSuccess, ActionError, EntryType>({
     mutationKey: ["folders", "new"],
@@ -38,7 +37,7 @@ export const useNewEntryCreate = () => {
         return data
       }),
     onSuccess: () => {
-      resetAndHideEntryInput()
+      resetAndHideInput()
       queryClient.invalidateQueries({ queryKey: ["folders", "detail", parentId, "children"] })
     },
     onError: () => {
@@ -57,5 +56,5 @@ export const useNewEntryCreate = () => {
     mutate(type, options)
   }
 
-  return { save, isSaving: isPending, setName, error }
+  return { save, isSaving: isPending, setName, error, resetAndHideInput }
 }

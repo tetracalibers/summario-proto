@@ -10,15 +10,14 @@ import { useNewEntryCreate } from "~/usecases/folder-explorer/input/ui.hooks"
 
 interface Props {
   type: EntryType
-  resetAndHideFn: () => void
 }
 
 function IconEntry({ type }: Pick<Props, "type">) {
   return type === "folder" ? <IconFolderFilled size={18} /> : <IconNote size={18} />
 }
 
-export default function NewEntryNameInput({ type, resetAndHideFn }: Props) {
-  const { save, isSaving, setName, error } = useNewEntryCreate()
+export default function NewEntryNameInput({ type }: Props) {
+  const { save, isSaving, setName, error, resetAndHideInput } = useNewEntryCreate()
 
   return (
     <Form
@@ -77,8 +76,8 @@ export default function NewEntryNameInput({ type, resetAndHideFn }: Props) {
         }}
         onChange={(e) => setName(e.currentTarget.value)}
         disabled={isSaving}
-        onBlur={resetAndHideFn}
-        onKeyDown={getHotkeyHandler([["Escape", resetAndHideFn]])}
+        onBlur={resetAndHideInput}
+        onKeyDown={getHotkeyHandler([["Escape", resetAndHideInput]])}
         error={error}
       />
     </Form>
