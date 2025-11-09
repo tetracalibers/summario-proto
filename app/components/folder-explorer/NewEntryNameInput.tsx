@@ -6,7 +6,7 @@ import { notifications } from "@mantine/notifications"
 import notificationStyle from "./notification.module.css"
 import IconLoadingSpinner from "~/components/icon-loading-spinner/IconLoadingSpinner"
 import type { EntryType } from "~/usecases/folder-explorer/types"
-import { useNewEntryCreate } from "~/usecases/folder-explorer/input/ui.hooks"
+import { useNewEntryCreateUi } from "~/usecases/folder-explorer/input/ui.hooks"
 
 interface Props {
   type: EntryType
@@ -17,7 +17,7 @@ function IconEntry({ type }: Pick<Props, "type">) {
 }
 
 export default function NewEntryNameInput({ type }: Props) {
-  const { save, isSaving, setName, error, resetAndHideInput } = useNewEntryCreate()
+  const { save, isSaving, setName, error, resetAndHideInput } = useNewEntryCreateUi()
 
   return (
     <Form
