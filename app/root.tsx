@@ -39,7 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {import.meta.env.DEV && <DevTools />}
+        {/* {import.meta.env.DEV && <DevTools />} */}
         <MantineProvider theme={theme}>
           <Notifications />
           {children}
@@ -54,7 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <Outlet />
     </QueryClientProvider>
   )
