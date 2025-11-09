@@ -2,11 +2,11 @@ import { TextInput } from "@mantine/core"
 import { IconFolderFilled, IconNote } from "@tabler/icons-react"
 import { Form, Link } from "react-router"
 import { getHotkeyHandler } from "@mantine/hooks"
-import { useEmptyTermCreateUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import { notifications } from "@mantine/notifications"
 import notificationStyle from "./notification.module.css"
 import IconLoadingSpinner from "~/components/icon-loading-spinner/IconLoadingSpinner"
 import type { EntryType } from "~/usecases/folder-explorer/types"
+import { useNewEntryCreate } from "~/usecases/folder-explorer/input/ui.hooks"
 
 interface Props {
   type: EntryType
@@ -18,7 +18,7 @@ function IconEntry({ type }: Pick<Props, "type">) {
 }
 
 export default function NewEntryNameInput({ type, resetAndHideFn }: Props) {
-  const { save, isSaving, setName, error } = useEmptyTermCreateUi()
+  const { save, isSaving, setName, error } = useNewEntryCreate()
 
   return (
     <Form

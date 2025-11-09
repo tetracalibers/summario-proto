@@ -17,7 +17,7 @@ export const useFolderExplorerInputUi = () => {
   return { showEntryInput, resetAndHideEntryInput, isActiveFileInput, isActiveFolderInput }
 }
 
-export const useEmptyTermCreateUi = () => {
+export const useNewEntryCreate = () => {
   const queryClient = useQueryClient()
 
   const parentId = useAtomValue(folderIdforDB$)
