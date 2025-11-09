@@ -12,4 +12,5 @@
 
 .description {
   color: var(--mantine-color-black);
+  font-family: "DM Mono", "Zen Kaku Gothic Antique";
 }
