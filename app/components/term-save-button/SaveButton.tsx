@@ -4,9 +4,9 @@ import { type ButtonHTMLAttributes } from "react"
 import { useParams } from "react-router"
 import { notifications } from "@mantine/notifications"
 import reversedNotificationStyles from "./reversed-notification.module.css"
-import { IconLoader } from "@tabler/icons-react"
 import loadingStyle from "./loading.module.css"
 import { useTermContentSaveUi } from "~/usecases/term-edit/ui.hooks"
+import IconLoadingSpinner from "../icon-loading-spinner/IconLoadingSpinner"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -60,7 +60,7 @@ const SaveButton = (props: Props) => {
     >
       {isSaving ? (
         <span className={loadingStyle.loading}>
-          <IconLoader className={loadingStyle.loading_icon} size="16px" />
+          <IconLoadingSpinner size="16px" />
           Saving...
         </span>
       ) : (
