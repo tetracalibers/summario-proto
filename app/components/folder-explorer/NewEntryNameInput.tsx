@@ -3,10 +3,10 @@ import { IconFolderFilled, IconNote } from "@tabler/icons-react"
 import { Form, Link } from "react-router"
 import { getHotkeyHandler } from "@mantine/hooks"
 import { notifications } from "@mantine/notifications"
-import notificationStyle from "./notification.module.css"
 import IconLoadingSpinner from "~/components/icon-loading-spinner/IconLoadingSpinner"
 import type { EntryType } from "~/usecases/folder-explorer/types"
 import { useNewEntryCreateUi } from "~/usecases/folder-explorer/input/ui.hooks"
+import { errorContent, successContent } from "~/libs/mantine-notifications/options"
 
 interface Props {
   type: EntryType
@@ -24,38 +24,28 @@ export default function NewEntryNameInput({ type }: Props) {
       onSubmit={() => {
         save(type, {
           onSuccess: ({ id, name }) => {
-            notifications.show({
-              title: "SUCCESS",
-              message:
-                type === "folder" ? (
-                  <>フォルダ「{name}」が新規作成されました 🎉</>
-                ) : (
-                  <>
-                    <Link
-                      to={`/terms/${id}`}
-                      style={{
-                        textDecorationColor: "var(--mantine-color-indigo-5)",
-                        color: "var(--mantine-color-indigo-6)"
-                      }}
-                    >
-                      {name}
-                    </Link>
-                    が新規作成されました 🎉
-                  </>
-                ),
-              color: "cyan",
-              classNames: notificationStyle,
-              autoClose: false
-            })
+            const content =
+              type === "folder"
+                ? successContent(`フォルダ「${name}」が新規作成されました 🎉`)
+                : successContent(
+                    <>
+                      <Link
+                        to={`/terms/${id}`}
+                        style={{
+                          textDecorationColor: "var(--mantine-color-indigo-5)",
+                          color: "var(--mantine-color-indigo-6)"
+                        }}
+                      >
+                        {name}
+                      </Link>
+                      が新規作成されました 🎉
+                    </>
+                  )
+
+            notifications.show(content)
           },
           onError: ({ detail }) => {
-            notifications.show({
-              title: detail.title,
-              message: detail.message,
-              color: "pink",
-              classNames: notificationStyle,
-              autoClose: false
-            })
+            notifications.show(errorContent(detail.message, detail.target))
           }
         })
       }}

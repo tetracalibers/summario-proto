@@ -1,7 +1,7 @@
 export class ActionError extends Error {
-  detail: { title: string; message: string }
+  detail: { target?: string; message: string }
 
-  constructor(message: string, detail: { title: string; message: string }) {
+  constructor(message: string, detail: { target?: string; message: string }) {
     super(message)
     this.name = "ActionError"
     this.detail = detail
@@ -9,9 +9,9 @@ export class ActionError extends Error {
 }
 
 export class BatchActionError extends Error {
-  details: { title: string; message: string }[]
+  details: { target?: string; message: string }[]
 
-  constructor(message: string, details: { title: string; message: string }[]) {
+  constructor(message: string, details: { target?: string; message: string }[]) {
     super(message)
     this.name = "BatchActionError"
     this.details = details
