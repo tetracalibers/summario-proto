@@ -41,7 +41,7 @@ export const useNewEntryCreateUi = () => {
       queryClient.invalidateQueries({ queryKey: folderKeys.children(`${parentId}`) })
     },
     onError: () => {
-      setError("保存に失敗しました")
+      setError("Please try again later.")
     }
   })
 
