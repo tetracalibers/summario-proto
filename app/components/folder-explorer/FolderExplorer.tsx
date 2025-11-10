@@ -78,7 +78,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
                 }}
                 folderName={folder.name}
                 isActiveStyle={pathFolderIds.has(folder.id)}
-                isEmpty={folder.is_empty}
+                entryCount={folder.entry_count}
               />
             </li>
           ))}

@@ -56,12 +56,13 @@ function DeleteDisabledHelp() {
 interface Props {
   folderName: string
   isActiveStyle: boolean
-  isEmpty: boolean
+  entryCount: number
   onClick: () => void
 }
 
-export default function FolderLink({ folderName, isActiveStyle, isEmpty, onClick }: Props) {
+export default function FolderLink({ folderName, isActiveStyle, entryCount, onClick }: Props) {
   const [openedMenu, setOpenedMenu] = useState(false)
+  const isEmpty = entryCount === 0
 
   return (
     <Menu
@@ -94,6 +95,7 @@ export default function FolderLink({ folderName, isActiveStyle, isEmpty, onClick
         >
           <IconFolderFilled size={18} />
           <span className={styles.label}>{folderName}</span>
+          <span className={styles.count}>{entryCount}</span>
         </UnstyledButton>
       </Menu.Target>
 
