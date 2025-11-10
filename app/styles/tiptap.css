@@ -50,6 +50,11 @@
     height: 0;
     pointer-events: none;
   }
+
+  /** 最初の空段落のplaceholderを変更 */
+  .node-title_block + p.is-empty::before {
+    content: "Start writing content...";
+  }
 }
 
 :is(.tiptap, .tiptap-static) code {

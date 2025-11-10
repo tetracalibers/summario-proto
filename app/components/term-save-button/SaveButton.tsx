@@ -3,10 +3,10 @@ import { useCurrentEditor } from "@tiptap/react"
 import { type ButtonHTMLAttributes } from "react"
 import { useParams } from "react-router"
 import { notifications } from "@mantine/notifications"
-import reversedNotificationStyles from "./reversed-notification.module.css"
-import { IconLoader } from "@tabler/icons-react"
 import loadingStyle from "./loading.module.css"
 import { useTermContentSaveUi } from "~/usecases/term-edit/ui.hooks"
+import IconLoadingSpinner from "../icon-loading-spinner/IconLoadingSpinner"
+import { errorContent, successContent, warningContent } from "~/libs/mantine-notifications/options"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -34,24 +34,15 @@ const SaveButton = (props: Props) => {
             // 保存開始時から未変更なら未編集化
             const cleaned = editor.commands.markCleanIfUnmodified()
 
-            const notificationOption = cleaned
-              ? { title: "Success", message: "保存に成功しました 🎉", color: "cyan" }
-              : {
-                  title: "Warning",
-                  message: "保存中に編集されました。もう一度保存してください。",
-                  color: "yellow"
-                }
-            notifications.show(notificationOption)
+            const content = cleaned
+              ? successContent("保存に成功しました 🎉")
+              : warningContent("保存中に編集されました。もう一度保存してください。")
+
+            notifications.show(content)
           },
           onError: ({ details }) => {
             details.forEach((error) => {
-              notifications.show({
-                title: error.title,
-                message: error.message,
-                color: "pink",
-                classNames: reversedNotificationStyles,
-                autoClose: false
-              })
+              notifications.show(errorContent(error.message, error.target))
             })
           }
         })
@@ -60,7 +51,7 @@ const SaveButton = (props: Props) => {
     >
       {isSaving ? (
         <span className={loadingStyle.loading}>
-          <IconLoader className={loadingStyle.loading_icon} size="16px" />
+          <IconLoadingSpinner size="16px" />
           Saving...
         </span>
       ) : (

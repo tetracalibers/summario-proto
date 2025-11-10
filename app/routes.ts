@@ -8,7 +8,6 @@ export default [
   ...prefix("api", [
     route("terms/:termId/preview", "routes/api/terms/preview.ts"),
     route("terms/:termId/edit", "routes/api/terms/edit.ts"),
-    route("terms/new", "routes/api/terms/new.ts"),
     route("terms/:termId/delete", "routes/api/terms/delete.ts"),
 
     route("folders/:folderId/children", "routes/api/folders/children.ts"),

@@ -1,0 +1,82 @@
+import { Group, TextInput } from "@mantine/core"
+import { IconFolderFilled, IconNote, IconInfoTriangle } from "@tabler/icons-react"
+import { Form, Link } from "react-router"
+import { getHotkeyHandler } from "@mantine/hooks"
+import { notifications } from "@mantine/notifications"
+import IconLoadingSpinner from "~/components/icon-loading-spinner/IconLoadingSpinner"
+import type { EntryType } from "~/usecases/folder-explorer/types"
+import { useNewEntryCreateUi } from "~/usecases/folder-explorer/input/ui.hooks"
+import { errorContent, successContent } from "~/libs/mantine-notifications/options"
+
+interface Props {
+  type: EntryType
+}
+
+function IconEntry({ type }: Pick<Props, "type">) {
+  return type === "folder" ? <IconFolderFilled size={18} /> : <IconNote size={18} />
+}
+
+export default function NewEntryNameInput({ type }: Props) {
+  const { save, isSaving, setName, error, resetAndHideInput } = useNewEntryCreateUi()
+
+  return (
+    <Form
+      onSubmit={() => {
+        save(type, {
+          onSuccess: ({ id, name }) => {
+            const content =
+              type === "folder"
+                ? successContent(`フォルダ「${name}」が新規作成されました 🎉`)
+                : successContent(
+                    <>
+                      <Link
+                        to={`/terms/${id}`}
+                        style={{
+                          textDecorationColor: "var(--mantine-color-indigo-5)",
+                          color: "var(--mantine-color-indigo-6)"
+                        }}
+                      >
+                        {name}
+                      </Link>
+                      が新規作成されました 🎉
+                    </>
+                  )
+
+            notifications.show(content)
+          },
+          onError: ({ detail }) => {
+            notifications.show(errorContent(detail.message, detail.target))
+          }
+        })
+      }}
+    >
+      <TextInput
+        placeholder={`New ${type === "folder" ? "Folder" : "File"} Name`}
+        aria-label={`new ${type === "folder" ? "folder" : "file"} name`}
+        autoFocus
+        leftSection={isSaving ? <IconLoadingSpinner size={16} /> : <IconEntry type={type} />}
+        styles={{
+          section: { "--section-size": "18px", "--section-start": "4px" },
+          input: {
+            "--input-fz": "0.8rem",
+            "--input-padding-inline-start": "calc(18px + 4px * 2)",
+            "--input-height": "calc(18px + 4px * 2)",
+            "--input-size": "calc(18px + 4px * 2)"
+          }
+        }}
+        onChange={(e) => setName(e.currentTarget.value)}
+        disabled={isSaving}
+        onBlur={resetAndHideInput}
+        onKeyDown={getHotkeyHandler([["Escape", resetAndHideInput]])}
+        error={
+          error && (
+            <Group gap={2} align="center" wrap="nowrap">
+              <IconInfoTriangle size={12} />
+              {error}
+            </Group>
+          )
+        }
+      />
+    </Form>
+  )
+}

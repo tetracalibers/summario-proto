@@ -1,11 +1,7 @@
 import { data } from "react-router"
 import type { Route } from "./+types/edit"
 import { saveTermContents } from "~/usecases/term-edit/feature.server"
-
-// [for debug]
-// const delay = (ms: number) => {
-//   return new Promise((resolve) => setTimeout(resolve, ms))
-// }
+import { delay } from "~/libs/debug"
 
 const joinTitles = (items: { title: string }[]) => {
   return items.map((i) => i.title).join(", ")
@@ -24,29 +20,29 @@ export async function action({ request, params }: Route.ActionArgs) {
     const errors = result.rejected.map((r) => {
       switch (r.key) {
         case "content":
-          return { title: "コンテンツの更新エラー", message: "コンテンツの保存に失敗しました" }
+          return { message: "コンテンツの保存に失敗しました" }
         case "alias.add":
           return {
-            title: "Aliasの更新エラー",
+            target: "Alias",
             message: "追加に失敗しました: " + joinTitles(r.targets)
           }
         case "alias.remove":
           return {
-            title: "Aliasの更新エラー",
+            target: "Alias",
             message: "削除に失敗しました: " + joinTitles(r.targets)
           }
         case "related.add":
           return {
-            title: "Related Termsの更新エラー",
+            target: "Related Terms",
             message: "追加に失敗しました: " + joinTitles(r.targets)
           }
         case "related.remove":
           return {
-            title: "Related Termsの更新エラー",
+            target: "Related Terms",
             message: "削除に失敗しました: " + joinTitles(r.targets)
           }
         default:
-          return { title: "Error", message: "不明なエラーが発生しました" }
+          return { message: "不明なエラーが発生しました" }
       }
     })
 

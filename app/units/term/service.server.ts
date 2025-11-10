@@ -1,3 +1,4 @@
+import { defaultContentJson } from "~/libs/tiptap-editor/utils"
 import { debugLog } from "~/libs/debug.server"
 import * as TermRepository from "./repository.server"
 import type { JSONContent } from "@tiptap/react"
@@ -20,4 +21,13 @@ export const getRecentTerm = async () => {
 
 export const updateTermContent = async (termId: number, title: string, content: JSONContent) => {
   return TermRepository.updateContent(termId, { title, content })
+}
+
+export const createEmptyTerm = async (title: string, folderId: number | null) => {
+  const [newTerm] = await TermRepository.createEmpty({
+    title,
+    folderId,
+    content: defaultContentJson(title)
+  })
+  return { id: newTerm.id, name: newTerm.title }
 }

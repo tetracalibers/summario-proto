@@ -1,0 +1,16 @@
+.root {
+  border: 1px solid rgb(from var(--notification-color) r g b / 60%);
+}
+
+.title {
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  color: var(--notification-color);
+  font-family: "Zen Kaku Gothic Antique";
+}
+
+.description {
+  color: var(--mantine-color-black);
+  font-family: "DM Mono", "Zen Kaku Gothic Antique";
+}

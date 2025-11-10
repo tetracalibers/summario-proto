@@ -1,0 +1,1 @@
+ALTER TABLE "terms" ALTER COLUMN "content" DROP DEFAULT;
