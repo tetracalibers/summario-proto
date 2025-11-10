@@ -48,13 +48,13 @@
 
 .count {
   font-size: 0.65em;
-  color: #63687c; /* var(--mantine-color-blue-gray-7) */
+  color: var(--mantine-color-blue-gray-7);
   aspect-ratio: 1;
-  height: 95%;
+  height: 90%;
   box-sizing: border-box;
-  border-radius: 50%;
+  border-radius: 3px;
   display: inline-grid;
   place-items: center;
-  background-color: #ecf4ff; /* var(--mantine-color-pale-blue-0) */
-  border: 1px solid var(--mantine-color-indigo-1);
+  background-color: rgb(from var(--mantine-color-violet-0) r g b / 65%);
+  border: 1px solid var(--mantine-color-violet-1);
 }
