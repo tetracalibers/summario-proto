@@ -1,3 +1,4 @@
+import { folderKeys } from "~/query-keys"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { resetEntryInput$ } from "./ui.actions"
 import { displayedInputEntryType$, entryInputError$, entryInputValue$ } from "./ui.atoms"
@@ -25,7 +26,6 @@ export const useNewEntryCreateUi = () => {
   const resetAndHideInput = useSetAtom(resetEntryInput$)
 
   const { mutate, isPending } = useMutation<CreationSuccess, ActionError, EntryType>({
-    mutationKey: ["folders", "new"],
     mutationFn: (type: EntryType) =>
       fetch("/api/folders/new", {
         method: "POST",
@@ -38,7 +38,7 @@ export const useNewEntryCreateUi = () => {
       }),
     onSuccess: () => {
       resetAndHideInput()
-      queryClient.invalidateQueries({ queryKey: ["folders", "detail", parentId, "children"] })
+      queryClient.invalidateQueries({ queryKey: folderKeys.children(`${parentId}`) })
     },
     onError: () => {
       setError("保存に失敗しました")
