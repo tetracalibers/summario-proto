@@ -1,5 +1,5 @@
-import { TextInput } from "@mantine/core"
-import { IconFolderFilled, IconNote } from "@tabler/icons-react"
+import { Group, TextInput } from "@mantine/core"
+import { IconFolderFilled, IconNote, IconInfoTriangle } from "@tabler/icons-react"
 import { Form, Link } from "react-router"
 import { getHotkeyHandler } from "@mantine/hooks"
 import { notifications } from "@mantine/notifications"
@@ -68,7 +68,14 @@ export default function NewEntryNameInput({ type }: Props) {
         disabled={isSaving}
         onBlur={resetAndHideInput}
         onKeyDown={getHotkeyHandler([["Escape", resetAndHideInput]])}
-        error={error}
+        error={
+          error && (
+            <Group gap={2} align="center" wrap="nowrap">
+              <IconInfoTriangle size={12} />
+              {error}
+            </Group>
+          )
+        }
       />
     </Form>
   )
