@@ -2,11 +2,11 @@ import { folderKeys } from "~/query-keys"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { resetEntryInput$ } from "./ui.actions"
 import { displayedInputEntryType$, entryInputError$, entryInputValue$ } from "./ui.atoms"
-import { folderIdforDB$, isActiveFileInput$, isActiveFolderInput$ } from "./ui.selectors"
+import { isActiveFileInput$, isActiveFolderInput$ } from "./ui.selectors"
 import { useMutation, useQueryClient, type MutateOptions } from "@tanstack/react-query"
 import { ActionError } from "~/libs/error"
-import type { CreationSuccess } from "./types"
-import type { EntryType } from "../types"
+import type { EntryType, FolderMutationSuccess } from "../types"
+import { folderIdforDB$ } from "../ui.selectors"
 
 export const useFolderExplorerInputUi = () => {
   const showEntryInput = useSetAtom(displayedInputEntryType$)
@@ -25,7 +25,7 @@ export const useNewEntryCreateUi = () => {
   const [error, setError] = useAtom(entryInputError$)
   const resetAndHideInput = useSetAtom(resetEntryInput$)
 
-  const { mutate, isPending } = useMutation<CreationSuccess, ActionError, EntryType>({
+  const { mutate, isPending } = useMutation<FolderMutationSuccess, ActionError, EntryType>({
     mutationFn: (type: EntryType) =>
       fetch("/api/folders/new", {
         method: "POST",
@@ -47,7 +47,7 @@ export const useNewEntryCreateUi = () => {
 
   const save = (
     type: EntryType,
-    options?: MutateOptions<CreationSuccess, ActionError, EntryType>
+    options?: MutateOptions<FolderMutationSuccess, ActionError, EntryType>
   ) => {
     if (name.trim().length === 0) {
       setError("名称を入力してください")

@@ -10,6 +10,10 @@ import { clsx } from "clsx"
 import styles from "./EntryLink.module.css"
 import { useState } from "react"
 import { Link } from "react-router"
+import { useEmptyFolderDeleteUi } from "~/usecases/folder-explorer/delete/ui.hooks"
+import { notifications } from "@mantine/notifications"
+import { errorContent, successContent } from "~/libs/mantine-notifications/options"
+import IconLoadingSpinner from "../icon-loading-spinner/IconLoadingSpinner"
 
 function DeleteDisabledHelp() {
   return (
@@ -54,15 +58,22 @@ function DeleteDisabledHelp() {
 }
 
 interface Props {
-  folderName: string
+  folder: { id: number; name: string }
+  folderEntryCount: number
   isActiveStyle: boolean
-  entryCount: number
-  onClick: () => void
+  onLinkClick: () => void
 }
 
-export default function FolderLink({ folderName, isActiveStyle, entryCount, onClick }: Props) {
+export default function FolderLink({
+  folder,
+  folderEntryCount,
+  isActiveStyle,
+  onLinkClick
+}: Props) {
   const [openedMenu, setOpenedMenu] = useState(false)
-  const isEmpty = entryCount === 0
+  const isEmpty = folderEntryCount === 0
+
+  const { deleteFolder, isDeleting } = useEmptyFolderDeleteUi()
 
   return (
     <Menu
@@ -81,7 +92,7 @@ export default function FolderLink({ folderName, isActiveStyle, entryCount, onCl
     >
       <Menu.Target aria-label="folder action menu">
         <UnstyledButton
-          onClick={onClick}
+          onClick={onLinkClick}
           onContextMenu={(e) => {
             e.preventDefault()
             setOpenedMenu(true)
@@ -94,8 +105,8 @@ export default function FolderLink({ folderName, isActiveStyle, entryCount, onCl
           )}
         >
           <IconFolderFilled size={18} />
-          <span className={styles.label}>{folderName}</span>
-          <span className={styles.count}>{entryCount}</span>
+          <span className={styles.label}>{folder.name}</span>
+          <span className={styles.count}>{folderEntryCount}</span>
         </UnstyledButton>
       </Menu.Target>
 
@@ -104,10 +115,22 @@ export default function FolderLink({ folderName, isActiveStyle, entryCount, onCl
         <Menu.Divider />
         <Menu.Item
           color="red"
-          leftSection={<IconTrash size={14} />}
+          leftSection={isDeleting ? <IconLoadingSpinner size={14} /> : <IconTrash size={14} />}
           rightSection={!isEmpty && <DeleteDisabledHelp />}
-          disabled={!isEmpty}
+          disabled={!isEmpty || isDeleting}
           component={isEmpty ? "button" : "div"}
+          onClick={() => {
+            if (!isEmpty) return
+            deleteFolder(folder, {
+              onSuccess: () => {
+                setOpenedMenu(false)
+                notifications.show(successContent(`フォルダ「${folder.name}」を削除しました`))
+              },
+              onError: ({ detail }) => {
+                notifications.show(errorContent(detail.message, detail.target))
+              }
+            })
+          }}
         >
           Delete
         </Menu.Item>

@@ -17,3 +17,8 @@ export const createEmptyFolder = async (name: string, parentId: number | null) =
   const [newFolder] = await FolderRepository.createEmpty({ name, parentId })
   return newFolder
 }
+
+export const deleteFolder = async (folderId: number) => {
+  const [deletedFolder] = await FolderRepository.deleteById(folderId)
+  return deletedFolder
+}
