@@ -6,7 +6,7 @@ import { isActiveFileInput$, isActiveFolderInput$ } from "./ui.selectors"
 import { useMutation, useQueryClient, type MutateOptions } from "@tanstack/react-query"
 import { ActionError } from "~/libs/error"
 import type { EntryType, FolderMutationSuccess } from "../types"
-import { folderIdforDB$ } from "../ui.selectors"
+import { folderId$ } from "../ui.atoms"
 
 export const useFolderExplorerInputUi = () => {
   const showEntryInput = useSetAtom(displayedInputEntryType$)
@@ -20,7 +20,7 @@ export const useFolderExplorerInputUi = () => {
 export const useNewEntryCreateUi = () => {
   const queryClient = useQueryClient()
 
-  const parentId = useAtomValue(folderIdforDB$)
+  const parentId = useAtomValue(folderId$)
   const [name, setName] = useAtom(entryInputValue$)
   const [error, setError] = useAtom(entryInputError$)
   const resetAndHideInput = useSetAtom(resetEntryInput$)
@@ -30,7 +30,7 @@ export const useNewEntryCreateUi = () => {
       fetch("/api/folders/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, name, parentId })
+        body: JSON.stringify({ type, name, parentId: parentId === "root" ? null : parentId })
       }).then(async (res) => {
         const data = await res.json()
         if (!res.ok) throw new ActionError("Failed to create a new term.", data)

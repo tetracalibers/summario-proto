@@ -3,7 +3,7 @@ import type { FolderMutationSuccess } from "../types"
 import { ActionError } from "~/libs/error"
 import { folderKeys } from "~/query-keys"
 import { useAtomValue } from "jotai"
-import { folderIdforDB$ } from "../ui.selectors"
+import { folderId$ } from "../ui.atoms"
 
 interface DeleteFolderParams {
   id: number
@@ -13,7 +13,7 @@ interface DeleteFolderParams {
 export const useEmptyFolderDeleteUi = () => {
   const queryClient = useQueryClient()
 
-  const parentId = useAtomValue(folderIdforDB$)
+  const parentId = useAtomValue(folderId$)
 
   const { mutate, isPending } = useMutation<FolderMutationSuccess, ActionError, DeleteFolderParams>(
     {
