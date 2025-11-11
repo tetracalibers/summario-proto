@@ -14,6 +14,18 @@ export const theme = createTheme({
       "#595e72",
       "#4a5167"
     ],
+    "pale-blue": [
+      "#ecf4ff",
+      "#dce4f5",
+      "#b9c7e2",
+      "#94a8d0",
+      "#748dc0",
+      "#5f7cb7",
+      "#5474b4",
+      "#44639f",
+      "#3a5890",
+      "#2c4b80"
+    ],
     "pale-indigo": [
       "#eff2ff",
       "#dfe2f2",

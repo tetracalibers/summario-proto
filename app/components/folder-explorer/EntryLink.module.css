@@ -52,9 +52,9 @@
   aspect-ratio: 1;
   height: 90%;
   box-sizing: border-box;
-  border-radius: 3px;
+  border-radius: 6px;
   display: inline-grid;
   place-items: center;
-  background-color: rgb(from var(--mantine-color-violet-0) r g b / 65%);
-  border: 1px solid var(--mantine-color-violet-1);
+  background-color: var(--mantine-color-white);
+  border: 1px solid var(--mantine-color-pale-blue-1);
 }
