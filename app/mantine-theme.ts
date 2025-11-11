@@ -2,6 +2,30 @@ import { createTheme } from "@mantine/core"
 
 export const theme = createTheme({
   colors: {
+    "blue-gray": [
+      "#f1f4fe",
+      "#e4e6ed",
+      "#c8cad3",
+      "#a9adb9",
+      "#9094a3",
+      "#7f8496",
+      "#777c91",
+      "#63687c",
+      "#595e72",
+      "#4a5167"
+    ],
+    "pale-blue": [
+      "#ecf4ff",
+      "#dce4f5",
+      "#b9c7e2",
+      "#94a8d0",
+      "#748dc0",
+      "#5f7cb7",
+      "#5474b4",
+      "#44639f",
+      "#3a5890",
+      "#2c4b80"
+    ],
     "pale-indigo": [
       "#eff2ff",
       "#dfe2f2",

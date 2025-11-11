@@ -54,3 +54,10 @@ export const createEmpty = async ({ name, parentId }: CreateData) => {
     .values({ name, parentId })
     .returning({ id: folders.id, name: folders.name })
 }
+
+export const deleteById = async (folderId: number) => {
+  return db
+    .delete(folders)
+    .where(eq(folders.id, folderId))
+    .returning({ id: folders.id, name: folders.name })
+}
