@@ -24,8 +24,9 @@ export default function AliasList({ node }: ReactNodeViewProps & Props) {
         defaultValue={initials.map((a) => a.title)}
         onChange={(values) => setUiValues(values)}
         disabled={isSaving}
-        size="xs"
+        size="sm"
         variant="unstyled"
+        radius="xs"
       />
     </NodeViewWrapper>
   )

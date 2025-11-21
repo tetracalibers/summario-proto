@@ -39,6 +39,10 @@
       gap: 0.5rem;
       align-items: center;
     }
+
+    .mantine-Input-input {
+      border-block-end: 1px dashed var(--mantine-color-gray-3);
+    }
   }
 
   .node-section_block {
