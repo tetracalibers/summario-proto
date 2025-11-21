@@ -29,12 +29,11 @@ export const getMainContentFromDoc = (doc: JSONContent): JSONContent[] => {
   return nodes.slice(2) // Remove title and alias list
 }
 
-export const judgeContentEmpty = (doc: JSONContent): boolean => {
-  const nodes = doc.content ?? []
-  if (nodes.length === 0) return true
-  if (nodes.length > 1) return false
+export const judgeContentEmpty = (contents: JSONContent[]): boolean => {
+  if (contents.length === 0) return true
+  if (contents.length > 1) return false
 
-  const firstNode = nodes[0]
+  const firstNode = contents[0]
   return (firstNode.content ?? []).length === 0
 }
 
