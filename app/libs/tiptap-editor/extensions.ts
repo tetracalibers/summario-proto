@@ -13,9 +13,10 @@ import { DropSectionBlock } from "./extensions/drop-section-block/extension"
 import { CustomDocumentControl } from "./extensions/doc-control/extension"
 import { TitleWatcher } from "./extensions/title-watcher/extension"
 import { TITLE_BLOCK } from "./constants"
+import { AliasListNode } from "./extensions/alias-list/extension"
 
 const CustomDocument = Document.extend({
-  content: "title (section|block)*"
+  content: "title aliases (section|block)*"
 })
 
 const lowlight = createLowlight(all)
@@ -63,6 +64,7 @@ export const tiptapExtensions = (
   Link.configure({ openOnClick: false }),
   SectionBlockNode,
   TitleBlockNode,
+  AliasListNode,
   DropSectionBlock,
   Placeholder.configure({
     showOnlyCurrent: false,
