@@ -72,7 +72,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
       </div>
 
       <React.Fragment key={location.pathname}>
-        <EditorWith initialJSON={term.content} title={term.title}>
+        <EditorWith content={term.content} title={term.title} aliases={alias}>
           <div className="controls-area">
             <FolderPath folders={paths} />
             <EditorActionMenu />

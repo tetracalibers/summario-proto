@@ -4,20 +4,25 @@ import { EditorContext, type JSONContent } from "@tiptap/react"
 import TipTapEditor from "./Editor"
 import { useSyncTermTitle, useTermContentState } from "~/units/term/ui.hooks"
 import ScrollArea from "../scroll-area/ScrollArea"
+import type { Alias } from "~/units/alias/types"
 
 interface Props {
   title: string
-  initialJSON?: JSONContent
+  aliases: Alias[]
+  content?: JSONContent[]
 }
 
-const EditorWith = ({ children, initialJSON, title }: PropsWithChildren<Props>) => {
+const EditorWith = ({ children, aliases, content = [], title }: PropsWithChildren<Props>) => {
   const { setIsDirty } = useTermContentState()
   const { setTermTitle } = useSyncTermTitle(title)
 
-  const editor = useTiptapEditor(initialJSON, {
-    onDirtyChange: setIsDirty,
-    onTitleChange: setTermTitle
-  })
+  const editor = useTiptapEditor(
+    { title, aliases, content },
+    {
+      onDirtyChange: setIsDirty,
+      onTitleChange: setTermTitle
+    }
+  )
   const editorValue = useMemo(() => ({ editor }), [editor])
 
   return (

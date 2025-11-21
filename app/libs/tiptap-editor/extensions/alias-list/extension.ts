@@ -1,9 +1,10 @@
 import { mergeAttributes, Node } from "@tiptap/core"
 import { ReactNodeViewRenderer } from "@tiptap/react"
 import AliasList from "./AliasList"
+import { ALIAS_LIST } from "../../constants"
 
 export const AliasListNode = Node.create({
-  name: "alias_list",
+  name: ALIAS_LIST,
   group: "aliases",
   addAttributes() {
     return {

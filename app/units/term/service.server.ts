@@ -27,7 +27,7 @@ export const createEmptyTerm = async (title: string, folderId: number | null) =>
   const [newTerm] = await TermRepository.createEmpty({
     title,
     folderId,
-    content: defaultContentJson(title)
+    content: defaultContentJson()
   })
   return { id: newTerm.id, name: newTerm.title }
 }
