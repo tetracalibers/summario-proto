@@ -7,11 +7,11 @@ import { createPreviewJson } from "~/libs/tiptap-editor/utils"
 
 export async function loader({ params }: Route.ActionArgs) {
   const term = await getTerm(Number(params.termId))
-  const contentJson = createPreviewJson(term.title, term.content as JSONContent[])
+  const initialJSON = createPreviewJson(term.title, term.content as JSONContent[])
 
   const html = renderToHTMLString({
-    content: contentJson,
-    extensions: tiptapExtensions(contentJson)
+    content: initialJSON,
+    extensions: tiptapExtensions({ initialJSON })
   })
 
   return html

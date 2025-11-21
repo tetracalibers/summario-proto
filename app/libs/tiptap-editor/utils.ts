@@ -18,7 +18,7 @@ export const createEditorJson = ({ title, aliases, content }: EditorData) => ({
   ]
 })
 
-export const createPreviewJson = (title: string, content: JSONContent[]) => ({
+export const createPreviewJson = (title: string, content: JSONContent[]): JSONContent => ({
   type: "doc",
   content: [{ type: TITLE_BLOCK, content: [{ type: "text", text: title }] }, ...content]
 })

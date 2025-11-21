@@ -8,7 +8,7 @@ export const useTiptapEditor = (initialData: EditorData, actions?: EditorActionH
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     immediatelyRender: false, // Disable immediate rendering to prevent SSR issues
-    extensions: tiptapExtensions(initialJSON, actions),
+    extensions: tiptapExtensions({ initialJSON, aliases: initialData.aliases }, actions),
     content: initialJSON
   })
 

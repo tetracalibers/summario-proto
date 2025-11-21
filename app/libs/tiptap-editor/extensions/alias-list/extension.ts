@@ -2,14 +2,22 @@ import { mergeAttributes, Node } from "@tiptap/core"
 import { ReactNodeViewRenderer } from "@tiptap/react"
 import AliasList from "./AliasList"
 import { ALIAS_LIST } from "../../constants"
+import type { Alias } from "~/units/alias/types"
 
-export const AliasListNode = Node.create({
+interface AliasListOptions {
+  initials: Alias[]
+}
+
+export const AliasListNode = Node.create<AliasListOptions>({
   name: ALIAS_LIST,
   group: "aliases",
+  addOptions() {
+    return { initials: [] }
+  },
   addAttributes() {
     return {
       initials: {
-        default: JSON.stringify([])
+        default: JSON.stringify(this.options.initials)
       }
     }
   },
