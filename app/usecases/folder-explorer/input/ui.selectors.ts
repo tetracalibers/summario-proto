@@ -11,8 +11,3 @@ export const isActiveFolderInput$ = atom((get) => {
   const displayedType = get(displayedInputEntryType$)
   return displayedType === "folder"
 })
-
-export const folderIdforDB$ = atom((get) => {
-  const folderId = get(folderId$)
-  return folderId === "root" ? null : folderId
-})

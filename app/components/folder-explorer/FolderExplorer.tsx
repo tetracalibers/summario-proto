@@ -73,12 +73,10 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
           {data?.folders.map((folder) => (
             <li key={folder.id}>
               <FolderLink
-                onClick={() => {
-                  setFolderId(folder.id)
-                }}
-                folderName={folder.name}
+                onLinkClick={() => setFolderId(folder.id)}
+                folder={folder}
+                folderEntryCount={folder.entry_count}
                 isActiveStyle={pathFolderIds.has(folder.id)}
-                isEmpty={folder.is_empty}
               />
             </li>
           ))}

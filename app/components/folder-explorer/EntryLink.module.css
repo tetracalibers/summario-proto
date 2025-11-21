@@ -1,7 +1,7 @@
 .entry_link {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   gap: 5px;
-  flex-wrap: nowrap;
   align-items: center;
   padding: 1px 2px;
   border-radius: 4px;
@@ -44,4 +44,17 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.count {
+  font-size: 0.65em;
+  color: var(--mantine-color-blue-gray-7);
+  aspect-ratio: 1;
+  height: 90%;
+  box-sizing: border-box;
+  border-radius: 6px;
+  display: inline-grid;
+  place-items: center;
+  background-color: var(--mantine-color-white);
+  border: 1px solid var(--mantine-color-pale-blue-1);
 }
