@@ -19,6 +19,7 @@ export const AliasListNode = Node.create({
     return ["alias-list", mergeAttributes(HTMLAttributes)]
   },
   addNodeView() {
+    // @ts-ignore
     return ReactNodeViewRenderer(AliasList)
   }
 })
