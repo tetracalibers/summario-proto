@@ -5,16 +5,7 @@ import {
   IconHelp,
   IconExternalLink
 } from "@tabler/icons-react"
-import {
-  ActionIcon,
-  HoverCard,
-  Menu,
-  UnstyledButton,
-  Text,
-  Group,
-  Stack,
-  Checkbox
-} from "@mantine/core"
+import { ActionIcon, HoverCard, Menu, UnstyledButton, Text, Group, Stack } from "@mantine/core"
 import { clsx } from "clsx"
 import styles from "./EntryLink.module.css"
 import { useState } from "react"
@@ -23,6 +14,8 @@ import { useEmptyFolderDeleteUi } from "~/usecases/folder-explorer/delete/ui.hoo
 import { notifications } from "@mantine/notifications"
 import { errorContent, successContent } from "~/libs/mantine-notifications/options"
 import IconLoadingSpinner from "../icon-loading-spinner/IconLoadingSpinner"
+import EntryCheckbox from "./EntryCheckbox"
+import type { Entry } from "~/usecases/folder-explorer/types"
 
 function DeleteDisabledHelp() {
   return (
@@ -72,6 +65,7 @@ interface Props {
   isActiveStyle: boolean
   onLinkClick: () => void
   selectable: boolean
+  updateSelection: (entry: Entry, selected: boolean) => void
 }
 
 export default function FolderLink({
@@ -79,7 +73,8 @@ export default function FolderLink({
   folderEntryCount,
   isActiveStyle,
   onLinkClick,
-  selectable
+  selectable,
+  updateSelection
 }: Props) {
   const [openedMenu, setOpenedMenu] = useState(false)
   const isEmpty = folderEntryCount === 0
@@ -96,7 +91,10 @@ export default function FolderLink({
     >
       <IconFolderFilled size={18} />
       <span className={styles.label}>{folder.name}</span>
-      <Checkbox aria-label="select folder" color="pink" size="xs" />
+      <EntryCheckbox
+        type="folder"
+        onChange={(checked) => updateSelection({ type: "folder", id: folder.id }, checked)}
+      />
     </div>
   ) : (
     <Menu

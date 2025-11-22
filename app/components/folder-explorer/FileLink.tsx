@@ -3,18 +3,20 @@ import { IconNote } from "@tabler/icons-react"
 import styles from "./EntryLink.module.css"
 import { clsx } from "clsx"
 import { useTermTitleState } from "~/units/term/ui.hooks"
-import { Checkbox } from "@mantine/core"
+import EntryCheckbox from "./EntryCheckbox"
+import type { Entry } from "~/usecases/folder-explorer/types"
 
 interface Props {
   targetTerm: {
-    id: string | number
+    id: number
     name: string
   }
   isActive: boolean
   selectable: boolean
+  updateSelection: (entry: Entry, selected: boolean) => void
 }
 
-export default function FileLink({ targetTerm, isActive, selectable }: Props) {
+export default function FileLink({ targetTerm, isActive, selectable, updateSelection }: Props) {
   const { termTitle: activeTermTitle } = useTermTitleState()
 
   const Tag = isActive || selectable ? "div" : NavLink
@@ -28,7 +30,12 @@ export default function FileLink({ targetTerm, isActive, selectable }: Props) {
       <span className={styles.label}>
         {isActive && activeTermTitle ? activeTermTitle : targetTerm.name}
       </span>
-      {selectable && <Checkbox aria-label="select file" color="pink" size="xs" />}
+      {selectable && (
+        <EntryCheckbox
+          type="file"
+          onChange={(checked) => updateSelection({ type: "file", id: targetTerm.id }, checked)}
+        />
+      )}
     </Tag>
   )
 }

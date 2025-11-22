@@ -16,6 +16,7 @@ import type { loader } from "~/routes/api/folders/children"
 import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import NewEntryNameInput from "./NewEntryNameInput"
 import ToggleLockButton from "./ToggleLockButton"
+import { useEffect } from "react"
 
 interface Props {
   currentTermId: number
@@ -26,7 +27,12 @@ interface Props {
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
   const { showEntryInput, isActiveFileInput, isActiveFolderInput } = useFolderExplorerInputUi()
 
-  const { data, setFolderId, locked, toggleLocked } = useFolderExplorerUi(initials)
+  const { data, setFolderId, locked, toggleLocked, selectedEntries, updateSelection } =
+    useFolderExplorerUi(initials)
+
+  useEffect(() => {
+    console.log("Selected Entries:", selectedEntries)
+  }, [selectedEntries])
 
   return (
     <div className={styles.root}>
@@ -79,6 +85,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
                 folderEntryCount={folder.entry_count}
                 isActiveStyle={pathFolderIds.has(folder.id)}
                 selectable={!locked}
+                updateSelection={updateSelection}
               />
             </li>
           ))}
@@ -89,6 +96,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
                 targetTerm={file}
                 isActive={currentTermId === file.id}
                 selectable={!locked}
+                updateSelection={updateSelection}
               />
             </li>
           ))}
