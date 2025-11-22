@@ -12,10 +12,10 @@ interface Props {
     id: number
     name: string
   }
-  setIsOpenedContextMenu: (opened: boolean) => void
+  closeMenu: () => void
 }
 
-export default function MenuItemForDelete({ isEmpty, folder, setIsOpenedContextMenu }: Props) {
+export default function MenuItemForDelete({ isEmpty, folder, closeMenu }: Props) {
   const { deleteFolder, isDeleting } = useEmptyFolderDeleteUi()
 
   return (
@@ -29,7 +29,7 @@ export default function MenuItemForDelete({ isEmpty, folder, setIsOpenedContextM
         if (!isEmpty) return
         deleteFolder(folder, {
           onSuccess: () => {
-            setIsOpenedContextMenu(false)
+            closeMenu()
             notifications.show(successContent(`フォルダ「${folder.name}」を削除しました`))
           },
           onError: ({ detail }) => {

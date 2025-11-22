@@ -87,7 +87,7 @@ export default function FolderLink({
         <MenuItemForDelete
           isEmpty={isEmpty}
           folder={folder}
-          setIsOpenedContextMenu={setIsOpenedContextMenu}
+          closeMenu={() => setIsOpenedContextMenu(false)}
         />
       </Menu.Dropdown>
     </Menu>
