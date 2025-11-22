@@ -1,11 +1,9 @@
-import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { folderId$, selectedEntries$ } from "./ui.atoms"
+import { useAtom, useAtomValue } from "jotai"
+import { folderId$ } from "./ui.atoms"
 import { useQuery } from "@tanstack/react-query"
 import type { loader } from "~/routes/api/folders/children"
 import { useSyncAtom } from "~/libs/jotai-utils/hooks"
 import { folderKeys } from "~/query-keys"
-import { selectEntry$, deselectEntry$ } from "./ui.actions"
-import type { Entry } from "./types"
 import { isSelectionMode$ } from "./ui.selectors"
 
 export const useFolderExplorerUi = (initials: Awaited<ReturnType<typeof loader>>) => {
@@ -14,17 +12,6 @@ export const useFolderExplorerUi = (initials: Awaited<ReturnType<typeof loader>>
   const [folderId, setFolderId] = useAtom(folderId$)
 
   const isSelectionMode = useAtomValue(isSelectionMode$)
-  const selectedEntries = useAtomValue(selectedEntries$)
-
-  const selectEntry = useSetAtom(selectEntry$)
-  const deselectEntry = useSetAtom(deselectEntry$)
-  const updateSelection = (entry: Entry, checked: boolean) => {
-    if (checked) {
-      selectEntry(entry)
-    } else {
-      deselectEntry(entry)
-    }
-  }
 
   const { data, isPending, isError } = useQuery<Awaited<ReturnType<typeof loader>>>({
     queryKey: folderKeys.children(`${folderId}`),
@@ -40,8 +27,6 @@ export const useFolderExplorerUi = (initials: Awaited<ReturnType<typeof loader>>
     isPending,
     isError,
     setFolderId,
-    isSelectionMode,
-    selectedEntries,
-    updateSelection
+    isSelectionMode
   }
 }

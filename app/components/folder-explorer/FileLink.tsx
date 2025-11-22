@@ -4,7 +4,7 @@ import styles from "./EntryLink.module.css"
 import { clsx } from "clsx"
 import { useTermTitleState } from "~/units/term/ui.hooks"
 import EntryCheckbox from "./EntryCheckbox"
-import type { Entry } from "~/usecases/folder-explorer/types"
+import { useCheckFileToMoveUi } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
 
 interface Props {
   targetTerm: {
@@ -13,11 +13,11 @@ interface Props {
   }
   isActive: boolean
   selectable: boolean
-  updateSelection: (entry: Entry, selected: boolean) => void
 }
 
-export default function FileLink({ targetTerm, isActive, selectable, updateSelection }: Props) {
+export default function FileLink({ targetTerm, isActive, selectable }: Props) {
   const { termTitle: activeTermTitle } = useTermTitleState()
+  const { updateCheckedFile } = useCheckFileToMoveUi()
 
   const Tag = isActive || selectable ? "div" : NavLink
 
@@ -36,10 +36,7 @@ export default function FileLink({ targetTerm, isActive, selectable, updateSelec
         {isActive && activeTermTitle ? activeTermTitle : targetTerm.name}
       </span>
       {selectable && (
-        <EntryCheckbox
-          type="file"
-          onChange={(checked) => updateSelection({ type: "file", id: targetTerm.id }, checked)}
-        />
+        <EntryCheckbox type="file" onChange={() => updateCheckedFile(targetTerm.id)} />
       )}
     </Tag>
   )

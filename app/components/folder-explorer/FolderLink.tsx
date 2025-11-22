@@ -3,12 +3,14 @@ import { Button, Menu, UnstyledButton } from "@mantine/core"
 import { clsx } from "clsx"
 import styles from "./EntryLink.module.css"
 import EntryCheckbox from "./EntryCheckbox"
-import type { Entry } from "~/usecases/folder-explorer/types"
 import MenuItemForDelete from "./folder-context-menu/MenuItemForDelete"
 import { useState } from "react"
 import MenuItemForMove from "./folder-context-menu/MenuItemForMove"
 import MenuItemForRename from "./folder-context-menu/MenuItemForRename"
-import { useSwitchMovingModeUi } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
+import {
+  useCheckFolderToMoveUi,
+  useSwitchMovingModeUi
+} from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
 
 interface Props {
   folder: { id: number; name: string }
@@ -16,7 +18,6 @@ interface Props {
   isActiveStyle: boolean
   onLinkClick: () => void
   selectable: boolean
-  updateSelection: (entry: Entry, selected: boolean) => void
 }
 
 export default function FolderLink({
@@ -24,11 +25,11 @@ export default function FolderLink({
   folderEntryCount,
   isActiveStyle,
   onLinkClick,
-  selectable,
-  updateSelection
+  selectable
 }: Props) {
   const [isOpenedContextMenu, setIsOpenedContextMenu] = useState(false)
   const { destinationFolderId, setDestinationFolderId } = useSwitchMovingModeUi()
+  const { updateCheckedFolder } = useCheckFolderToMoveUi()
   const isEmpty = folderEntryCount === 0
 
   return selectable ? (
@@ -51,10 +52,7 @@ export default function FolderLink({
           Move Here
         </Button>
       ) : (
-        <EntryCheckbox
-          type="folder"
-          onChange={(checked) => updateSelection({ type: "folder", id: folder.id }, checked)}
-        />
+        <EntryCheckbox type="folder" onChange={() => updateCheckedFolder(folder.id)} />
       )}
     </div>
   ) : (
