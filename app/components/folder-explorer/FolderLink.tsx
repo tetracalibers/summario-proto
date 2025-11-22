@@ -1,4 +1,4 @@
-import { IconFolderFilled, IconEdit, IconLogin2 } from "@tabler/icons-react"
+import { IconFolderFilled } from "@tabler/icons-react"
 import { Menu, UnstyledButton } from "@mantine/core"
 import { clsx } from "clsx"
 import styles from "./EntryLink.module.css"
@@ -6,6 +6,8 @@ import EntryCheckbox from "./EntryCheckbox"
 import type { Entry } from "~/usecases/folder-explorer/types"
 import MenuItemForDelete from "./folder-context-menu/MenuItemForDelete"
 import { useState } from "react"
+import MenuItemForMove from "./folder-context-menu/MenuItemForMove"
+import MenuItemForRename from "./folder-context-menu/MenuItemForRename"
 
 interface Props {
   folder: { id: number; name: string }
@@ -79,8 +81,8 @@ export default function FolderLink({
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item leftSection={<IconEdit size={16} />}>フォルダ名を変更</Menu.Item>
-        <Menu.Item leftSection={<IconLogin2 size={16} />}>ここに移動するアイテムを選択</Menu.Item>
+        <MenuItemForRename />
+        <MenuItemForMove />
         <Menu.Divider />
         <MenuItemForDelete
           isEmpty={isEmpty}
