@@ -15,6 +15,7 @@ import { useFolderExplorerUi } from "~/usecases/folder-explorer/ui.hooks"
 import type { loader } from "~/routes/api/folders/children"
 import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import NewEntryNameInput from "./NewEntryNameInput"
+import ToggleLockButton from "./ToggleLockButton"
 
 interface Props {
   currentTermId: number
@@ -25,7 +26,7 @@ interface Props {
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
   const { showEntryInput, isActiveFileInput, isActiveFolderInput } = useFolderExplorerInputUi()
 
-  const { data, setFolderId } = useFolderExplorerUi(initials)
+  const { data, setFolderId, locked, toggleLocked } = useFolderExplorerUi(initials)
 
   return (
     <div className={styles.root}>
@@ -89,16 +90,19 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
           {isActiveFileInput && <NewEntryNameInput type="file" />}
         </ul>
       </ScrollArea>
-      <Link
-        to="/folder-map"
-        className={styles.folder_map_link}
-        reloadDocument
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Open MindMap
-        <IconExternalLink size={14} color="var(--mantine-color-gray-7)" />
-      </Link>
+      <div className={styles.footer}>
+        <ToggleLockButton locked={locked} toggleLocked={toggleLocked} />
+        <Link
+          to="/folder-map"
+          className={styles.folder_map_link}
+          reloadDocument
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open MindMap
+          <IconExternalLink size={14} color="var(--mantine-color-gray-7)" />
+        </Link>
+      </div>
     </div>
   )
 }

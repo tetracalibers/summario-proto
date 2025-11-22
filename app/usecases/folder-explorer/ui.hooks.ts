@@ -1,5 +1,5 @@
 import { useAtom } from "jotai"
-import { folderId$ } from "./ui.atoms"
+import { folderId$, locked$ } from "./ui.atoms"
 import { useQuery } from "@tanstack/react-query"
 import type { loader } from "~/routes/api/folders/children"
 import { useSyncAtom } from "~/libs/jotai-utils/hooks"
@@ -9,6 +9,7 @@ export const useFolderExplorerUi = (initials: Awaited<ReturnType<typeof loader>>
   useSyncAtom(folderId$, initials.current?.id ?? null)
 
   const [folderId, setFolderId] = useAtom(folderId$)
+  const [locked, toggleLocked] = useAtom(locked$)
 
   const { data, isPending, isError } = useQuery<Awaited<ReturnType<typeof loader>>>({
     queryKey: folderKeys.children(`${folderId}`),
@@ -19,5 +20,5 @@ export const useFolderExplorerUi = (initials: Awaited<ReturnType<typeof loader>>
     placeholderData: initials
   })
 
-  return { data, isPending, isError, setFolderId }
+  return { data, isPending, isError, setFolderId, locked, toggleLocked }
 }

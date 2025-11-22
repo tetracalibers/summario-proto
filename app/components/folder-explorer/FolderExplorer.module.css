@@ -56,21 +56,27 @@
   padding: 0.5rem;
 }
 
-.folder_map_link {
-  color: var(--mantine-color-gray-7);
-  text-decoration: none;
-  font-size: 0.8rem;
+.footer {
   padding-inline-end: 0.25rem;
-  padding-block: 0.25rem;
-  display: inline-flex;
+  padding-block: 0;
+  display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
   position: sticky;
   gap: 3px;
   bottom: 0;
   background-color: var(--mantine-color-gray-0);
   border-block-start: 1px solid var(--mantine-color-gray-2);
   border-radius: 0 0 4px 4px;
+}
+
+.folder_map_link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--mantine-color-gray-7);
+  text-decoration: none;
+  font-size: 0.8rem;
 }
 
 /** ref: https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ */
