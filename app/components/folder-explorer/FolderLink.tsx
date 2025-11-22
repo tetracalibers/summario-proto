@@ -3,7 +3,8 @@ import {
   IconTrash,
   IconEdit,
   IconHelp,
-  IconExternalLink
+  IconExternalLink,
+  IconLogin2
 } from "@tabler/icons-react"
 import { ActionIcon, HoverCard, Menu, UnstyledButton, Text, Group, Stack } from "@mantine/core"
 import { clsx } from "clsx"
@@ -108,7 +109,8 @@ export default function FolderLink({
       onChange={setOpenedMenu}
       styles={{
         arrow: { "--popover-border-color": "var(--mantine-color-pale-indigo-2)" },
-        dropdown: { "--popover-border-color": "var(--mantine-color-pale-indigo-2)" }
+        dropdown: { "--popover-border-color": "var(--mantine-color-pale-indigo-2)" },
+        itemLabel: { fontSize: "var(--mantine-font-size-xs)" }
       }}
     >
       <Menu.Target aria-label="folder action menu">
@@ -132,11 +134,12 @@ export default function FolderLink({
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item leftSection={<IconEdit size={14} />}>Rename</Menu.Item>
+        <Menu.Item leftSection={<IconEdit size={16} />}>フォルダ名を変更</Menu.Item>
+        <Menu.Item leftSection={<IconLogin2 size={16} />}>ここに移動するアイテムを選択</Menu.Item>
         <Menu.Divider />
         <Menu.Item
           color="red"
-          leftSection={isDeleting ? <IconLoadingSpinner size={14} /> : <IconTrash size={14} />}
+          leftSection={isDeleting ? <IconLoadingSpinner size={16} /> : <IconTrash size={16} />}
           rightSection={!isEmpty && <DeleteDisabledHelp />}
           disabled={!isEmpty || isDeleting}
           component={isEmpty ? "button" : "div"}
@@ -153,7 +156,7 @@ export default function FolderLink({
             })
           }}
         >
-          Delete
+          フォルダを削除
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>
