@@ -15,7 +15,6 @@ import { useFolderExplorerUi } from "~/usecases/folder-explorer/ui.hooks"
 import type { loader } from "~/routes/api/folders/children"
 import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import NewEntryNameInput from "./NewEntryNameInput"
-import ToggleLockButton from "./ToggleLockButton"
 import { useEffect } from "react"
 
 interface Props {
@@ -27,8 +26,14 @@ interface Props {
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
   const { showEntryInput, isActiveFileInput, isActiveFolderInput } = useFolderExplorerInputUi()
 
-  const { data, setFolderId, locked, toggleLocked, selectedEntries, updateSelection } =
-    useFolderExplorerUi(initials)
+  const {
+    data,
+    setFolderId,
+    isSelectionMode,
+    destinationFolderId,
+    selectedEntries,
+    updateSelection
+  } = useFolderExplorerUi(initials)
 
   useEffect(() => {
     console.log("Selected Entries:", selectedEntries)
@@ -84,7 +89,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
                 folder={folder}
                 folderEntryCount={folder.entry_count}
                 isActiveStyle={pathFolderIds.has(folder.id)}
-                selectable={!locked}
+                selectable={isSelectionMode && folder.id !== destinationFolderId}
                 updateSelection={updateSelection}
               />
             </li>
@@ -95,7 +100,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
               <FileLink
                 targetTerm={file}
                 isActive={currentTermId === file.id}
-                selectable={!locked}
+                selectable={isSelectionMode}
                 updateSelection={updateSelection}
               />
             </li>
@@ -104,7 +109,6 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
         </ul>
       </ScrollArea>
       <div className={styles.footer}>
-        <ToggleLockButton locked={locked} toggleLocked={toggleLocked} />
         <Link
           to="/folder-map"
           className={styles.folder_map_link}
