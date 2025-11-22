@@ -28,20 +28,25 @@
 
   .node-alias_list {
     margin-block-start: 0.35rem;
-    margin-block-end: 1.4rem;
+    margin-block-end: 1rem;
     margin-inline: -1.75rem;
-    padding-inline: calc(1.75rem / 2);
+    padding-inline-start: calc(1.75rem / 2);
     padding-block-end: 0.35rem;
 
     .mantine-InputWrapper-root {
       display: grid;
       grid-template-columns: auto 1fr;
-      gap: 0.5rem;
-      align-items: center;
+      gap: 0.3rem;
+      align-items: baseline;
+    }
+
+    .mantine-InputWrapper-label::after {
+      content: " : ";
     }
 
     .mantine-Input-input {
-      border-block-end: 1px dashed var(--mantine-color-gray-3);
+      border-block-end: 1px solid var(--mantine-color-gray-1);
+      padding: 0.4rem;
     }
   }
 
