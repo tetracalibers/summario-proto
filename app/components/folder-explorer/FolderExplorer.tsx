@@ -78,13 +78,18 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
                 folder={folder}
                 folderEntryCount={folder.entry_count}
                 isActiveStyle={pathFolderIds.has(folder.id)}
+                selectable={!locked}
               />
             </li>
           ))}
           {isActiveFolderInput && <NewEntryNameInput type="folder" />}
           {data?.files.map((file) => (
             <li key={file.id}>
-              <FileLink targetTerm={file} isActive={currentTermId === file.id} />
+              <FileLink
+                targetTerm={file}
+                isActive={currentTermId === file.id}
+                selectable={!locked}
+              />
             </li>
           ))}
           {isActiveFileInput && <NewEntryNameInput type="file" />}

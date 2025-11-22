@@ -18,7 +18,7 @@
   border: 2px solid var(--mantine-color-pale-indigo-2);
 }
 
-.entry_link svg {
+.entry_link svg:first-child {
   --icon-color: var(--mantine-color-gray-6);
   stroke: var(--icon-color);
 }
