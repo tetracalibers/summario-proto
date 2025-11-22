@@ -96,7 +96,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
         target="_blank"
         rel="noopener noreferrer"
       >
-        Edit structure
+        Open MindMap
         <IconExternalLink size={14} color="var(--mantine-color-gray-7)" />
       </Link>
     </div>
