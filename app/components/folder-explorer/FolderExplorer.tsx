@@ -26,14 +26,8 @@ interface Props {
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
   const { showEntryInput, isActiveFileInput, isActiveFolderInput } = useFolderExplorerInputUi()
 
-  const {
-    data,
-    setFolderId,
-    isSelectionMode,
-    destinationFolderId,
-    selectedEntries,
-    updateSelection
-  } = useFolderExplorerUi(initials)
+  const { data, setFolderId, isSelectionMode, selectedEntries, updateSelection } =
+    useFolderExplorerUi(initials)
 
   useEffect(() => {
     console.log("Selected Entries:", selectedEntries)
@@ -89,7 +83,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
                 folder={folder}
                 folderEntryCount={folder.entry_count}
                 isActiveStyle={pathFolderIds.has(folder.id)}
-                selectable={isSelectionMode && folder.id !== destinationFolderId}
+                selectable={isSelectionMode}
                 updateSelection={updateSelection}
               />
             </li>

@@ -7,7 +7,6 @@ import { folderKeys } from "~/query-keys"
 import { selectEntry$, deselectEntry$ } from "./ui.actions"
 import type { Entry } from "./types"
 import { isSelectionMode$ } from "./ui.selectors"
-import { destinationFolderId$ } from "./move-to-folder/ui.atoms"
 
 export const useFolderExplorerUi = (initials: Awaited<ReturnType<typeof loader>>) => {
   useSyncAtom(folderId$, initials.current?.id ?? null)
@@ -15,7 +14,6 @@ export const useFolderExplorerUi = (initials: Awaited<ReturnType<typeof loader>>
   const [folderId, setFolderId] = useAtom(folderId$)
 
   const isSelectionMode = useAtomValue(isSelectionMode$)
-  const destinationFolderId = useAtomValue(destinationFolderId$)
   const selectedEntries = useAtomValue(selectedEntries$)
 
   const selectEntry = useSetAtom(selectEntry$)
@@ -43,7 +41,6 @@ export const useFolderExplorerUi = (initials: Awaited<ReturnType<typeof loader>>
     isError,
     setFolderId,
     isSelectionMode,
-    destinationFolderId,
     selectedEntries,
     updateSelection
   }

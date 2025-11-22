@@ -24,9 +24,14 @@ export default function FileLink({ targetTerm, isActive, selectable, updateSelec
   return (
     <Tag
       to={`/terms/${targetTerm.id}`}
-      className={clsx(styles.entry_link, styles.file_link, isActive && styles.highlight_active)}
+      className={clsx(
+        styles.entry_link,
+        styles.file_link,
+        isActive && styles.highlight_active,
+        selectable && styles.selectable
+      )}
     >
-      <IconNote size={18} />
+      <IconNote size={18} className={styles.entry_icon} />
       <span className={styles.label}>
         {isActive && activeTermTitle ? activeTermTitle : targetTerm.name}
       </span>

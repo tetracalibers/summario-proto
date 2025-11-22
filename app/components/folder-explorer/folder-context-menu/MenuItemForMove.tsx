@@ -1,15 +1,13 @@
 import { Menu } from "@mantine/core"
 import { IconLogin2 } from "@tabler/icons-react"
-import { useSwitchMovingModeUi } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
 
 interface Props {
   folderId: number
   closeMenu: () => void
+  setDestinationFolderId: (id: number) => void
 }
 
-export default function MenuItemForMove({ folderId, closeMenu }: Props) {
-  const { setDestinationFolderId } = useSwitchMovingModeUi()
-
+export default function MenuItemForMove({ folderId, closeMenu, setDestinationFolderId }: Props) {
   return (
     <Menu.Item
       leftSection={<IconLogin2 size={16} />}

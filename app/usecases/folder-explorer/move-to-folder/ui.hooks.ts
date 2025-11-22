@@ -1,10 +1,11 @@
-import { useSetAtom } from "jotai"
+import { useAtom } from "jotai"
 import { destinationFolderId$ } from "./ui.atoms"
 
 export const useSwitchMovingModeUi = () => {
-  const setDestinationFolderId = useSetAtom(destinationFolderId$)
+  const [destinationFolderId, setDestinationFolderId] = useAtom(destinationFolderId$)
 
   return {
+    destinationFolderId,
     setDestinationFolderId
   }
 }

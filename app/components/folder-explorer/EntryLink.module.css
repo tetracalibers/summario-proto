@@ -10,7 +10,7 @@
   border: 2px solid transparent;
 }
 
-.entry_link:not(.highlight_active, .highlight_focused):hover {
+.entry_link:not(.highlight_active, .highlight_focused, .selectable):hover {
   border: 2px solid var(--mantine-color-pale-indigo-1);
 }
 
@@ -18,7 +18,7 @@
   border: 2px solid var(--mantine-color-pale-indigo-2);
 }
 
-.entry_link svg:first-child {
+.entry_icon {
   --icon-color: var(--mantine-color-gray-6);
   stroke: var(--icon-color);
 }
@@ -28,7 +28,7 @@
   color: inherit;
 }
 
-.folder_link svg {
+.folder_link .entry_icon {
   stroke: none;
   fill: var(--icon-color);
 }

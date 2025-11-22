@@ -11,6 +11,7 @@ export default function EntryCheckbox({ type, onChange }: Props) {
       aria-label={`select ${type}`}
       color="pink"
       size="xs"
+      variant="outline"
       onChange={(event) => onChange(event.currentTarget.checked)}
     />
   )
