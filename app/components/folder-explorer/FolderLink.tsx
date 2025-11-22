@@ -82,7 +82,7 @@ export default function FolderLink({
 
       <Menu.Dropdown>
         <MenuItemForRename />
-        <MenuItemForMove />
+        <MenuItemForMove folderId={folder.id} closeMenu={() => setIsOpenedContextMenu(false)} />
         <Menu.Divider />
         <MenuItemForDelete
           isEmpty={isEmpty}
