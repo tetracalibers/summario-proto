@@ -37,7 +37,7 @@ export const getFolderGraph = async (): Promise<{ nodes: Node[]; edges: Edge[] }
     }
   })
   const termNodes = terms.map((term) => {
-    const isContentEmpty = judgeContentEmpty(term.content as JSONContent)
+    const isContentEmpty = judgeContentEmpty(term.content as JSONContent[])
     return {
       id: createFileNodeId(term.id),
       data: {

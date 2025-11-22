@@ -88,5 +88,11 @@
     "label": "Conclusion",
     "label_ja": "まとめ",
     "description": "最後にまとめると？"
+  },
+  {
+    "name": "reference",
+    "label": "Reference",
+    "label_ja": "参考文献",
+    "description": "どこから得た情報？"
   }
 ]

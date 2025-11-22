@@ -3,11 +3,10 @@ import "~/styles/editor-page.css"
 import "@mantine/tiptap/styles.css"
 import "~/styles/tiptap.css"
 
-import { Paper, Stack } from "@mantine/core"
+import { Paper } from "@mantine/core"
 import SaveButton from "~/components/term-save-button/SaveButton"
 import EditorWith from "~/components/editor/EditorWith"
 import type { Route } from "./+types/term"
-import AliasInput from "~/components/alias-input/AliasInput"
 import RelatedTermView from "~/components/related-term-view/RelatedTermView"
 import RelatedInput from "~/components/related-input/RelatedInput"
 import FolderPath from "~/components/folder-path/FolderPath"
@@ -72,7 +71,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
       </div>
 
       <React.Fragment key={location.pathname}>
-        <EditorWith initialJSON={term.content} title={term.title}>
+        <EditorWith content={term.content} title={term.title} aliases={alias}>
           <div className="controls-area">
             <FolderPath folders={paths} />
             <EditorActionMenu />
@@ -82,10 +81,7 @@ export default function Term({ loaderData }: Route.ComponentProps) {
           </div>
         </EditorWith>
         <div className="rightside-area">
-          <Stack gap="0.5rem">
-            <AliasInput initials={alias} />
-            <RelatedInput initials={related} options={relatedOptions} />
-          </Stack>
+          <RelatedInput initials={related} options={relatedOptions} />
           <RelatedTermView initialCenterNode={term} />
         </div>
       </React.Fragment>

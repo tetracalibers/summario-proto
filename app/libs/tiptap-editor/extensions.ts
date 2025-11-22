@@ -13,9 +13,11 @@ import { DropSectionBlock } from "./extensions/drop-section-block/extension"
 import { CustomDocumentControl } from "./extensions/doc-control/extension"
 import { TitleWatcher } from "./extensions/title-watcher/extension"
 import { TITLE_BLOCK } from "./constants"
+import { AliasListNode } from "./extensions/alias-list/extension"
+import type { Alias } from "~/units/alias/types"
 
 const CustomDocument = Document.extend({
-  content: "title (section|block)*"
+  content: "title aliases (section|block)*"
 })
 
 const lowlight = createLowlight(all)
@@ -25,8 +27,12 @@ export interface EditorActionHooks {
   onTitleChange?: (title: string | null) => void
 }
 
+interface ExtensionsInitialParams {
+  initialJSON: JSONContent
+  aliases?: Alias[]
+}
 export const tiptapExtensions = (
-  initialJSON?: JSONContent,
+  { initialJSON, aliases }: ExtensionsInitialParams,
   { onDirtyChange, onTitleChange }: EditorActionHooks = {}
 ): Extensions => [
   CustomDocument,
@@ -63,6 +69,7 @@ export const tiptapExtensions = (
   Link.configure({ openOnClick: false }),
   SectionBlockNode,
   TitleBlockNode,
+  AliasListNode.configure({ initials: aliases }),
   DropSectionBlock,
   Placeholder.configure({
     showOnlyCurrent: false,

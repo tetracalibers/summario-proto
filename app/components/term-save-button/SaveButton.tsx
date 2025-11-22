@@ -7,6 +7,7 @@ import loadingStyle from "./loading.module.css"
 import { useTermContentSaveUi } from "~/usecases/term-edit/ui.hooks"
 import IconLoadingSpinner from "../icon-loading-spinner/IconLoadingSpinner"
 import { errorContent, successContent, warningContent } from "~/libs/mantine-notifications/options"
+import { getMainContentFromDoc } from "~/libs/tiptap-editor/utils"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -27,7 +28,8 @@ const SaveButton = (props: Props) => {
 
         // 保存開始時のdocをスナップショット
         editor.commands.takeSnapshot()
-        const content = isDirtyEditor ? editor.getJSON() : null
+        const editorJson = isDirtyEditor ? editor.getJSON() : null
+        const content = editorJson ? getMainContentFromDoc(editorJson) : null
 
         save(content, {
           onSuccess: () => {

@@ -1,21 +1,40 @@
 import type { JSONContent } from "@tiptap/react"
-import { SECTION_BLOCK, TITLE_BLOCK } from "./constants"
+import { ALIAS_LIST, SECTION_BLOCK, TITLE_BLOCK } from "./constants"
+import type { Alias } from "~/units/alias/types"
 
-export const defaultContentJson = (title: string) => ({
+export const defaultContentJson = () => [{ type: "paragraph" }]
+
+export interface EditorData {
+  title: string
+  aliases: Alias[]
+  content: JSONContent[]
+}
+export const createEditorJson = ({ title, aliases, content }: EditorData) => ({
   type: "doc",
-  content: [{ type: TITLE_BLOCK, content: [{ type: "text", text: title }] }, { type: "paragraph" }]
+  content: [
+    { type: TITLE_BLOCK, content: [{ type: "text", text: title }] },
+    { type: ALIAS_LIST, attrs: { aliases: aliases } },
+    ...content
+  ]
 })
 
-export const judgeContentEmpty = (doc: JSONContent): boolean => {
+export const createPreviewJson = (title: string, content: JSONContent[]): JSONContent => ({
+  type: "doc",
+  content: [{ type: TITLE_BLOCK, content: [{ type: "text", text: title }] }, ...content]
+})
+
+export const getMainContentFromDoc = (doc: JSONContent): JSONContent[] => {
   const nodes = doc.content ?? []
-  if (nodes.length === 0) return true
-  if (nodes.length > 2) return false
+  if (nodes.length <= 2) return []
+  return nodes.slice(2) // Remove title and alias list
+}
 
-  const [first, second] = nodes
-  const isEmptyParagraph = second?.type === "paragraph" && (second.content?.length ?? 0) === 0
+export const judgeContentEmpty = (contents: JSONContent[]): boolean => {
+  if (contents.length === 0) return true
+  if (contents.length > 1) return false
 
-  if (nodes.length === 1) return first?.type === TITLE_BLOCK
-  return first?.type === TITLE_BLOCK && isEmptyParagraph
+  const firstNode = contents[0]
+  return (firstNode.content ?? []).length === 0
 }
 
 export const createSectionBlockJson = (title: string) => ({
