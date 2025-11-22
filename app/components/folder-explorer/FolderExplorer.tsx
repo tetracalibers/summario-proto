@@ -1,7 +1,7 @@
 import FileLink from "./FileLink"
 import FolderLink from "./FolderLink"
 import styles from "./FolderExplorer.module.css"
-import { ActionIcon, UnstyledButton } from "@mantine/core"
+import { ActionIcon, Button, UnstyledButton } from "@mantine/core"
 import {
   IconChevronLeft,
   IconFolderOpen,
@@ -15,6 +15,7 @@ import { useFolderExplorerUi } from "~/usecases/folder-explorer/ui.hooks"
 import type { loader } from "~/routes/api/folders/children"
 import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import NewEntryNameInput from "./NewEntryNameInput"
+import { useMovingModeUi } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
 
 interface Props {
   currentTermId: number
@@ -24,7 +25,8 @@ interface Props {
 
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
   const { showEntryInput, isActiveFileInput, isActiveFolderInput } = useFolderExplorerInputUi()
-  const { data, setFolderId, isSelectionMode } = useFolderExplorerUi(initials)
+  const { data, setFolderId } = useFolderExplorerUi(initials)
+  const { isMovingMode, cancelMovingMode } = useMovingModeUi()
 
   return (
     <div className={styles.root}>
@@ -76,7 +78,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
                 folder={folder}
                 folderEntryCount={folder.entry_count}
                 isActiveStyle={pathFolderIds.has(folder.id)}
-                selectable={isSelectionMode}
+                selectable={isMovingMode}
               />
             </li>
           ))}
@@ -86,7 +88,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
               <FileLink
                 targetTerm={file}
                 isActive={currentTermId === file.id}
-                selectable={isSelectionMode}
+                selectable={isMovingMode}
               />
             </li>
           ))}
@@ -94,16 +96,23 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
         </ul>
       </ScrollArea>
       <div className={styles.footer}>
-        <Link
-          to="/folder-map"
-          className={styles.folder_map_link}
-          reloadDocument
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Open MindMap
-          <IconExternalLink size={14} color="var(--mantine-color-gray-7)" />
-        </Link>
+        {isMovingMode ? (
+          <div>
+            <div>x件選択中</div>
+            <Button onClick={cancelMovingMode}>キャンセル</Button>
+          </div>
+        ) : (
+          <Link
+            to="/folder-map"
+            className={styles.folder_map_link}
+            reloadDocument
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open MindMap
+            <IconExternalLink size={14} color="var(--mantine-color-gray-7)" />
+          </Link>
+        )}
       </div>
     </div>
   )
