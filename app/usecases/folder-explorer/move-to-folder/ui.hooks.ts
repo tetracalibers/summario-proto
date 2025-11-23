@@ -4,7 +4,7 @@ import { updateFileIdsToMove$, updateFolderIdsToMove$ } from "./ui.actions"
 import { useResetAtom } from "jotai/utils"
 import { isMovingMode$ } from "./ui.selectors"
 
-export const useSwitchMovingModeUi = () => {
+export const useMovingTargetFolderUi = () => {
   const [destinationFolderId, setDestinationFolderId] = useAtom(destinationFolderId$)
 
   return {

@@ -9,7 +9,7 @@ import MenuItemForMove from "./folder-context-menu/MenuItemForMove"
 import MenuItemForRename from "./folder-context-menu/MenuItemForRename"
 import {
   useCheckFolderToMoveUi,
-  useSwitchMovingModeUi
+  useMovingTargetFolderUi
 } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
 
 interface Props {
@@ -28,7 +28,7 @@ export default function FolderLink({
   selectable
 }: Props) {
   const [isOpenedContextMenu, setIsOpenedContextMenu] = useState(false)
-  const { destinationFolderId, setDestinationFolderId } = useSwitchMovingModeUi()
+  const { destinationFolderId, setDestinationFolderId } = useMovingTargetFolderUi()
   const { updateCheckedFolder } = useCheckFolderToMoveUi()
   const isEmpty = folderEntryCount === 0
 
