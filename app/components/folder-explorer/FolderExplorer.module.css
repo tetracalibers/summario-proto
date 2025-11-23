@@ -19,15 +19,18 @@
   display: grid;
   grid-template-areas: "back . new";
   grid-template-columns: auto 1fr auto;
+  align-items: center;
 }
 
 .back_button {
   grid-area: back;
   display: flex;
   align-items: center;
-  font-family: monospace;
-  color: var(--mantine-color-gray-7);
-  padding-inline-start: 4px;
+  font-family: "DM Mono";
+  padding-inline: 2px;
+}
+.back_button:disabled {
+  background: none;
 }
 
 .new_button {
@@ -56,13 +59,9 @@
   padding: 0.5rem;
 }
 
-.folder_map_link {
-  color: var(--mantine-color-gray-7);
-  text-decoration: none;
-  font-size: 0.8rem;
-  padding-inline-end: 0.25rem;
-  padding-block: 0.25rem;
-  display: inline-flex;
+.footer {
+  padding: 0.25rem;
+  display: flex;
   align-items: center;
   justify-content: end;
   position: sticky;
@@ -71,6 +70,33 @@
   background-color: var(--mantine-color-gray-0);
   border-block-start: 1px solid var(--mantine-color-gray-2);
   border-radius: 0 0 4px 4px;
+}
+
+.moving_controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  width: 100%;
+}
+
+.selected_count {
+  padding-inline: 0.25rem;
+  font-size: 0.75rem;
+  font-family: "DM Mono", "Zen Kaku Gothic Antique";
+  color: var(--mantine-color-blue-gray-7);
+}
+.selected_one_or_more {
+  color: var(--mantine-color-pink-light-color);
+}
+
+.folder_map_link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--mantine-color-blue-gray-7);
+  text-decoration: none;
+  font-size: 0.75rem;
 }
 
 /** ref: https://css-tricks.com/books/greatest-css-tricks/scroll-shadows/ */

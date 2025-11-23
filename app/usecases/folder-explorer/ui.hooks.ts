@@ -19,5 +19,10 @@ export const useFolderExplorerUi = (initials: Awaited<ReturnType<typeof loader>>
     placeholderData: initials
   })
 
-  return { data, isPending, isError, setFolderId }
+  return {
+    data,
+    isPending,
+    isError,
+    setFolderId
+  }
 }

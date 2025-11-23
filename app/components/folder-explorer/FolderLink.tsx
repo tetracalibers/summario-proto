@@ -1,81 +1,65 @@
-import {
-  IconFolderFilled,
-  IconTrash,
-  IconEdit,
-  IconHelp,
-  IconExternalLink
-} from "@tabler/icons-react"
-import { ActionIcon, HoverCard, Menu, UnstyledButton, Text, Group, Stack } from "@mantine/core"
+import { IconFolderFilled, IconLogin2 } from "@tabler/icons-react"
+import { Button, Menu, UnstyledButton } from "@mantine/core"
 import { clsx } from "clsx"
 import styles from "./EntryLink.module.css"
+import EntryCheckbox from "./EntryCheckbox"
+import MenuItemForDelete from "./folder-context-menu/MenuItemForDelete"
 import { useState } from "react"
-import { Link } from "react-router"
-import { useEmptyFolderDeleteUi } from "~/usecases/folder-explorer/delete/ui.hooks"
-import { notifications } from "@mantine/notifications"
-import { errorContent, successContent } from "~/libs/mantine-notifications/options"
-import IconLoadingSpinner from "../icon-loading-spinner/IconLoadingSpinner"
-
-function DeleteDisabledHelp() {
-  return (
-    <HoverCard
-      shadow="md"
-      withArrow
-      arrowPosition="center"
-      position="right"
-      offset={0}
-      styles={{
-        arrow: { "--popover-border-color": "var(--mantine-color-pale-indigo-2)" },
-        dropdown: { "--popover-border-color": "var(--mantine-color-pale-indigo-2)" }
-      }}
-    >
-      <HoverCard.Target>
-        <ActionIcon variant="white" color="gray" radius="xl" aria-label="help">
-          <IconHelp size={16} />
-        </ActionIcon>
-      </HoverCard.Target>
-      <HoverCard.Dropdown>
-        <Stack gap={6}>
-          <Text size="xs">空でないフォルダは削除できません。</Text>
-          <Link
-            to="/folder-map"
-            reloadDocument
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              textDecoration: "none",
-              color: "var(--mantine-color-pink-6)"
-            }}
-          >
-            <Group gap={4} justify="end" align="center">
-              <Text size="xs">フォルダ構成を編集</Text>
-              <IconExternalLink size={14} color="var(--mantine-color-pink-5)" />
-            </Group>
-          </Link>
-        </Stack>
-      </HoverCard.Dropdown>
-    </HoverCard>
-  )
-}
+import MenuItemForMove from "./folder-context-menu/MenuItemForMove"
+import MenuItemForRename from "./folder-context-menu/MenuItemForRename"
+import {
+  useCheckFolderToMoveUi,
+  useMovingTargetFolderUi
+} from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
 
 interface Props {
   folder: { id: number; name: string }
   folderEntryCount: number
   isActiveStyle: boolean
   onLinkClick: () => void
+  selectable: boolean
+  selectedCount: number
 }
 
 export default function FolderLink({
   folder,
   folderEntryCount,
   isActiveStyle,
-  onLinkClick
+  onLinkClick,
+  selectable,
+  selectedCount
 }: Props) {
-  const [openedMenu, setOpenedMenu] = useState(false)
+  const [isOpenedContextMenu, setIsOpenedContextMenu] = useState(false)
+  const { destinationFolderId, setDestinationFolderId } = useMovingTargetFolderUi()
+  const { updateCheckedFolder } = useCheckFolderToMoveUi()
   const isEmpty = folderEntryCount === 0
 
-  const { deleteFolder, isDeleting } = useEmptyFolderDeleteUi()
-
-  return (
+  return selectable ? (
+    <div className={clsx(styles.entry_link, styles.folder_link, styles.selectable)}>
+      <IconFolderFilled size={18} className={styles.entry_icon} />
+      <span className={styles.label}>{folder.name}</span>
+      {destinationFolderId === folder.id ? (
+        <Button
+          variant="outline"
+          color="pink"
+          size="compact-xs"
+          radius="sm"
+          leftSection={<IconLogin2 size={14} />}
+          className={styles.move_here_button}
+          styles={{
+            inner: { gap: 4 },
+            section: { margin: 0 },
+            label: { fontSize: "0.7rem" }
+          }}
+          disabled={selectedCount === 0}
+        >
+          Move Here
+        </Button>
+      ) : (
+        <EntryCheckbox type="folder" onChange={() => updateCheckedFolder(folder.id)} />
+      )}
+    </div>
+  ) : (
     <Menu
       shadow="md"
       offset={0}
@@ -83,11 +67,12 @@ export default function FolderLink({
       position="right-start"
       withArrow
       arrowPosition="center"
-      opened={openedMenu}
-      onChange={setOpenedMenu}
+      opened={isOpenedContextMenu}
+      onChange={setIsOpenedContextMenu}
       styles={{
         arrow: { "--popover-border-color": "var(--mantine-color-pale-indigo-2)" },
-        dropdown: { "--popover-border-color": "var(--mantine-color-pale-indigo-2)" }
+        dropdown: { "--popover-border-color": "var(--mantine-color-pale-indigo-2)" },
+        itemLabel: { fontSize: "var(--mantine-font-size-xs)" }
       }}
     >
       <Menu.Target aria-label="folder action menu">
@@ -95,45 +80,34 @@ export default function FolderLink({
           onClick={onLinkClick}
           onContextMenu={(e) => {
             e.preventDefault()
-            setOpenedMenu(true)
+            setIsOpenedContextMenu(true)
           }}
           className={clsx(
             styles.entry_link,
             styles.folder_link,
             isActiveStyle && styles.highlight_active,
-            openedMenu && styles.highlight_focused
+            isOpenedContextMenu && styles.highlight_focused
           )}
         >
-          <IconFolderFilled size={18} />
+          <IconFolderFilled size={18} className={styles.entry_icon} />
           <span className={styles.label}>{folder.name}</span>
           <span className={styles.count}>{folderEntryCount}</span>
         </UnstyledButton>
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item leftSection={<IconEdit size={14} />}>Rename</Menu.Item>
+        <MenuItemForRename />
+        <MenuItemForMove
+          folderId={folder.id}
+          closeMenu={() => setIsOpenedContextMenu(false)}
+          setDestinationFolderId={setDestinationFolderId}
+        />
         <Menu.Divider />
-        <Menu.Item
-          color="red"
-          leftSection={isDeleting ? <IconLoadingSpinner size={14} /> : <IconTrash size={14} />}
-          rightSection={!isEmpty && <DeleteDisabledHelp />}
-          disabled={!isEmpty || isDeleting}
-          component={isEmpty ? "button" : "div"}
-          onClick={() => {
-            if (!isEmpty) return
-            deleteFolder(folder, {
-              onSuccess: () => {
-                setOpenedMenu(false)
-                notifications.show(successContent(`フォルダ「${folder.name}」を削除しました`))
-              },
-              onError: ({ detail }) => {
-                notifications.show(errorContent(detail.message, detail.target))
-              }
-            })
-          }}
-        >
-          Delete
-        </Menu.Item>
+        <MenuItemForDelete
+          isEmpty={isEmpty}
+          folder={folder}
+          closeMenu={() => setIsOpenedContextMenu(false)}
+        />
       </Menu.Dropdown>
     </Menu>
   )

@@ -1,7 +1,7 @@
 import FileLink from "./FileLink"
 import FolderLink from "./FolderLink"
 import styles from "./FolderExplorer.module.css"
-import { ActionIcon, UnstyledButton } from "@mantine/core"
+import { ActionIcon, Button } from "@mantine/core"
 import {
   IconChevronLeft,
   IconFolderOpen,
@@ -15,6 +15,8 @@ import { useFolderExplorerUi } from "~/usecases/folder-explorer/ui.hooks"
 import type { loader } from "~/routes/api/folders/children"
 import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import NewEntryNameInput from "./NewEntryNameInput"
+import { useMovingModeUi } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
+import clsx from "clsx"
 
 interface Props {
   currentTermId: number
@@ -24,42 +26,50 @@ interface Props {
 
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
   const { showEntryInput, isActiveFileInput, isActiveFolderInput } = useFolderExplorerInputUi()
-
   const { data, setFolderId } = useFolderExplorerUi(initials)
+  const { isMovingMode, cancelMovingMode, selectedCount } = useMovingModeUi()
 
   return (
     <div className={styles.root}>
       <div className={styles.header}>
         <div className={styles.action}>
           {data?.current && !data.current.isRoot && (
-            <UnstyledButton
+            <Button
+              aria-label="go to parent folder"
               className={styles.back_button}
               onClick={() => {
                 setFolderId(data.current?.parentId ?? "root")
               }}
+              variant="transparent"
+              color="blue-gray"
+              size="compact-xs"
+              radius="sm"
+              disabled={isMovingMode}
             >
-              <IconChevronLeft size={16} color="var(--mantine-color-gray-7)" />
+              <IconChevronLeft size={16} />
               ..
-            </UnstyledButton>
+            </Button>
           )}
           <div className={styles.new_button}>
             <ActionIcon
               variant="transparent"
+              color="blue-gray"
               radius="xl"
               aria-label="new folder"
               onClick={() => showEntryInput("folder")}
               disabled={isActiveFolderInput}
             >
-              <IconFolderPlus size={16} color="var(--mantine-color-gray-7)" />
+              <IconFolderPlus size={16} />
             </ActionIcon>
             <ActionIcon
               variant="transparent"
+              color="blue-gray"
               radius="xl"
               aria-label="new note"
               onClick={() => showEntryInput("file")}
               disabled={isActiveFileInput}
             >
-              <IconPencilPlus size={16} color="var(--mantine-color-gray-7)" />
+              <IconPencilPlus size={16} />
             </ActionIcon>
           </div>
         </div>
@@ -77,28 +87,58 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
                 folder={folder}
                 folderEntryCount={folder.entry_count}
                 isActiveStyle={pathFolderIds.has(folder.id)}
+                selectable={isMovingMode}
+                selectedCount={selectedCount}
               />
             </li>
           ))}
           {isActiveFolderInput && <NewEntryNameInput type="folder" />}
           {data?.files.map((file) => (
             <li key={file.id}>
-              <FileLink targetTerm={file} isActive={currentTermId === file.id} />
+              <FileLink
+                targetTerm={file}
+                isActive={currentTermId === file.id}
+                selectable={isMovingMode}
+              />
             </li>
           ))}
           {isActiveFileInput && <NewEntryNameInput type="file" />}
         </ul>
       </ScrollArea>
-      <Link
-        to="/folder-map"
-        className={styles.folder_map_link}
-        reloadDocument
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Edit structure
-        <IconExternalLink size={14} color="var(--mantine-color-gray-7)" />
-      </Link>
+      <div className={styles.footer}>
+        {isMovingMode ? (
+          <div className={styles.moving_controls}>
+            <div
+              className={clsx(
+                styles.selected_count,
+                selectedCount > 0 && styles.selected_one_or_more
+              )}
+            >
+              {selectedCount}件選択中
+            </div>
+            <Button
+              onClick={cancelMovingMode}
+              variant="outline"
+              color="pale-indigo"
+              size="compact-xs"
+              radius="sm"
+            >
+              Cancel
+            </Button>
+          </div>
+        ) : (
+          <Link
+            to="/folder-map"
+            className={styles.folder_map_link}
+            reloadDocument
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open MindMap
+            <IconExternalLink size={14} color="var(--mantine-color-blue-gray-light-color)" />
+          </Link>
+        )}
+      </div>
     </div>
   )
 }
