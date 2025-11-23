@@ -1,7 +1,7 @@
 import FileLink from "./FileLink"
 import FolderLink from "./FolderLink"
 import styles from "./FolderExplorer.module.css"
-import { ActionIcon, Button, UnstyledButton } from "@mantine/core"
+import { ActionIcon, Button } from "@mantine/core"
 import {
   IconChevronLeft,
   IconFolderOpen,
@@ -34,34 +34,42 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
       <div className={styles.header}>
         <div className={styles.action}>
           {data?.current && !data.current.isRoot && (
-            <UnstyledButton
+            <Button
+              aria-label="go to parent folder"
               className={styles.back_button}
               onClick={() => {
                 setFolderId(data.current?.parentId ?? "root")
               }}
+              variant="transparent"
+              color="blue-gray"
+              size="compact-xs"
+              radius="sm"
+              disabled={isMovingMode}
             >
-              <IconChevronLeft size={16} color="var(--mantine-color-gray-7)" />
+              <IconChevronLeft size={16} />
               ..
-            </UnstyledButton>
+            </Button>
           )}
           <div className={styles.new_button}>
             <ActionIcon
               variant="transparent"
+              color="blue-gray"
               radius="xl"
               aria-label="new folder"
               onClick={() => showEntryInput("folder")}
               disabled={isActiveFolderInput}
             >
-              <IconFolderPlus size={16} color="var(--mantine-color-gray-7)" />
+              <IconFolderPlus size={16} />
             </ActionIcon>
             <ActionIcon
               variant="transparent"
+              color="blue-gray"
               radius="xl"
               aria-label="new note"
               onClick={() => showEntryInput("file")}
               disabled={isActiveFileInput}
             >
-              <IconPencilPlus size={16} color="var(--mantine-color-gray-7)" />
+              <IconPencilPlus size={16} />
             </ActionIcon>
           </div>
         </div>
@@ -110,7 +118,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
             <Button
               onClick={cancelMovingMode}
               variant="light"
-              color="cyan"
+              color="blue"
               size="compact-xs"
               radius="sm"
             >
@@ -126,7 +134,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
             rel="noopener noreferrer"
           >
             Open MindMap
-            <IconExternalLink size={14} color="var(--mantine-color-gray-7)" />
+            <IconExternalLink size={14} color="var(--mantine-color-blue-gray-light-color)" />
           </Link>
         )}
       </div>

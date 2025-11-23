@@ -19,15 +19,18 @@
   display: grid;
   grid-template-areas: "back . new";
   grid-template-columns: auto 1fr auto;
+  align-items: center;
 }
 
 .back_button {
   grid-area: back;
   display: flex;
   align-items: center;
-  font-family: monospace;
-  color: var(--mantine-color-gray-7);
-  padding-inline-start: 4px;
+  font-family: "DM Mono";
+  padding-inline: 2px;
+}
+.back_button:disabled {
+  background: none;
 }
 
 .new_button {
@@ -81,7 +84,7 @@
   padding-inline: 0.25rem;
   font-size: 0.75rem;
   font-family: "DM Mono", "Zen Kaku Gothic Antique";
-  color: var(--mantine-color-gray-7);
+  color: var(--mantine-color-blue-gray-7);
 }
 .selected_one_or_more {
   color: var(--mantine-color-pink-light-color);
@@ -91,7 +94,7 @@
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  color: var(--mantine-color-gray-7);
+  color: var(--mantine-color-blue-gray-7);
   text-decoration: none;
   font-size: 0.75rem;
 }
