@@ -38,7 +38,7 @@ export default function FolderLink({
       <span className={styles.label}>{folder.name}</span>
       {destinationFolderId === folder.id ? (
         <Button
-          variant="light"
+          variant="outline"
           color="pink"
           size="compact-xs"
           radius="sm"

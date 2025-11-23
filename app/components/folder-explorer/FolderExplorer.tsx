@@ -117,8 +117,8 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
             </div>
             <Button
               onClick={cancelMovingMode}
-              variant="light"
-              color="blue"
+              variant="outline"
+              color="pale-indigo"
               size="compact-xs"
               radius="sm"
             >
