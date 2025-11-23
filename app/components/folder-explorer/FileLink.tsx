@@ -27,7 +27,7 @@ export default function FileLink({ targetTerm, isActive, selectable }: Props) {
       className={clsx(
         styles.entry_link,
         styles.file_link,
-        isActive && styles.highlight_active,
+        isActive && !selectable && styles.highlight_active,
         selectable && styles.selectable
       )}
     >
