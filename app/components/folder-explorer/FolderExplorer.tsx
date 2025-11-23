@@ -16,6 +16,7 @@ import type { loader } from "~/routes/api/folders/children"
 import { useFolderExplorerInputUi } from "~/usecases/folder-explorer/input/ui.hooks"
 import NewEntryNameInput from "./NewEntryNameInput"
 import { useMovingModeUi } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
+import clsx from "clsx"
 
 interface Props {
   currentTermId: number
@@ -97,9 +98,24 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
       </ScrollArea>
       <div className={styles.footer}>
         {isMovingMode ? (
-          <div>
-            <div>{selectedCount}件選択中</div>
-            <Button onClick={cancelMovingMode}>キャンセル</Button>
+          <div className={styles.moving_controls}>
+            <div
+              className={clsx(
+                styles.selected_count,
+                selectedCount > 0 && styles.selected_one_or_more
+              )}
+            >
+              {selectedCount}件選択中
+            </div>
+            <Button
+              onClick={cancelMovingMode}
+              variant="light"
+              color="cyan"
+              size="compact-xs"
+              radius="sm"
+            >
+              Cancel
+            </Button>
           </div>
         ) : (
           <Link

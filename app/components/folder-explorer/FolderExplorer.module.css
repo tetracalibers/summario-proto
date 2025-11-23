@@ -69,6 +69,24 @@
   border-radius: 0 0 4px 4px;
 }
 
+.moving_controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  width: 100%;
+}
+
+.selected_count {
+  padding-inline: 0.25rem;
+  font-size: 0.75rem;
+  font-family: "DM Mono", "Zen Kaku Gothic Antique";
+  color: var(--mantine-color-gray-7);
+}
+.selected_one_or_more {
+  color: var(--mantine-color-pink-light-color);
+}
+
 .folder_map_link {
   display: inline-flex;
   align-items: center;
