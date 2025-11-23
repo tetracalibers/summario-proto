@@ -26,7 +26,7 @@ interface Props {
 export default function FolderExplorer({ initials, pathFolderIds, currentTermId }: Props) {
   const { showEntryInput, isActiveFileInput, isActiveFolderInput } = useFolderExplorerInputUi()
   const { data, setFolderId } = useFolderExplorerUi(initials)
-  const { isMovingMode, cancelMovingMode } = useMovingModeUi()
+  const { isMovingMode, cancelMovingMode, selectedCount } = useMovingModeUi()
 
   return (
     <div className={styles.root}>
@@ -98,7 +98,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
       <div className={styles.footer}>
         {isMovingMode ? (
           <div>
-            <div>x件選択中</div>
+            <div>{selectedCount}件選択中</div>
             <Button onClick={cancelMovingMode}>キャンセル</Button>
           </div>
         ) : (
