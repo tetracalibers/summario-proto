@@ -58,3 +58,7 @@
   background-color: var(--mantine-color-white);
   border: 1px solid var(--mantine-color-pale-blue-1);
 }
+
+.move_here_button:disabled {
+  color: var(--mantine-color-gray-6);
+}

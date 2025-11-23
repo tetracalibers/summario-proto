@@ -88,6 +88,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
                 folderEntryCount={folder.entry_count}
                 isActiveStyle={pathFolderIds.has(folder.id)}
                 selectable={isMovingMode}
+                selectedCount={selectedCount}
               />
             </li>
           ))}

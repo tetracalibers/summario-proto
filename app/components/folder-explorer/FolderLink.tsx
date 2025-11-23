@@ -18,6 +18,7 @@ interface Props {
   isActiveStyle: boolean
   onLinkClick: () => void
   selectable: boolean
+  selectedCount: number
 }
 
 export default function FolderLink({
@@ -25,7 +26,8 @@ export default function FolderLink({
   folderEntryCount,
   isActiveStyle,
   onLinkClick,
-  selectable
+  selectable,
+  selectedCount
 }: Props) {
   const [isOpenedContextMenu, setIsOpenedContextMenu] = useState(false)
   const { destinationFolderId, setDestinationFolderId } = useMovingTargetFolderUi()
@@ -43,11 +45,13 @@ export default function FolderLink({
           size="compact-xs"
           radius="sm"
           leftSection={<IconLogin2 size={14} />}
+          className={styles.move_here_button}
           styles={{
             inner: { gap: 4 },
             section: { margin: 0 },
             label: { fontSize: "0.7rem" }
           }}
+          disabled={selectedCount === 0}
         >
           Move Here
         </Button>
