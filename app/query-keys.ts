@@ -10,6 +10,6 @@ export const termKeys = {
 export const folderKeys = {
   all: ["folders"] as const,
   details: () => [...folderKeys.all, "detail"] as const,
-  detail: (id: string) => [...folderKeys.details(), id] as const,
-  children: (id: string) => [...folderKeys.detail(id), "children"] as const
+  detail: (id: number | string) => [...folderKeys.details(), id] as const,
+  children: (id: number | string) => [...folderKeys.detail(id), "children"] as const
 }
