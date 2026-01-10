@@ -2,7 +2,15 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { destFolder$, fileIdsToMove$, folderIdsToMove$ } from "./ui.atoms"
 import { resetMovingModeState$, updateFileIdsToMove$, updateFolderIdsToMove$ } from "./ui.actions"
 import { isMovingMode$, selectedCount$ } from "./ui.selectors"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query"
+import type { MoveSuccess } from "./types"
+
+interface MoveSuccessResponse extends MoveSuccess {
+  message: string
+}
+interface MoveFailureResponse {
+  errors: { message: string }[]
+}
 
 export const useMoveToFolderUi = () => {
   const queryClient = useQueryClient()
@@ -14,7 +22,7 @@ export const useMoveToFolderUi = () => {
 
   const resetMovingModeState = useSetAtom(resetMovingModeState$)
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending } = useMutation<MoveSuccessResponse, MoveFailureResponse>({
     mutationFn: () =>
       fetch("/api/entries/move", {
         method: "POST",
@@ -36,7 +44,13 @@ export const useMoveToFolderUi = () => {
     }
   })
 
-  return { destFolder, setDestFolder, execMoveApi: mutate, isMoving: isPending }
+  return {
+    destFolder,
+    setDestFolder,
+    execMoveApi: (options: UseMutationOptions<MoveSuccessResponse, MoveFailureResponse>) =>
+      mutate(void 0, options),
+    isMoving: isPending
+  }
 }
 
 export const useCheckFolderToMoveUi = () => {

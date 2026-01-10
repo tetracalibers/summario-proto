@@ -1,5 +1,6 @@
 import * as TermService from "~/units/term/service.server"
 import * as FolderService from "~/units/folder/service.server"
+import type { MoveFailure, MoveSuccess } from "./types"
 
 interface MovePayload {
   targets: {
@@ -7,17 +8,6 @@ interface MovePayload {
     folder: Map<number, { name: string; type: "folder" }>[]
   }
   newParentId: number | null
-}
-
-interface MoveSuccess {
-  ok: true
-  files: { type: string; id: number; name: string }[]
-  folders: { type: string; id: number; name: string }[]
-}
-
-interface MoveFailure {
-  ok: false
-  rejected: { reason: any; name: string; type: "file" | "folder" }[]
 }
 
 export const moveEntriesIntoSubfolder = async ({

@@ -11,6 +11,8 @@ import {
   useCheckFolderToMoveUi,
   useMoveToFolderUi
 } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
+import { notifications } from "@mantine/notifications"
+import { errorContent, successContent } from "~/libs/mantine-notifications/options"
 
 interface Props {
   folder: { id: number; name: string }
@@ -30,7 +32,7 @@ export default function FolderLink({
   selectedCount
 }: Props) {
   const [isOpenedContextMenu, setIsOpenedContextMenu] = useState(false)
-  const { destFolder, setDestFolder } = useMoveToFolderUi()
+  const { destFolder, setDestFolder, execMoveApi } = useMoveToFolderUi()
   const { updateCheckedFolder } = useCheckFolderToMoveUi()
   const isEmpty = folderEntryCount === 0
 
@@ -52,6 +54,18 @@ export default function FolderLink({
             label: { fontSize: "0.7rem" }
           }}
           disabled={selectedCount === 0}
+          onClick={() => {
+            execMoveApi({
+              onSuccess: ({ message }) => {
+                notifications.show(successContent(message))
+              },
+              onError: ({ errors }) => {
+                errors.forEach(({ message }) => {
+                  notifications.show(errorContent(message))
+                })
+              }
+            })
+          }}
         >
           Move Here
         </Button>
