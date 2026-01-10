@@ -32,7 +32,7 @@ export default function FolderLink({
   selectedCount
 }: Props) {
   const [isOpenedContextMenu, setIsOpenedContextMenu] = useState(false)
-  const { destFolder, setDestFolder, execMoveApi } = useMoveToFolderUi()
+  const { destFolder, setDestFolder, execMoveApi, isMoving } = useMoveToFolderUi()
   const { updateCheckedFolder } = useCheckFolderToMoveUi()
   const isEmpty = folderEntryCount === 0
 
@@ -53,7 +53,9 @@ export default function FolderLink({
             section: { margin: 0 },
             label: { fontSize: "0.7rem" }
           }}
-          disabled={selectedCount === 0}
+          disabled={selectedCount === 0 || isMoving}
+          loading={isMoving}
+          loaderProps={{ type: "dots" }}
           onClick={() => {
             execMoveApi({
               onSuccess: ({ message }) => {
