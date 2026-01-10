@@ -31,3 +31,8 @@ export const createEmptyTerm = async (title: string, folderId: number | null) =>
   })
   return { id: newTerm.id, name: newTerm.title }
 }
+
+export const moveTerms = async (termIds: number[], newFolderId: number | null) => {
+  const [movedTerm] = await TermRepository.moveMany(termIds, newFolderId)
+  return { type: "term", id: movedTerm.id, name: movedTerm.title }
+}

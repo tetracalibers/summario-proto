@@ -1,4 +1,4 @@
-import { asc, eq, isNull, sql } from "drizzle-orm"
+import { asc, eq, isNull, sql, inArray } from "drizzle-orm"
 import { db } from "~/db/connection"
 import { folders } from "~/db/schema"
 
@@ -59,5 +59,13 @@ export const deleteById = async (folderId: number) => {
   return db
     .delete(folders)
     .where(eq(folders.id, folderId))
+    .returning({ id: folders.id, name: folders.name })
+}
+
+export const moveMany = async (folderIds: number[], newParentId: number | null) => {
+  return db
+    .update(folders)
+    .set({ parentId: newParentId })
+    .where(inArray(folders.id, folderIds))
     .returning({ id: folders.id, name: folders.name })
 }
