@@ -1,8 +1,8 @@
 import { atom } from "jotai"
-import { destinationFolderId$, fileIdsToMove$, folderIdsToMove$ } from "./ui.atoms"
+import { destFolder$, fileIdsToMove$, folderIdsToMove$ } from "./ui.atoms"
 
 export const isMovingMode$ = atom((get) => {
-  return get(destinationFolderId$) !== null
+  return get(destFolder$) !== null
 })
 
 export const selectedCount$ = atom((get) => {
