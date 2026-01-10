@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { destFolder$, fileIdsToMove$, folderIdsToMove$ } from "./ui.atoms"
+import { destFolder$, filesToMove$, foldersToMove$ } from "./ui.atoms"
 import { resetMovingModeState$, updateFileIdsToMove$, updateFolderIdsToMove$ } from "./ui.actions"
 import { isMovingMode$, selectedCount$ } from "./ui.selectors"
 import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query"
@@ -15,8 +15,9 @@ interface MoveFailureResponse {
 export const useMoveToFolderUi = () => {
   const queryClient = useQueryClient()
 
-  const targetFileIds = useAtomValue(fileIdsToMove$)
-  const targetFolderIds = useAtomValue(folderIdsToMove$)
+  const targetFiles = useAtomValue(filesToMove$)
+  const targetFolders = useAtomValue(foldersToMove$)
+  console.log("targetFiles:", targetFiles)
 
   const [destFolder, setDestFolder] = useAtom(destFolder$)
 
@@ -28,8 +29,10 @@ export const useMoveToFolderUi = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fileIds: Array.from(targetFileIds),
-          folderIds: Array.from(targetFolderIds),
+          targets: {
+            files: targetFiles,
+            folders: targetFolders
+          },
           newParent: destFolder
         })
       }).then(async (res) => {

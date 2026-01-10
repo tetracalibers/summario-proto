@@ -1,29 +1,32 @@
 import { atom } from "jotai"
-import { destFolder$, fileIdsToMove$, folderIdsToMove$ } from "./ui.atoms"
+import { destFolder$, filesToMove$, foldersToMove$ } from "./ui.atoms"
 import { RESET } from "jotai/utils"
 
-export const updateFileIdsToMove$ = atom(null, (get, set, fileId: number) => {
-  const fileIds = new Set(get(fileIdsToMove$))
-  if (fileIds.has(fileId)) {
-    fileIds.delete(fileId)
+export const updateFileIdsToMove$ = atom(null, (get, set, file: { id: number; name: string }) => {
+  const files = new Map(get(filesToMove$))
+  if (files.has(file.id)) {
+    files.delete(file.id)
   } else {
-    fileIds.add(fileId)
+    files.set(file.id, file.name)
   }
-  set(fileIdsToMove$, fileIds)
+  set(filesToMove$, files)
 })
 
-export const updateFolderIdsToMove$ = atom(null, (get, set, folderId: number) => {
-  const folderIds = new Set(get(folderIdsToMove$))
-  if (folderIds.has(folderId)) {
-    folderIds.delete(folderId)
-  } else {
-    folderIds.add(folderId)
+export const updateFolderIdsToMove$ = atom(
+  null,
+  (get, set, folder: { id: number; name: string }) => {
+    const folders = new Map(get(foldersToMove$))
+    if (folders.has(folder.id)) {
+      folders.delete(folder.id)
+    } else {
+      folders.set(folder.id, folder.name)
+    }
+    set(foldersToMove$, folders)
   }
-  set(folderIdsToMove$, folderIds)
-})
+)
 
 export const resetMovingModeState$ = atom(null, (_, set) => {
-  set(fileIdsToMove$, RESET)
-  set(folderIdsToMove$, RESET)
+  set(filesToMove$, RESET)
+  set(foldersToMove$, RESET)
   set(destFolder$, RESET)
 })

@@ -72,7 +72,7 @@ export default function FolderLink({
           Move Here
         </Button>
       ) : (
-        <EntryCheckbox type="folder" onChange={() => updateCheckedFolder(folder.id)} />
+        <EntryCheckbox type="folder" onChange={() => updateCheckedFolder(folder)} />
       )}
     </div>
   ) : (
