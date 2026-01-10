@@ -17,7 +17,6 @@ export const useMoveToFolderUi = () => {
 
   const targetFiles = useAtomValue(filesToMove$)
   const targetFolders = useAtomValue(foldersToMove$)
-  console.log("targetFiles:", targetFiles)
 
   const [destFolder, setDestFolder] = useAtom(destFolder$)
 
@@ -30,8 +29,8 @@ export const useMoveToFolderUi = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           targets: {
-            files: targetFiles,
-            folders: targetFolders
+            file: { ids: [...targetFiles.keys()], names: [...targetFiles.values()] },
+            folder: { ids: [...targetFolders.keys()], names: [...targetFolders.values()] }
           },
           newParent: destFolder
         })
@@ -47,11 +46,15 @@ export const useMoveToFolderUi = () => {
     }
   })
 
+  const execMoveApi = (options: UseMutationOptions<MoveSuccessResponse, MoveFailureResponse>) => {
+    if (destFolder === null) return
+    mutate(void 0, options)
+  }
+
   return {
     destFolder,
     setDestFolder,
-    execMoveApi: (options: UseMutationOptions<MoveSuccessResponse, MoveFailureResponse>) =>
-      mutate(void 0, options),
+    execMoveApi,
     isMoving: isPending
   }
 }

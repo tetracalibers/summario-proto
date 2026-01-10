@@ -5,8 +5,8 @@ import { debugLog } from "~/libs/debug.server"
 
 interface MovePayload {
   targets: {
-    files: Map<number, string>
-    folders: Map<number, string>
+    file: { ids: number[]; names: string[] }
+    folder: { ids: number[]; names: string[] }
   }
   newParentId: number | null
 }
@@ -18,13 +18,13 @@ export const moveEntriesIntoSubfolder = async ({
   debugLog(targets)
 
   const results = await Promise.allSettled([
-    TermService.moveTerms([...targets.files.keys()], newParentId),
-    FolderService.moveFolders([...targets.folders.keys()], newParentId)
+    TermService.moveTerms(targets.file.ids, newParentId),
+    FolderService.moveFolders(targets.folder.ids, newParentId)
   ])
 
   const targetDetails = [
-    ...[...targets.files.values()].map((name) => ({ type: "file", name }) as const),
-    ...[...targets.folders.values()].map((name) => ({ type: "folder", name }) as const)
+    ...targets.file.names.map((name) => ({ type: "file", name }) as const),
+    ...targets.folder.names.map((name) => ({ type: "folder", name }) as const)
   ]
 
   const rejected = results
