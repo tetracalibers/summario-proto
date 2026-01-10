@@ -24,5 +24,5 @@ export async function action({ request }: Route.ActionArgs) {
 
   const countMoved = result.files.length + result.folders.length
 
-  return { ...result, message: `${countMoved}件のアイテムを「${newParent.name}」に移動しました 🎉` }
+  return { ...result, message: `${countMoved}件のアイテムを「${newParent.name}」に移動しました。` }
 }
