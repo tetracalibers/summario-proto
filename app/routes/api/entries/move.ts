@@ -1,3 +1,4 @@
+import { data } from "react-router"
 import type { Route } from "./+types/move"
 import { delay } from "~/libs/debug"
 import { moveEntriesIntoSubfolder } from "~/usecases/folder-explorer/move-to-folder/feature.server"
@@ -18,7 +19,7 @@ export async function action({ request }: Route.ActionArgs) {
         : { message: "ノートの移動に失敗しました: " + r.name }
     })
 
-    return { errors, status: 500 }
+    return data(errors, { status: 500 })
   }
 
   const countMoved = result.files.length + result.folders.length
