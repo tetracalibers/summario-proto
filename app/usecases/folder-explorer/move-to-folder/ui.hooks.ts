@@ -4,6 +4,7 @@ import { resetMovingModeState$, updateFileIdsToMove$, updateFolderIdsToMove$ } f
 import { isMovingMode$, selectedCount$ } from "./ui.selectors"
 import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query"
 import type { MoveSuccess } from "./types"
+import { folderKeys } from "~/query-keys"
 
 interface MoveSuccessResponse extends MoveSuccess {
   message: string
@@ -41,7 +42,9 @@ export const useMoveToFolderUi = () => {
       }),
     onSuccess: () => {
       resetMovingModeState()
-      queryClient.invalidateQueries({ queryKey: ["folders", "children"] })
+
+      queryClient.invalidateQueries({ queryKey: folderKeys.details() })
+
       // TODO: エディタの上のパス文字列を更新
     }
   })
