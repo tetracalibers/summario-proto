@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { destinationFolderId$, fileIdsToMove$, folderIdsToMove$ } from "./ui.atoms"
+import { destFolder$, fileIdsToMove$, folderIdsToMove$ } from "./ui.atoms"
 import { resetMovingModeState$, updateFileIdsToMove$, updateFolderIdsToMove$ } from "./ui.actions"
 import { isMovingMode$, selectedCount$ } from "./ui.selectors"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -10,7 +10,7 @@ export const useMoveToFolderUi = () => {
   const targetFileIds = useAtomValue(fileIdsToMove$)
   const targetFolderIds = useAtomValue(folderIdsToMove$)
 
-  const newParentId = useAtomValue(destinationFolderId$)
+  const [destFolder, setDestFolder] = useAtom(destFolder$)
 
   const resetMovingModeState = useSetAtom(resetMovingModeState$)
 
@@ -22,7 +22,7 @@ export const useMoveToFolderUi = () => {
         body: JSON.stringify({
           fileIds: Array.from(targetFileIds),
           folderIds: Array.from(targetFolderIds),
-          newParentId
+          newParent: destFolder
         })
       }).then(async (res) => {
         const data = await res.json()
@@ -36,16 +36,7 @@ export const useMoveToFolderUi = () => {
     }
   })
 
-  return { execMoveApi: mutate, isMoving: isPending }
-}
-
-export const useMovingTargetFolderUi = () => {
-  const [destinationFolderId, setDestinationFolderId] = useAtom(destinationFolderId$)
-
-  return {
-    destinationFolderId,
-    setDestinationFolderId
-  }
+  return { destFolder, setDestFolder, execMoveApi: mutate, isMoving: isPending }
 }
 
 export const useCheckFolderToMoveUi = () => {

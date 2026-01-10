@@ -9,7 +9,7 @@ import MenuItemForMove from "./folder-context-menu/MenuItemForMove"
 import MenuItemForRename from "./folder-context-menu/MenuItemForRename"
 import {
   useCheckFolderToMoveUi,
-  useMovingTargetFolderUi
+  useMoveToFolderUi
 } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
 
 interface Props {
@@ -30,7 +30,7 @@ export default function FolderLink({
   selectedCount
 }: Props) {
   const [isOpenedContextMenu, setIsOpenedContextMenu] = useState(false)
-  const { destinationFolderId, setDestinationFolderId } = useMovingTargetFolderUi()
+  const { destFolder, setDestFolder } = useMoveToFolderUi()
   const { updateCheckedFolder } = useCheckFolderToMoveUi()
   const isEmpty = folderEntryCount === 0
 
@@ -38,7 +38,7 @@ export default function FolderLink({
     <div className={clsx(styles.entry_link, styles.folder_link, styles.selectable)}>
       <IconFolderFilled size={18} className={styles.entry_icon} />
       <span className={styles.label}>{folder.name}</span>
-      {destinationFolderId === folder.id ? (
+      {destFolder?.id === folder.id ? (
         <Button
           variant="outline"
           color="pink"
@@ -98,9 +98,9 @@ export default function FolderLink({
       <Menu.Dropdown>
         <MenuItemForRename />
         <MenuItemForMove
-          folderId={folder.id}
+          folder={folder}
           closeMenu={() => setIsOpenedContextMenu(false)}
-          setDestinationFolderId={setDestinationFolderId}
+          setDestFolder={setDestFolder}
         />
         <Menu.Divider />
         <MenuItemForDelete

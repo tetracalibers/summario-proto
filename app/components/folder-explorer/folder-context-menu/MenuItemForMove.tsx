@@ -2,17 +2,17 @@ import { Menu } from "@mantine/core"
 import { IconLogin2 } from "@tabler/icons-react"
 
 interface Props {
-  folderId: number
+  folder: { id: number | null; name: string }
   closeMenu: () => void
-  setDestinationFolderId: (id: number) => void
+  setDestFolder: (folder: { id: number | null; name: string }) => void
 }
 
-export default function MenuItemForMove({ folderId, closeMenu, setDestinationFolderId }: Props) {
+export default function MenuItemForMove({ folder, closeMenu, setDestFolder }: Props) {
   return (
     <Menu.Item
       leftSection={<IconLogin2 size={16} />}
       onClick={() => {
-        setDestinationFolderId(folderId)
+        setDestFolder(folder)
         closeMenu()
       }}
     >

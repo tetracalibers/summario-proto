@@ -1,5 +1,5 @@
 import { atom } from "jotai"
-import { destinationFolderId$, fileIdsToMove$, folderIdsToMove$ } from "./ui.atoms"
+import { destFolder$, fileIdsToMove$, folderIdsToMove$ } from "./ui.atoms"
 import { RESET } from "jotai/utils"
 
 export const updateFileIdsToMove$ = atom(null, (get, set, fileId: number) => {
@@ -25,5 +25,5 @@ export const updateFolderIdsToMove$ = atom(null, (get, set, folderId: number) =>
 export const resetMovingModeState$ = atom(null, (_, set) => {
   set(fileIdsToMove$, RESET)
   set(folderIdsToMove$, RESET)
-  set(destinationFolderId$, RESET)
+  set(destFolder$, RESET)
 })
