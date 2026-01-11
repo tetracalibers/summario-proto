@@ -9,10 +9,14 @@ import MenuItemForMove from "./folder-context-menu/MenuItemForMove"
 import MenuItemForRename from "./folder-context-menu/MenuItemForRename"
 import {
   useCheckFolderToMoveUi,
-  useMovingTargetFolderUi
+  useMoveToFolderUi
 } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
+import { notifications } from "@mantine/notifications"
+import { errorContent, successContent } from "~/libs/mantine-notifications/options"
+import LoadingLabel from "../loading-label/LoadingLabel"
 
 interface Props {
+  currentTermId: number
   folder: { id: number; name: string }
   folderEntryCount: number
   isActiveStyle: boolean
@@ -22,6 +26,7 @@ interface Props {
 }
 
 export default function FolderLink({
+  currentTermId,
   folder,
   folderEntryCount,
   isActiveStyle,
@@ -30,7 +35,7 @@ export default function FolderLink({
   selectedCount
 }: Props) {
   const [isOpenedContextMenu, setIsOpenedContextMenu] = useState(false)
-  const { destinationFolderId, setDestinationFolderId } = useMovingTargetFolderUi()
+  const { destFolder, setDestFolder, execMoveApi, isMoving } = useMoveToFolderUi(currentTermId)
   const { updateCheckedFolder } = useCheckFolderToMoveUi()
   const isEmpty = folderEntryCount === 0
 
@@ -38,7 +43,7 @@ export default function FolderLink({
     <div className={clsx(styles.entry_link, styles.folder_link, styles.selectable)}>
       <IconFolderFilled size={18} className={styles.entry_icon} />
       <span className={styles.label}>{folder.name}</span>
-      {destinationFolderId === folder.id ? (
+      {destFolder?.id === folder.id ? (
         <Button
           variant="outline"
           color="pink"
@@ -51,12 +56,34 @@ export default function FolderLink({
             section: { margin: 0 },
             label: { fontSize: "0.7rem" }
           }}
-          disabled={selectedCount === 0}
+          disabled={selectedCount === 0 || isMoving}
+          loading={isMoving}
+          loaderProps={{
+            children: <LoadingLabel doing="Moving" iconSize={14} />
+          }}
+          onClick={() => {
+            execMoveApi({
+              onSuccess: ({ messages }) => {
+                messages.forEach(({ text, type }) => {
+                  const content =
+                    type === "success"
+                      ? successContent(text)
+                      : errorContent(text, null, { autoClose: true })
+                  notifications.show(content)
+                })
+              },
+              onError: ({ details }) => {
+                details.forEach(({ message }) => {
+                  notifications.show(errorContent(message, null, { autoClose: true }))
+                })
+              }
+            })
+          }}
         >
           Move Here
         </Button>
       ) : (
-        <EntryCheckbox type="folder" onChange={() => updateCheckedFolder(folder.id)} />
+        <EntryCheckbox type="folder" onChange={() => updateCheckedFolder(folder)} />
       )}
     </div>
   ) : (
@@ -98,9 +125,9 @@ export default function FolderLink({
       <Menu.Dropdown>
         <MenuItemForRename />
         <MenuItemForMove
-          folderId={folder.id}
+          folder={folder}
           closeMenu={() => setIsOpenedContextMenu(false)}
-          setDestinationFolderId={setDestinationFolderId}
+          setDestFolder={setDestFolder}
         />
         <Menu.Divider />
         <MenuItemForDelete

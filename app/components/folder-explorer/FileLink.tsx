@@ -35,9 +35,7 @@ export default function FileLink({ targetTerm, isActive, selectable }: Props) {
       <span className={styles.label}>
         {isActive && activeTermTitle ? activeTermTitle : targetTerm.name}
       </span>
-      {selectable && (
-        <EntryCheckbox type="file" onChange={() => updateCheckedFile(targetTerm.id)} />
-      )}
+      {selectable && <EntryCheckbox type="file" onChange={() => updateCheckedFile(targetTerm)} />}
     </Tag>
   )
 }

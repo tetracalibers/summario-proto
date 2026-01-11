@@ -4,12 +4,13 @@ export const termKeys = {
   all: ["terms"] as const,
   details: () => [...termKeys.all, "detail"] as const,
   detail: (id: number) => [...termKeys.details(), id] as const,
+  path: (id: number) => [...termKeys.detail(id), "path"] as const,
   preview: (id: number) => [...termKeys.detail(id), "preview"] as const
 }
 
 export const folderKeys = {
   all: ["folders"] as const,
   details: () => [...folderKeys.all, "detail"] as const,
-  detail: (id: string) => [...folderKeys.details(), id] as const,
-  children: (id: string) => [...folderKeys.detail(id), "children"] as const
+  detail: (id: number | string) => [...folderKeys.details(), id] as const,
+  children: (id: number | string) => [...folderKeys.detail(id), "children"] as const
 }

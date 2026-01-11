@@ -1,6 +1,6 @@
 import { db } from "~/db/connection"
 import { terms } from "~/db/schema"
-import { eq, desc } from "drizzle-orm"
+import { eq, desc, inArray } from "drizzle-orm"
 import type { JSONContent } from "@tiptap/react"
 
 export const findAll = async () => {
@@ -30,6 +30,11 @@ export const findRecent = async ({ limit = 1 }) => {
   return rows
 }
 
+export const getParentFolderId = async (termId: number) => {
+  const rows = await db.select({ folderId: terms.folderId }).from(terms).where(eq(terms.id, termId))
+
+  return rows
+}
 interface UpdateContentData {
   title: string
   content: JSONContent
@@ -51,5 +56,13 @@ export const createEmpty = async ({ title, folderId, content }: CreateData) => {
   return db
     .insert(terms)
     .values({ title, folderId, content })
+    .returning({ id: terms.id, title: terms.title })
+}
+
+export const moveMany = async (termIds: number[], newFolderId: number | null) => {
+  return db
+    .update(terms)
+    .set({ folderId: newFolderId })
+    .where(inArray(terms.id, termIds))
     .returning({ id: terms.id, title: terms.title })
 }
