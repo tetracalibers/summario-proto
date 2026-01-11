@@ -3,11 +3,10 @@ import { useCurrentEditor } from "@tiptap/react"
 import { type ButtonHTMLAttributes } from "react"
 import { useParams } from "react-router"
 import { notifications } from "@mantine/notifications"
-import loadingStyle from "./loading.module.css"
 import { useTermContentSaveUi } from "~/usecases/term-edit/ui.hooks"
-import IconLoadingSpinner from "../icon-loading-spinner/IconLoadingSpinner"
 import { errorContent, successContent, warningContent } from "~/libs/mantine-notifications/options"
 import { getMainContentFromDoc } from "~/libs/tiptap-editor/utils"
+import LoadingLabel from "../loading-label/LoadingLabel"
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -23,6 +22,8 @@ const SaveButton = (props: Props) => {
       gradient={{ from: "grape", to: "indigo", deg: 90 }}
       radius="sm"
       disabled={!isCanSave || isSaving}
+      loading={isSaving}
+      loaderProps={{ children: <LoadingLabel doing="Saving" iconSize={16} /> }}
       onClick={() => {
         if (!editor) return
 
@@ -51,14 +52,7 @@ const SaveButton = (props: Props) => {
       }}
       {...props}
     >
-      {isSaving ? (
-        <span className={loadingStyle.loading}>
-          <IconLoadingSpinner size="16px" />
-          Saving...
-        </span>
-      ) : (
-        "Save"
-      )}
+      Save
     </Button>
   )
 }

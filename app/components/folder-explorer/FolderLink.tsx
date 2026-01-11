@@ -13,6 +13,7 @@ import {
 } from "~/usecases/folder-explorer/move-to-folder/ui.hooks"
 import { notifications } from "@mantine/notifications"
 import { errorContent, successContent } from "~/libs/mantine-notifications/options"
+import LoadingLabel from "../loading-label/LoadingLabel"
 
 interface Props {
   currentTermId: number
@@ -57,7 +58,9 @@ export default function FolderLink({
           }}
           disabled={selectedCount === 0 || isMoving}
           loading={isMoving}
-          loaderProps={{ type: "dots" }}
+          loaderProps={{
+            children: <LoadingLabel doing="Moving" iconSize={14} />
+          }}
           onClick={() => {
             execMoveApi({
               onSuccess: ({ message }) => {
