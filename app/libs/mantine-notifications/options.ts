@@ -15,10 +15,14 @@ export const warningContent = (message: ReactNode) => ({
   classNames: styles
 })
 
-export const errorContent = (message: ReactNode, target?: string) => ({
+export const errorContent = (
+  message: ReactNode,
+  target?: string | null,
+  { autoClose = false } = {}
+) => ({
   title: target ? `ERROR: ${target}` : "ERROR",
   message,
   color: "pink",
   classNames: styles,
-  autoClose: false
+  autoClose
 })
