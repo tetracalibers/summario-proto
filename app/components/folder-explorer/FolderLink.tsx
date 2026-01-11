@@ -63,12 +63,18 @@ export default function FolderLink({
           }}
           onClick={() => {
             execMoveApi({
-              onSuccess: ({ message }) => {
-                notifications.show(successContent(message))
+              onSuccess: ({ messages }) => {
+                messages.forEach(({ text, type }) => {
+                  const content =
+                    type === "success"
+                      ? successContent(text)
+                      : errorContent(text, null, { autoClose: true })
+                  notifications.show(content)
+                })
               },
               onError: ({ details }) => {
                 details.forEach(({ message }) => {
-                  notifications.show(errorContent(message))
+                  notifications.show(errorContent(message, null, { autoClose: true }))
                 })
               }
             })

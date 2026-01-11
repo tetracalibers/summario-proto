@@ -25,6 +25,18 @@ export const updateFolderIdsToMove$ = atom(
   }
 )
 
+export const removeFileIdsToMove$ = atom(null, (get, set, fileIds: number[]) => {
+  const files = new Map(get(filesToMove$))
+  fileIds.forEach((id) => files.delete(id))
+  set(filesToMove$, files)
+})
+
+export const removeFolderIdsToMove$ = atom(null, (get, set, folderIds: number[]) => {
+  const folders = new Map(get(foldersToMove$))
+  folderIds.forEach((id) => folders.delete(id))
+  set(foldersToMove$, folders)
+})
+
 export const resetMovingModeState$ = atom(null, (_, set) => {
   set(filesToMove$, RESET)
   set(foldersToMove$, RESET)

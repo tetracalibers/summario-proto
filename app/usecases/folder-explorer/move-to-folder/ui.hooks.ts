@@ -1,16 +1,18 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { destFolder$, filesToMove$, foldersToMove$ } from "./ui.atoms"
-import { resetMovingModeState$, updateFileIdsToMove$, updateFolderIdsToMove$ } from "./ui.actions"
+import {
+  removeFileIdsToMove$,
+  removeFolderIdsToMove$,
+  resetMovingModeState$,
+  updateFileIdsToMove$,
+  updateFolderIdsToMove$
+} from "./ui.actions"
 import { isMovingMode$, selectedCount$ } from "./ui.selectors"
 import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/react-query"
-import type { MoveSuccess } from "./types"
 import { folderKeys, termKeys } from "~/query-keys"
 import { folderId$ } from "../ui.atoms"
 import { BatchActionError } from "~/libs/error"
-
-interface MoveSuccessResponse extends MoveSuccess {
-  message: string
-}
+import type { action } from "~/routes/api/entries/move"
 
 export const useMoveToFolderUi = (currentTermId: number) => {
   const queryClient = useQueryClient()
@@ -22,9 +24,12 @@ export const useMoveToFolderUi = (currentTermId: number) => {
 
   const [destFolder, setDestFolder] = useAtom(destFolder$)
 
+  const removeTargetFiles = useSetAtom(removeFileIdsToMove$)
+  const removeTargetFolders = useSetAtom(removeFolderIdsToMove$)
+
   const resetMovingModeState = useSetAtom(resetMovingModeState$)
 
-  const { mutate, isPending } = useMutation<MoveSuccessResponse, BatchActionError>({
+  const { mutate, isPending } = useMutation<Awaited<ReturnType<typeof action>>, BatchActionError>({
     mutationFn: () =>
       fetch("/api/entries/move", {
         method: "POST",
@@ -41,15 +46,23 @@ export const useMoveToFolderUi = (currentTermId: number) => {
         if (!res.ok) throw new BatchActionError("Failed to move entries.", data)
         return data
       }),
-    onSuccess: () => {
-      resetMovingModeState()
-      show(destFolder?.id ?? "root")
+    onSuccess: ({ errorsCount, success }) => {
+      if (errorsCount === 0) {
+        resetMovingModeState()
+        show(destFolder?.id ?? "root")
+      } else {
+        removeTargetFiles(success.file)
+        removeTargetFolders(success.folder)
+      }
+
       queryClient.invalidateQueries({ queryKey: folderKeys.details() })
       queryClient.invalidateQueries({ queryKey: termKeys.path(currentTermId) })
     }
   })
 
-  const execMoveApi = (options: UseMutationOptions<MoveSuccessResponse, BatchActionError>) => {
+  const execMoveApi = (
+    options: UseMutationOptions<Awaited<ReturnType<typeof action>>, BatchActionError>
+  ) => {
     if (destFolder === null) return
     mutate(void 0, options)
   }

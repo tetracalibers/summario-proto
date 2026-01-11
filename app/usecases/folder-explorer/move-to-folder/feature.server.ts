@@ -1,6 +1,6 @@
 import * as TermService from "~/units/term/service.server"
 import * as FolderService from "~/units/folder/service.server"
-import type { MoveFailure, MoveSuccess } from "./types"
+import type { EntriesResults, MoveResult } from "./types"
 import { debugLog } from "~/libs/debug.server"
 
 interface MovePayload {
@@ -14,7 +14,7 @@ interface MovePayload {
 export const moveEntriesIntoSubfolder = async ({
   targets,
   newParentId
-}: MovePayload): Promise<MoveSuccess | MoveFailure> => {
+}: MovePayload): Promise<MoveResult> => {
   debugLog(targets)
 
   const results = await Promise.allSettled([
@@ -22,24 +22,24 @@ export const moveEntriesIntoSubfolder = async ({
     FolderService.moveFolders(targets.folder.ids, newParentId)
   ])
 
-  const rejected = results
-    .filter((r) => r.status === "rejected")
-    .map((r, i) => {
-      const type = i === 0 ? "file" : ("folder" as const)
-      const targetNames = type === "file" ? targets.file.names : targets.folder.names
-      return { reason: r.reason, type, names: targetNames } as const
-    })
+  const rejected = results.filter((r) => r.status === "rejected").length
+  const status = rejected === 0 ? "ALL_SUCCEEDED" : "HAS_FAILURES"
 
-  if (rejected.length > 0) {
-    console.error("Failed to move entries:", rejected)
-    return { ok: false, rejected }
-  }
-
-  const [filesResult, foldersResult] = results
+  const [files, folders] = results
+  const filesResult: EntriesResults = (() => {
+    const status = files.status === "fulfilled" ? "SUCCESS" : "FAILURE"
+    return { status, count: targets.file.ids.length, ...targets.file }
+  })()
+  const foldersResult: EntriesResults = (() => {
+    const status = folders.status === "fulfilled" ? "SUCCESS" : "FAILURE"
+    return { status, count: targets.folder.ids.length, ...targets.folder }
+  })()
 
   return {
-    ok: true,
-    files: filesResult.status === "fulfilled" ? filesResult.value : [],
-    folders: foldersResult.status === "fulfilled" ? foldersResult.value : []
+    status,
+    details: [
+      { type: "file", ...filesResult },
+      { type: "folder", ...foldersResult }
+    ]
   }
 }
