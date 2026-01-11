@@ -66,8 +66,8 @@ export default function FolderLink({
               onSuccess: ({ message }) => {
                 notifications.show(successContent(message))
               },
-              onError: ({ errors }) => {
-                errors.forEach(({ message }) => {
+              onError: ({ details }) => {
+                details.forEach(({ message }) => {
                   notifications.show(errorContent(message))
                 })
               }

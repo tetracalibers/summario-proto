@@ -13,10 +13,10 @@ export async function action({ request }: Route.ActionArgs) {
   const result = await moveEntriesIntoSubfolder({ targets, newParentId: newParent.id })
 
   if (!result.ok) {
-    const errors = result.rejected.map((r) => {
+    const errors = result.rejected.flatMap((r) => {
       return r.type === "folder"
-        ? { message: "フォルダの移動に失敗しました: " + r.name }
-        : { message: "ノートの移動に失敗しました: " + r.name }
+        ? { message: "フォルダの移動に失敗しました: " + r.names.join(", ") }
+        : { message: "ノートの移動に失敗しました: " + r.names.join(", ") }
     })
 
     return data(errors, { status: 500 })

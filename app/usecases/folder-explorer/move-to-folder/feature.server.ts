@@ -22,17 +22,12 @@ export const moveEntriesIntoSubfolder = async ({
     FolderService.moveFolders(targets.folder.ids, newParentId)
   ])
 
-  const targetDetails = [
-    ...targets.file.names.map((name) => ({ type: "file", name }) as const),
-    ...targets.folder.names.map((name) => ({ type: "folder", name }) as const)
-  ]
-
   const rejected = results
-    .flat()
     .filter((r) => r.status === "rejected")
     .map((r, i) => {
-      const target = targetDetails[i]
-      return { reason: r.reason, ...target }
+      const type = i === 0 ? "file" : ("folder" as const)
+      const targetNames = type === "file" ? targets.file.names : targets.folder.names
+      return { reason: r.reason, type, names: targetNames } as const
     })
 
   if (rejected.length > 0) {

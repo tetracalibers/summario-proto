@@ -6,12 +6,10 @@ import { useMutation, useQueryClient, type UseMutationOptions } from "@tanstack/
 import type { MoveSuccess } from "./types"
 import { folderKeys, termKeys } from "~/query-keys"
 import { folderId$ } from "../ui.atoms"
+import { BatchActionError } from "~/libs/error"
 
 interface MoveSuccessResponse extends MoveSuccess {
   message: string
-}
-interface MoveFailureResponse {
-  errors: { message: string }[]
 }
 
 export const useMoveToFolderUi = (currentTermId: number) => {
@@ -26,7 +24,7 @@ export const useMoveToFolderUi = (currentTermId: number) => {
 
   const resetMovingModeState = useSetAtom(resetMovingModeState$)
 
-  const { mutate, isPending } = useMutation<MoveSuccessResponse, MoveFailureResponse>({
+  const { mutate, isPending } = useMutation<MoveSuccessResponse, BatchActionError>({
     mutationFn: () =>
       fetch("/api/entries/move", {
         method: "POST",
@@ -40,7 +38,7 @@ export const useMoveToFolderUi = (currentTermId: number) => {
         })
       }).then(async (res) => {
         const data = await res.json()
-        if (!res.ok) throw new Error(data.message || "Failed to move entries.")
+        if (!res.ok) throw new BatchActionError("Failed to move entries.", data)
         return data
       }),
     onSuccess: () => {
@@ -51,7 +49,7 @@ export const useMoveToFolderUi = (currentTermId: number) => {
     }
   })
 
-  const execMoveApi = (options: UseMutationOptions<MoveSuccessResponse, MoveFailureResponse>) => {
+  const execMoveApi = (options: UseMutationOptions<MoveSuccessResponse, BatchActionError>) => {
     if (destFolder === null) return
     mutate(void 0, options)
   }

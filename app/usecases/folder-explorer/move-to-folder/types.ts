@@ -6,5 +6,5 @@ export interface MoveSuccess {
 
 export interface MoveFailure {
   ok: false
-  rejected: { reason: any; name: string; type: "file" | "folder" }[]
+  rejected: { reason: any; type: "file" | "folder"; names: string[] }[]
 }
