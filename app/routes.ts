@@ -6,6 +6,7 @@ export default [
   route("folder-map", "routes/folder-map.tsx"),
 
   ...prefix("api", [
+    route("terms/:termId/path", "routes/api/terms/path.ts"),
     route("terms/:termId/preview", "routes/api/terms/preview.ts"),
     route("terms/:termId/edit", "routes/api/terms/edit.ts"),
     route("terms/:termId/delete", "routes/api/terms/delete.ts"),

@@ -30,6 +30,11 @@ export const findRecent = async ({ limit = 1 }) => {
   return rows
 }
 
+export const getParentFolderId = async (termId: number) => {
+  const rows = await db.select({ folderId: terms.folderId }).from(terms).where(eq(terms.id, termId))
+
+  return rows
+}
 interface UpdateContentData {
   title: string
   content: JSONContent

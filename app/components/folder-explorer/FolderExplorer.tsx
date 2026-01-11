@@ -84,6 +84,7 @@ export default function FolderExplorer({ initials, pathFolderIds, currentTermId 
             <li key={folder.id}>
               <FolderLink
                 onLinkClick={() => setFolderId(folder.id)}
+                currentTermId={currentTermId}
                 folder={folder}
                 folderEntryCount={folder.entry_count}
                 isActiveStyle={pathFolderIds.has(folder.id)}

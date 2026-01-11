@@ -6,11 +6,6 @@ export const getFolder = async (folderId: number | null) => {
   return FolderService.getFolder(folderId)
 }
 
-export const getFolderPath = async (folderId: number | null) => {
-  if (folderId === null) return null
-  return FolderService.getFolderPath(folderId)
-}
-
 export const getFolderChildren = async (folderId: number | null) => {
   const [folders, files] = await Promise.all([
     FolderChildrenReadStore.findChildrenFolders(folderId),

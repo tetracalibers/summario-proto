@@ -4,6 +4,7 @@ export const termKeys = {
   all: ["terms"] as const,
   details: () => [...termKeys.all, "detail"] as const,
   detail: (id: number) => [...termKeys.details(), id] as const,
+  path: (id: number) => [...termKeys.detail(id), "path"] as const,
   preview: (id: number) => [...termKeys.detail(id), "preview"] as const
 }
 

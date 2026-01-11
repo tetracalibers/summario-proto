@@ -15,6 +15,7 @@ import { notifications } from "@mantine/notifications"
 import { errorContent, successContent } from "~/libs/mantine-notifications/options"
 
 interface Props {
+  currentTermId: number
   folder: { id: number; name: string }
   folderEntryCount: number
   isActiveStyle: boolean
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export default function FolderLink({
+  currentTermId,
   folder,
   folderEntryCount,
   isActiveStyle,
@@ -32,7 +34,7 @@ export default function FolderLink({
   selectedCount
 }: Props) {
   const [isOpenedContextMenu, setIsOpenedContextMenu] = useState(false)
-  const { destFolder, setDestFolder, execMoveApi, isMoving } = useMoveToFolderUi()
+  const { destFolder, setDestFolder, execMoveApi, isMoving } = useMoveToFolderUi(currentTermId)
   const { updateCheckedFolder } = useCheckFolderToMoveUi()
   const isEmpty = folderEntryCount === 0
 
