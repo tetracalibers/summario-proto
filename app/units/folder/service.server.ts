@@ -24,6 +24,7 @@ export const deleteFolder = async (folderId: number) => {
 }
 
 export const moveFolders = async (folderIds: number[], newParentId: number | null) => {
-  const [movedFolder] = await FolderRepository.moveMany(folderIds, newParentId)
-  return { type: "folder", ...movedFolder }
+  if (folderIds.length === 0) return []
+  const movedFolder = await FolderRepository.moveMany(folderIds, newParentId)
+  return movedFolder
 }

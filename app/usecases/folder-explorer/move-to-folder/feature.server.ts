@@ -44,7 +44,7 @@ export const moveEntriesIntoSubfolder = async ({
 
   return {
     ok: true,
-    files: filesResult.status === "fulfilled" ? [filesResult.value] : [],
-    folders: foldersResult.status === "fulfilled" ? [foldersResult.value] : []
+    files: filesResult.status === "fulfilled" ? filesResult.value : [],
+    folders: foldersResult.status === "fulfilled" ? foldersResult.value : []
   }
 }
