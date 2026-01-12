@@ -17,7 +17,7 @@ export default function EditorSidebar({ currentTermId, initialFolders, paths }: 
       variant="default"
       color="pink"
       radius="md"
-      defaultValue="folder"
+      defaultValue="folders"
       styles={{
         root: {
           paddingInline: "0.25rem",
@@ -40,15 +40,15 @@ export default function EditorSidebar({ currentTermId, initialFolders, paths }: 
       }}
     >
       <Tabs.List>
-        <Tabs.Tab value="folder" leftSection={<IconFolder size={14} />}>
-          Folder
+        <Tabs.Tab value="folders" leftSection={<IconFolder size={14} />}>
+          Folders
         </Tabs.Tab>
         <Tabs.Tab value="blocks" leftSection={<IconDragDrop2 size={16} />}>
           Blocks
         </Tabs.Tab>
       </Tabs.List>
 
-      <Tabs.Panel value="folder">
+      <Tabs.Panel value="folders">
         <Paper shadow="0" withBorder p="0" h="100%">
           <FolderExplorer
             currentTermId={currentTermId}
