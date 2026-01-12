@@ -11,7 +11,6 @@ import "jotai-devtools/styles.css"
 
 import "@mantine/core/styles.css"
 import "@mantine/notifications/styles.css"
-import "@gfazioli/mantine-split-pane/styles.css"
 
 const queryClient = new QueryClient()
 
